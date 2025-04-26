@@ -1,7 +1,7 @@
 stages:
   - versioning
   - build
-  - deploy
+  # - deploy
 
 Versioning:
   stage: versioning
