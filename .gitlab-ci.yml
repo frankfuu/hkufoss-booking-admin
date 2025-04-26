@@ -33,7 +33,8 @@ Build Admin:
     - mkdir -p /kaniko/.docker
     - DOCKER_VERSION=$(cat .VERSION)
     - echo "{\"auths\":{\"$CI_REGISTRY\":{\"auth\":\"$(echo -n ${CI_REGISTRY_USER}:${CI_REGISTRY_PASSWORD} | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
-    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile.prod --destination $CI_REGISTRY_IMAGE:$DOCKER_VERSION --cache=true --snapshotMode=redo --use-new-run
+    # Adding build args to handle the pnpm lockfile issue
+    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile.prod --destination $CI_REGISTRY_IMAGE:$DOCKER_VERSION --cache=true --snapshotMode=redo --use-new-run --build-arg PNPM_INSTALL_FLAGS="--force"
   artifacts:
     paths:
     - .VERSION
