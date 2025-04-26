@@ -1,0 +1,19 @@
+# Use Node.js version 18
+FROM node:18-alpine
+
+# Install pnpm
+RUN npm install -g pnpm
+
+# Set the working directory
+WORKDIR /app
+
+# Copy the package.json and install dependencies
+COPY package.json pnpm-lock.yaml /app/
+
+# Copy the rest of the app's code
+COPY . /app
+
+# Expose the port and start the app
+EXPOSE 5173
+
+CMD [ -d "node_modules" ] && pnpm dev --host || pnpm install && pnpm dev --host

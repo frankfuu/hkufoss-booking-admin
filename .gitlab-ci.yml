@@ -1,0 +1,65 @@
+stages:
+  - versioning
+  - build
+  - deploy
+
+Versioning:
+  stage: versioning
+  image:
+    name: node:20
+  variables:
+    GITLAB_TOKEN: $VERSIONING_TOKEN
+    GIT_DEPTH: 0
+  before_script:
+    - apt-get update && apt-get install -y --no-install-recommends git-core ca-certificates
+    - npm install -g semantic-release @semantic-release/changelog @semantic-release/exec @semantic-release/git @semantic-release/gitlab
+  script:
+    - semantic-release
+  artifacts:
+    paths:
+    - .VERSION
+  only:
+    - main
+    - beta
+
+Build Admin:
+  stage: build
+  variables:
+    GODEBUG: "http2client=0"
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
+  script:
+    - mkdir -p /kaniko/.docker
+    - DOCKER_VERSION=$(cat .VERSION)
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"auth\":\"$(echo -n ${CI_REGISTRY_USER}:${CI_REGISTRY_PASSWORD} | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
+    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile.prod --destination $CI_REGISTRY_IMAGE:$DOCKER_VERSION --cache=true --snapshotMode=redo --use-new-run
+  artifacts:
+    paths:
+    - .VERSION
+  only:
+    - main
+    - beta
+
+Deploy:
+  stage: deploy
+  image: ubuntu:latest
+  only:
+    - beta
+  environment:
+    name: dev
+  before_script:
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - mkdir -p ~/.ssh
+    - echo -e "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - echo "$SSH_HOST" > ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  script:
+    - DOCKER_VERSION=$(cat .VERSION)
+    - ssh -i ~/.ssh/id_rsa $SSH_USERNAME@$SSH_HOST "ls -l"
+    - ssh -i ~/.ssh/id_rsa $SSH_USERNAME@$SSH_HOST "docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY"
+    - ssh -i ~/.ssh/id_rsa $SSH_USERNAME@$SSH_HOST "sed -i 's|^ADMIN_IMAGE=.*|ADMIN_IMAGE=$CI_REGISTRY_IMAGE:$DOCKER_VERSION|' $ENV_FILE"
+    - ssh -i ~/.ssh/id_rsa $SSH_USERNAME@$SSH_HOST "docker compose -f $DOCKER_COMPOSE_FILE pull admin"
+    - ssh -i ~/.ssh/id_rsa $SSH_USERNAME@$SSH_HOST "docker compose -f $DOCKER_COMPOSE_FILE up -d"

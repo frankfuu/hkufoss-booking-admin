@@ -1,0 +1,78 @@
+import { Create } from "@refinedev/mui";
+import {
+  Box,
+  TextField,
+  Checkbox,
+  MenuItem,
+  ListItemText,
+  Autocomplete,
+  FormGroup,
+  FormControlLabel,
+  Grid,
+  Typography,
+} from "@mui/material";
+import { useForm } from "@refinedev/react-hook-form";
+import { Controller } from "react-hook-form";
+import { useList } from "@refinedev/core";
+import { useTranslation } from "react-i18next";
+
+export const RoleCreate = () => {
+  const { t } = useTranslation();
+  const { data: permissionsData, isLoading } = useList({
+    resource: "permissions",
+    pagination: { pageSize: 300 },
+  });
+
+  const {
+    saveButtonProps,
+    refineCore: { formLoading, onFinish },
+    register,
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (data: any) => {
+    // console.log("Intercepted data:", data);
+    onFinish(data);
+  };
+
+  if (isLoading) {
+    return <div>{t("Loading...")}</div>;
+  } else {
+    return (
+      <Create isLoading={formLoading} saveButtonProps={{ ...saveButtonProps, onClick: handleSubmit(onSubmit) }}>
+        <Box component="form" sx={{ display: "flex", flexDirection: "column" }} autoComplete="off">
+          <TextField
+            {...register("name", {
+              required: t("This field is required"),
+            })}
+            error={!!(errors as any)?.name}
+            helperText={(errors as any)?.name?.message}
+            margin="normal"
+            fullWidth
+            InputLabelProps={{ shrink: true }}
+            type="text"
+            label="Name"
+            name="name"
+          />
+
+          <Typography variant="h6" sx={{ mt: 2, mb: 2 }}>
+            Permissions
+          </Typography>
+
+          <Grid container spacing={2}>
+            {permissionsData?.data.map((p) => (
+              <Grid item xs={12} sm={6} md={4} key={p.id}>
+                <FormControlLabel
+                  control={<Checkbox {...register("perms")} value={p.id} />}
+                  label={`${p.subject} - ${p.action}`}
+                />
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+      </Create>
+    );
+  }
+};

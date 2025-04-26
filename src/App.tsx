@@ -1,0 +1,249 @@
+import { Authenticated, I18nProvider, Refine, useNotification, usePermissions } from "@refinedev/core";
+import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
+
+import {
+  ErrorComponent,
+  RefineSnackbarProvider,
+  SnackbarProvider,
+  ThemedLayoutV2,
+  useNotificationProvider,
+} from "@refinedev/mui";
+
+import CssBaseline from "@mui/material/CssBaseline";
+import GlobalStyles from "@mui/material/GlobalStyles";
+import routerBindings, {
+  CatchAllNavigate,
+  DocumentTitleHandler,
+  NavigateToResource,
+  UnsavedChangesNotifier,
+} from "@refinedev/react-router-v6";
+import dataProvider from "@refinedev/simple-rest";
+import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
+import { authProvider } from "./authProvider";
+import { Header } from "./components/header";
+import { ColorModeContextProvider } from "./contexts/color-mode";
+import { ForgotPassword } from "./pages/forgotPassword";
+import { Login } from "./pages/login";
+import { Register } from "./pages/register";
+import FrankPage from "./pages/other/FooPage";
+import FrankPageInner from "./pages/other/FooPageInner";
+import { myDataProvider } from "./products/data-provider";
+import { RolesList } from "./pages/roles/list";
+import { UsersList } from "./pages/users/list";
+import { UserShow } from "./pages/users/show";
+import { UserEdit } from "./pages/users/edit";
+import { UserCreate } from "./pages/users/create";
+import { RoleShow } from "./pages/roles/show";
+import { RoleEdit } from "./pages/roles/edit";
+import { RoleCreate } from "./pages/roles/create";
+import { MuiEditInferencer, MuiInferencer, MuiListInferencer, MuiShowInferencer } from "@refinedev/inferencer/mui";
+import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
+import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
+import { AirlineSeatReclineNormal, Cancel, CancelOutlined, Category, Error } from "@mui/icons-material";
+
+import { DebugShow } from "./pages/other/debug-show";
+import { UserOptionsProvider } from "./components/user-options-context";
+import { Title } from "./components/title";
+import { useTranslation } from "react-i18next";
+import { Button, IconButton } from "@mui/material";
+import { useEffect, useRef, useState } from "react";
+import { Provider, useSelector } from "react-redux";
+import { store } from "./store/store";
+import { startCase } from "lodash";
+
+const customTitleHandler = ({ resource, action, params }: any) => {
+  let title = "HKU FOSS Booking System";
+
+  if (resource && action) {
+    const resourceName = startCase(resource.name.toLowerCase());
+    const actionName = startCase(action.toLowerCase());
+
+    title = `${resourceName} ${actionName} ${params?.id ?? ""} - ` + title;
+  }
+
+  return title;
+};
+
+const AppContent = () => {
+  const rawPermissions = useSelector((state: { permissions: any }) => state.permissions);
+  const permissions = Object.values(rawPermissions);
+
+  const { t, i18n } = useTranslation();
+
+  const i18nProvider: I18nProvider = {
+    translate: (key: string, options?: any): string => String(t(key, options)),
+    changeLocale: (lang: string) => i18n.changeLanguage(lang),
+    getLocale: () => i18n.language,
+  };
+
+  return (
+    <Refine
+      dataProvider={{
+        default: myDataProvider,
+        sampleRest: dataProvider("https://api.fake-rest.refine.dev"),
+      }}
+      notificationProvider={useNotificationProvider}
+      routerProvider={routerBindings}
+      authProvider={authProvider}
+      i18nProvider={i18nProvider}
+      resources={[
+        {
+          name: "system",
+          meta: {
+            label: t("nav.system.title"),
+            icon: <SupervisorAccountIcon />,
+          },
+        },
+        {
+          name: "users",
+          list: "/users",
+          show: "/users/show/:id",
+          edit: "/users/edit/:id",
+          create: "/users/create",
+          meta: {
+            label: t("nav.system.users"),
+            canDelete: false,
+            icon: <SupervisorAccountIcon />,
+            parent: "system",
+          },
+        },
+        {
+          name: "roles",
+          list: "/roles",
+          show: "/roles/show/:id",
+          edit: "/roles/edit/:id",
+          create: "/roles/create",
+          meta: {
+            label: t("nav.system.roles"),
+            canDelete: false,
+            icon: <AssignmentIndIcon />,
+            parent: "system",
+          },
+        },
+      ]}
+      options={{
+        // syncWithLocation: true,
+        warnWhenUnsavedChanges: true,
+        useNewQueryKeys: true,
+        projectId: "IimQSo-zDjSYp-IeQEwC",
+        title: {
+          icon: null,
+          text: null,
+        },
+        reactQuery: {
+          clientConfig: {
+            defaultOptions: {
+              queries: {
+                retry: 3,
+              },
+            },
+          },
+        },
+      }}
+    >
+      <Routes>
+        <Route path="/foo">
+          <Route index element={<FrankPage />} />
+          <Route path="inner" element={<FrankPageInner />} />
+        </Route>
+        <Route
+          element={
+            <Authenticated key="xxx" fallback={<CatchAllNavigate to="/login" />}>
+              {/* <CustomThemedLayout>
+                <Outlet />
+              </CustomThemedLayout> */}
+              <ThemedLayoutV2 Header={Header} Title={Title}>
+                <Outlet />
+              </ThemedLayoutV2>
+            </Authenticated>
+          }
+        >
+          <Route index element={<NavigateToResource resource="members" />} />
+
+          {/* <Route path="/forms/builder">
+          <Route index element={<FormBuilderPage />} />
+          <Route path="inner" element={<FrankPageInner />} />
+        </Route> */}
+          <Route path="/debug">
+            <Route index element={<DebugShow />} />
+            <Route path="inner" element={<FrankPageInner />} />
+          </Route>
+
+          <Route path="/roles">
+            <Route index element={<RolesList />} />
+            <Route path="show/:id" element={<RoleShow />} />
+            <Route path="edit/:id" element={<RoleEdit />} />
+            <Route path="create" element={<RoleCreate />} />
+          </Route>
+          <Route path="/users">
+            <Route index element={<UsersList />} />
+            <Route path="/users/show/:id" element={<UserShow />} />
+            <Route path="/users/edit/:id" element={<UserEdit />} />
+            <Route path="/users/create" element={<UserCreate />} />
+          </Route>
+
+          <Route path="*" element={<ErrorComponent />} />
+        </Route>
+        <Route
+          element={
+            <Authenticated key="yyy" fallback={<Outlet />}>
+              <NavigateToResource />
+            </Authenticated>
+          }
+        >
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          {/* <Route path="/forgot-password" element={<ForgotPassword />} /> */}
+        </Route>
+      </Routes>
+
+      <RefineKbar />
+      <UnsavedChangesNotifier />
+      <DocumentTitleHandler handler={customTitleHandler} />
+    </Refine>
+  );
+};
+
+function App() {
+  const basePath = import.meta.env.VITE_BASE_PATH || "/";
+
+  const snackbarRef = useRef<SnackbarProvider>(null);
+
+  return (
+    <Provider store={store}>
+      <BrowserRouter basename={basePath}>
+        <RefineKbarProvider>
+          <ColorModeContextProvider>
+            <UserOptionsProvider>
+              <CssBaseline />
+              <GlobalStyles styles={{ html: { WebkitFontSmoothing: "auto" } }} />
+              <SnackbarProvider
+                ref={snackbarRef}
+                iconVariant={{
+                  error: <Error sx={{ fontSize: "20px", marginRight: "8px" }} />,
+                }}
+                action={
+                  <IconButton
+                    onClick={() => {
+                      snackbarRef.current?.closeSnackbar();
+                    }}
+                  >
+                    <CancelOutlined sx={{ color: "white" }} fontSize="small" />
+                  </IconButton>
+                }
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+              >
+                <AppContent />
+              </SnackbarProvider>
+            </UserOptionsProvider>
+          </ColorModeContextProvider>
+        </RefineKbarProvider>
+      </BrowserRouter>
+    </Provider>
+  );
+}
+
+export default App;

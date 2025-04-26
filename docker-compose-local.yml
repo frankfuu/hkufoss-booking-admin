@@ -1,0 +1,14 @@
+name: hkufoss-frontend
+services:
+  frontend:
+    container_name: hkufoss-frontend
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:5173" # Map port 3000 on the host to port 3000 in the container
+    volumes:
+      - .:/app # Mount the current directory to /app in the container for hot-reloading
+    environment:
+      - NODE_ENV=development # Set environment variables
+    # command: pnpm dev --host # Command to run your app
