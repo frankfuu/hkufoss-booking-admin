@@ -18,10 +18,6 @@ import { useTranslation } from "react-i18next";
 
 export const RoleCreate = () => {
   const { t } = useTranslation();
-  const { data: permissionsData, isLoading } = useList({
-    resource: "permissions",
-    pagination: { pageSize: 300 },
-  });
 
   const {
     saveButtonProps,
@@ -37,7 +33,7 @@ export const RoleCreate = () => {
     onFinish(data);
   };
 
-  if (isLoading) {
+  if (formLoading) {
     return <div>{t("Loading...")}</div>;
   } else {
     return (
@@ -56,21 +52,6 @@ export const RoleCreate = () => {
             label="Name"
             name="name"
           />
-
-          <Typography variant="h6" sx={{ mt: 2, mb: 2 }}>
-            Permissions
-          </Typography>
-
-          <Grid container spacing={2}>
-            {permissionsData?.data.map((p) => (
-              <Grid item xs={12} sm={6} md={4} key={p.id}>
-                <FormControlLabel
-                  control={<Checkbox {...register("perms")} value={p.id} />}
-                  label={`${p.subject} - ${p.action}`}
-                />
-              </Grid>
-            ))}
-          </Grid>
         </Box>
       </Create>
     );
