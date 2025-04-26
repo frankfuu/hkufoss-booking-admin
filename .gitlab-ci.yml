@@ -1,7 +1,7 @@
 stages:
   - versioning
   - build
-  - deploy
+  # - deploy
 
 Versioning:
   stage: versioning
@@ -41,25 +41,25 @@ Build Admin:
     - main
     - beta
 
-Deploy:
-  stage: deploy
-  image: ubuntu:latest
-  only:
-    - beta
-  environment:
-    name: dev
-  before_script:
-    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
-    - mkdir -p ~/.ssh
-    - echo -e "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-    - chmod 600 ~/.ssh/id_rsa
-    - echo "$SSH_HOST" > ~/.ssh/known_hosts
-    - chmod 644 ~/.ssh/known_hosts
-    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-  script:
-    - DOCKER_VERSION=$(cat .VERSION)
-    - ssh -i ~/.ssh/id_rsa $SSH_USERNAME@$SSH_HOST "ls -l"
-    - ssh -i ~/.ssh/id_rsa $SSH_USERNAME@$SSH_HOST "docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY"
-    - ssh -i ~/.ssh/id_rsa $SSH_USERNAME@$SSH_HOST "sed -i 's|^ADMIN_IMAGE=.*|ADMIN_IMAGE=$CI_REGISTRY_IMAGE:$DOCKER_VERSION|' $ENV_FILE"
-    - ssh -i ~/.ssh/id_rsa $SSH_USERNAME@$SSH_HOST "docker compose -f $DOCKER_COMPOSE_FILE pull admin"
-    - ssh -i ~/.ssh/id_rsa $SSH_USERNAME@$SSH_HOST "docker compose -f $DOCKER_COMPOSE_FILE up -d"
+# Deploy:
+#   stage: deploy
+#   image: ubuntu:latest
+#   only:
+#     - beta
+#   environment:
+#     name: dev
+#   before_script:
+#     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+#     - mkdir -p ~/.ssh
+#     - echo -e "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+#     - chmod 600 ~/.ssh/id_rsa
+#     - echo "$SSH_HOST" > ~/.ssh/known_hosts
+#     - chmod 644 ~/.ssh/known_hosts
+#     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+#   script:
+#     - DOCKER_VERSION=$(cat .VERSION)
+#     - ssh -i ~/.ssh/id_rsa $SSH_USERNAME@$SSH_HOST "ls -l"
+#     - ssh -i ~/.ssh/id_rsa $SSH_USERNAME@$SSH_HOST "docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY"
+#     - ssh -i ~/.ssh/id_rsa $SSH_USERNAME@$SSH_HOST "sed -i 's|^ADMIN_IMAGE=.*|ADMIN_IMAGE=$CI_REGISTRY_IMAGE:$DOCKER_VERSION|' $ENV_FILE"
+#     - ssh -i ~/.ssh/id_rsa $SSH_USERNAME@$SSH_HOST "docker compose -f $DOCKER_COMPOSE_FILE pull admin"
+#     - ssh -i ~/.ssh/id_rsa $SSH_USERNAME@$SSH_HOST "docker compose -f $DOCKER_COMPOSE_FILE up -d"
