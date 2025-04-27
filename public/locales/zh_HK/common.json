@@ -108,7 +108,9 @@
             "checkIns": "簽到記錄",
             "auditLog": "審計日誌",
             "centreControls": "地點控制",
-            "bookings": "Bookings zh_HK"
+            "bookings": "Bookings zh_HK",
+            "resource-schedules": "Resource Schedules zh_HK",
+            "resource-exceptions": "Resource Exceptions zh_HK"
         }
     },
     "actions": {

@@ -51,7 +51,11 @@ import { Provider, useSelector } from "react-redux";
 import { store } from "./store/store";
 import { startCase } from "lodash";
 import BookOnlineIcon from "@mui/icons-material/BookOnline";
-import { BookingCreate } from "./bookings/create";
+import { BookingCreate } from "./pages/bookings/create";
+import { BookingsList } from "./pages/bookings/list";
+import { ResourceListings } from "./pages/resources/list";
+import { ResourceScheduleListings } from "./pages/resource-schedules/list";
+import { ResourceExceptionListings } from "./pages/resource-exceptions/list";
 
 const customTitleHandler = ({ resource, action, params }: any) => {
   let title = "HKU FOSS Booking System";
@@ -135,6 +139,36 @@ const AppContent = () => {
             parent: "system",
           },
         },
+        {
+          name: "resources",
+          list: "/resources",
+          meta: {
+            label: t("nav.system.resources"),
+            canDelete: false,
+            icon: <BookOnlineIcon />,
+            parent: "system",
+          },
+        },
+        {
+          name: "resource-schedules",
+          list: "/resource-schedules",
+          meta: {
+            label: t("nav.system.resource-schedules"),
+            canDelete: false,
+            icon: <BookOnlineIcon />,
+            parent: "system",
+          },
+        },
+        {
+          name: "resource-exceptions",
+          list: "/resource-exceptions",
+          meta: {
+            label: t("nav.system.resource-exceptions"),
+            canDelete: false,
+            icon: <BookOnlineIcon />,
+            parent: "system",
+          },
+        },
       ]}
       options={{
         // syncWithLocation: true,
@@ -197,10 +231,17 @@ const AppContent = () => {
             <Route path="/users/create" element={<UserCreate />} />
           </Route>
           <Route path="/bookings">
-            <Route index element={<UsersList />} />
-            {/* <Route path="/bookings/show/:id" element={<UserShow />} /> */}
-            {/* <Route path="/bookings/edit/:id" element={<UserEdit />} /> */}
+            <Route index element={<BookingsList />} />
             <Route path="/bookings/create" element={<BookingCreate />} />
+          </Route>
+          <Route path="/resources">
+            <Route index element={<ResourceListings />} />
+          </Route>
+          <Route path="/resource-schedules">
+            <Route index element={<ResourceScheduleListings />} />
+          </Route>
+          <Route path="/resource-exceptions">
+            <Route index element={<ResourceExceptionListings />} />
           </Route>
 
           <Route path="*" element={<ErrorComponent />} />

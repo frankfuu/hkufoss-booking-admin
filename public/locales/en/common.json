@@ -108,7 +108,10 @@
             "checkIns": "Check-Ins",
             "auditLog": "Audit Log",
             "centreControls": "Location Controls",
-            "bookings": "Bookings"
+            "bookings": "Bookings",
+            "resources": "Resources",
+            "resource-schedules": "Resource Schedules",
+            "resource-exceptions": "Resource Exceptions"
         }
     },
     "actions": {
