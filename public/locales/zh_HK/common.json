@@ -107,7 +107,8 @@
             "memberNoteCategories": "會員備註類別",
             "checkIns": "簽到記錄",
             "auditLog": "審計日誌",
-            "centreControls": "地點控制"
+            "centreControls": "地點控制",
+            "bookings": "Bookings zh_HK"
         }
     },
     "actions": {
@@ -372,7 +373,7 @@
     "Centres": "地點",
     "Districts": "地區",
     "Choose member": "選擇會員",
-    "Create reservation": "新增預約",
+    "Create Booking": "新增預約",
     "Cancel": "取消",
     "Day": "日期",
     "Service Attendance": "服務出席記錄",

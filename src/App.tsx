@@ -50,6 +50,8 @@ import { useEffect, useRef, useState } from "react";
 import { Provider, useSelector } from "react-redux";
 import { store } from "./store/store";
 import { startCase } from "lodash";
+import BookOnlineIcon from "@mui/icons-material/BookOnline";
+import { BookingCreate } from "./bookings/create";
 
 const customTitleHandler = ({ resource, action, params }: any) => {
   let title = "HKU FOSS Booking System";
@@ -120,6 +122,19 @@ const AppContent = () => {
             parent: "system",
           },
         },
+        {
+          name: "bookings",
+          list: "/bookings",
+          show: "/bookings/show/:id",
+          edit: "/bookings/edit/:id",
+          create: "/bookings/create",
+          meta: {
+            label: t("nav.system.bookings"),
+            canDelete: false,
+            icon: <BookOnlineIcon />,
+            parent: "system",
+          },
+        },
       ]}
       options={{
         // syncWithLocation: true,
@@ -180,6 +195,12 @@ const AppContent = () => {
             <Route path="/users/show/:id" element={<UserShow />} />
             <Route path="/users/edit/:id" element={<UserEdit />} />
             <Route path="/users/create" element={<UserCreate />} />
+          </Route>
+          <Route path="/bookings">
+            <Route index element={<UsersList />} />
+            {/* <Route path="/bookings/show/:id" element={<UserShow />} /> */}
+            {/* <Route path="/bookings/edit/:id" element={<UserEdit />} /> */}
+            <Route path="/bookings/create" element={<BookingCreate />} />
           </Route>
 
           <Route path="*" element={<ErrorComponent />} />

@@ -107,7 +107,8 @@
             "memberNoteCategories": "Member Note Categories",
             "checkIns": "Check-Ins",
             "auditLog": "Audit Log",
-            "centreControls": "Location Controls"
+            "centreControls": "Location Controls",
+            "bookings": "Bookings"
         }
     },
     "actions": {
@@ -373,6 +374,7 @@
     "Districts": "Districts",
     "Choose member": "Choose member",
     "Create reservation": "Create reservation",
+    "Create Booking": "Create Booking",
     "Cancel": "Cancel",
     "Day": "Day",
     "Service Attendance": "Service Attendance",
