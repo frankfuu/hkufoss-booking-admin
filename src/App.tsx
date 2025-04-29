@@ -59,6 +59,7 @@ import { ResourceExceptionListings } from "./pages/resource-exceptions/list";
 import { ResourceAddonListings } from "./pages/resource-addons/list";
 import { CourseListings } from "./pages/courses/list";
 import { FunderListings } from "./pages/funders/list";
+import { ActivityNatureListings } from "./pages/activity-natures/list";
 
 const customTitleHandler = ({ resource, action, params }: any) => {
   let title = "HKU FOSS Booking System";
@@ -182,6 +183,26 @@ const AppContent = () => {
             parent: "system",
           },
         },
+        {
+          name: "activity-natures",
+          list: "/activity-natures",
+          meta: {
+            label: t("nav.system.activity-natures"),
+            canDelete: false,
+            icon: <BookOnlineIcon />,
+            parent: "system",
+          },
+        },
+        {
+          name: "activity-types",
+          list: "/activity-types",
+          meta: {
+            label: t("nav.system.activity-types"),
+            canDelete: false,
+            icon: <BookOnlineIcon />,
+            parent: "system",
+          },
+        },
       ]}
       options={{
         // syncWithLocation: true,
@@ -265,7 +286,12 @@ const AppContent = () => {
           <Route path="/funders">
             <Route index element={<FunderListings />} />
           </Route>
-
+          <Route path="/activity-natures">
+            <Route index element={<ActivityNatureListings />} />
+          </Route>
+          <Route path="/activity-types">
+            <Route index element={<ActivityNatureListings />} />
+          </Route>
           <Route path="*" element={<ErrorComponent />} />
         </Route>
         <Route

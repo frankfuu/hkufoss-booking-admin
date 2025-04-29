@@ -114,7 +114,9 @@
             "resource-exceptions": "Resource Exceptions",
             "resource-addons": "Resource Addons",
             "courses": "Courses",
-            "funders": "Funders"
+            "funders": "Funders",
+            "activity-natures": "Activity Natures",
+            "activity-types": "Activity Types"
         }
     },
     "actions": {

@@ -113,7 +113,9 @@
             "resource-exceptions": "Resource Exceptions zh_HK",
             "resource-addons": "Resource Addons zh_HK",
             "courses": "Courses zh_HK",
-            "funders": "Funders zh_HK"
+            "funders": "Funders zh_HK",
+            "activity-natures": "Activity Natures zh_HK",
+            "activity-types": "Activity Types zh_HK"
         }
     },
     "actions": {
