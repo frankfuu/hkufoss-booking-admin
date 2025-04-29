@@ -74,6 +74,8 @@ import { FundersCreate } from "./pages/funders/create";
 import { FundersEdit } from "./pages/funders/edit";
 import { CoursesCreate } from "./pages/courses/create";
 import { CoursesEdit } from "./pages/courses/edit";
+import { ActivityNaturesCreate } from "./pages/activity-natures/create";
+import { ActivityNaturesEdit } from "./pages/activity-natures/edit";
 
 const customTitleHandler = ({ resource, action, params }: any) => {
   let title = "HKU FOSS Booking System";
@@ -228,6 +230,8 @@ const AppContent = () => {
         {
           name: "activity-natures",
           list: "/activity-natures",
+          create: "/activity-natures/create",
+          edit: "/activity-natures/edit/:id",
           meta: {
             label: t("nav.system.activity-natures"),
             canDelete: true,
@@ -329,11 +333,13 @@ const AppContent = () => {
           </Route>
           <Route path="/funders">
             <Route index element={<FunderListings />} />
-            <Route path="/funders/create" element={<FundersCreate />} />
-            <Route path="/funders/edit/:id" element={<FundersEdit />} />
+            <Route path="/funders/create" element={<ActivityNaturesCreate />} />
+            <Route path="/funders/edit/:id" element={<ActivityNaturesEdit />} />
           </Route>
           <Route path="/activity-natures">
             <Route index element={<ActivityNatureListings />} />
+            <Route path="/activity-natures/create" element={<ActivityNaturesCreate />} />
+            <Route path="/activity-natures/edit/:id" element={<ActivityNaturesEdit />} />
           </Route>
           <Route path="/activity-types">
             <Route index element={<ActivityNatureListings />} />
