@@ -82,6 +82,8 @@ import { ResourceAddonsCreate } from "./pages/resource-addons/create";
 import { ResourceAddonsEdit } from "./pages/resource-addons/edit";
 import { ResourcesCreate } from "./pages/resources/create";
 import { ResourcesEdit } from "./pages/resources/edit";
+import { ResourceExceptionsCreate } from "./pages/resource-exceptions/create";
+import { ResourceExceptionsEdit } from "./pages/resource-exceptions/edit";
 
 const customTitleHandler = ({ resource, action, params }: any) => {
   let title = "HKU FOSS Booking System";
@@ -206,6 +208,8 @@ const AppContent = () => {
         {
           name: "resource-exceptions",
           list: "/resource-exceptions",
+          create: "/resource-exceptions/create",
+          edit: "/resource-exceptions/edit/:id",
           meta: {
             label: t("nav.bookings.resource-exceptions"),
             canDelete: true,
@@ -336,6 +340,8 @@ const AppContent = () => {
           </Route>
           <Route path="/resource-exceptions">
             <Route index element={<ResourceExceptionListings />} />
+            <Route path="/resource-exceptions/create" element={<ResourceExceptionsCreate />} />
+            <Route path="/resource-exceptions/edit/:id" element={<ResourceExceptionsEdit />} />
           </Route>
           <Route path="/resource-addons">
             <Route index element={<ResourceAddonListings />} />
