@@ -112,7 +112,8 @@
             "resource-schedules": "Resource Schedules zh_HK",
             "resource-exceptions": "Resource Exceptions zh_HK",
             "resource-addons": "Resource Addons zh_HK",
-            "courses": "Courses zh_HK"
+            "courses": "Courses zh_HK",
+            "funders": "Funders zh_HK"
         }
     },
     "actions": {

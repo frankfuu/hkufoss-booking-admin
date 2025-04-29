@@ -113,7 +113,8 @@
             "resource-schedules": "Resource Schedules",
             "resource-exceptions": "Resource Exceptions",
             "resource-addons": "Resource Addons",
-            "courses": "Courses"
+            "courses": "Courses",
+            "funders": "Funders"
         }
     },
     "actions": {

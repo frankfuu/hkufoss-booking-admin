@@ -58,6 +58,7 @@ import { ResourceScheduleListings } from "./pages/resource-schedules/list";
 import { ResourceExceptionListings } from "./pages/resource-exceptions/list";
 import { ResourceAddonListings } from "./pages/resource-addons/list";
 import { CourseListings } from "./pages/courses/list";
+import { FunderListings } from "./pages/funders/list";
 
 const customTitleHandler = ({ resource, action, params }: any) => {
   let title = "HKU FOSS Booking System";
@@ -172,10 +173,10 @@ const AppContent = () => {
           },
         },
         {
-          name: "courses",
-          list: "/courses",
+          name: "funders",
+          list: "/funders",
           meta: {
-            label: t("nav.system.courses"),
+            label: t("nav.system.funders"),
             canDelete: false,
             icon: <BookOnlineIcon />,
             parent: "system",
@@ -260,6 +261,9 @@ const AppContent = () => {
           </Route>
           <Route path="/courses">
             <Route index element={<CourseListings />} />
+          </Route>
+          <Route path="/funders">
+            <Route index element={<FunderListings />} />
           </Route>
 
           <Route path="*" element={<ErrorComponent />} />
