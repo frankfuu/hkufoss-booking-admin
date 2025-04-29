@@ -18,7 +18,7 @@ export const FunderListings = () => {
     },
   });
 
-  const { show, edit } = useNavigation();
+  const { edit } = useNavigation();
   const { resource } = useResource();
 
   const columns = React.useMemo<GridColDef[]>(

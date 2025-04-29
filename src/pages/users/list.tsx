@@ -1,7 +1,7 @@
 import React from "react";
 import { useDataGrid, EditButton, ShowButton, DeleteButton, List, DateField } from "@refinedev/mui";
 import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
-import { useList, useMany, useNavigation, usePermissions } from "@refinedev/core";
+import { useList, useMany, useNavigation, usePermissions, useResource } from "@refinedev/core";
 import { Checkbox, Typography } from "@mui/material";
 import { k, s } from "../../common/constants";
 import { useResourceNavigation } from "../../common/helpers";
@@ -13,6 +13,7 @@ export const UsersList = () => {
   const { data: permissions }: { data: any[] | undefined } = usePermissions();
 
   const { edit } = useNavigation();
+  const { resource } = useResource();
   const { dataGridProps } = useDataGrid({
     filters: {
       // permanent: [
@@ -99,9 +100,7 @@ export const UsersList = () => {
         {...dataGridProps}
         columns={columns}
         autoHeight
-        onRowClick={({ id }) => {
-          edit("users", id);
-        }}
+        onRowClick={({ id }) => resource?.name && edit(resource.name, id)}
         sx={{
           "& .MuiDataGrid-row": {
             cursor: "pointer",

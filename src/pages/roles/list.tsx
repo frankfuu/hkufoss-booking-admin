@@ -3,7 +3,7 @@ import { useDataGrid, EditButton, ShowButton, DeleteButton, List, DateField } fr
 import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import { Checkbox } from "@mui/material";
 import { k } from "../../common/constants";
-import { useNavigation, usePermissions } from "@refinedev/core";
+import { useNavigation, usePermissions, useResource } from "@refinedev/core";
 import moment from "moment-timezone";
 
 export const RolesList = () => {
@@ -18,7 +18,8 @@ export const RolesList = () => {
     },
   });
 
-  const { show } = useNavigation();
+  const { edit } = useNavigation();
+  const { resource } = useResource();
 
   const columns = React.useMemo<GridColDef[]>(
     () => [
@@ -81,9 +82,7 @@ export const RolesList = () => {
         {...dataGridProps}
         columns={columns}
         autoHeight
-        onRowClick={({ id }) => {
-          show("roles", id);
-        }}
+        onRowClick={({ id }) => resource?.name && edit(resource.name, id)}
         sx={{
           "& .MuiDataGrid-row": {
             cursor: "pointer",
