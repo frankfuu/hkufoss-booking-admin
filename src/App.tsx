@@ -84,6 +84,8 @@ import { ResourcesCreate } from "./pages/resources/create";
 import { ResourcesEdit } from "./pages/resources/edit";
 import { ResourceExceptionsCreate } from "./pages/resource-exceptions/create";
 import { ResourceExceptionsEdit } from "./pages/resource-exceptions/edit";
+import { ResourceSchedulesCreate } from "./pages/resource-schedules/create";
+import { ResourceSchedulesEdit } from "./pages/resource-schedules/edit";
 
 const customTitleHandler = ({ resource, action, params }: any) => {
   let title = "HKU FOSS Booking System";
@@ -198,6 +200,8 @@ const AppContent = () => {
         {
           name: "resource-schedules",
           list: "/resource-schedules",
+          create: "/resource-schedules/create",
+          edit: "/resource-schedules/edit/:id",
           meta: {
             label: t("nav.bookings.resource-schedules"),
             canDelete: true,
@@ -337,6 +341,8 @@ const AppContent = () => {
           </Route>
           <Route path="/resource-schedules">
             <Route index element={<ResourceScheduleListings />} />
+            <Route path="/resource-schedules/create" element={<ResourceSchedulesCreate />} />
+            <Route path="/resource-schedules/edit/:id" element={<ResourceSchedulesEdit />} />
           </Route>
           <Route path="/resource-exceptions">
             <Route index element={<ResourceExceptionListings />} />
