@@ -343,8 +343,8 @@ const AppContent = () => {
           </Route>
           <Route path="/funders">
             <Route index element={<FunderListings />} />
-            <Route path="/funders/create" element={<ActivityNaturesCreate />} />
-            <Route path="/funders/edit/:id" element={<ActivityNaturesEdit />} />
+            <Route path="/funders/create" element={<FundersCreate />} />
+            <Route path="/funders/edit/:id" element={<FundersEdit />} />
           </Route>
           <Route path="/activity-natures">
             <Route index element={<ActivityNatureListings />} />
