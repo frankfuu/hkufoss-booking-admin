@@ -36,6 +36,11 @@ export const ResourceListings = () => {
         headerName: "Type",
       },
       {
+        field: "seatingCapacity",
+        minWidth: 50,
+        headerName: "Capacity",
+      },
+      {
         field: "location",
         minWidth: 80,
         headerName: "Location",
@@ -45,11 +50,7 @@ export const ResourceListings = () => {
         minWidth: 50,
         headerName: "Floor",
       },
-      {
-        field: "seatingCapacity",
-        minWidth: 50,
-        headerName: "Start",
-      },
+
       {
         field: "updatedAt",
         // flex: 1,
