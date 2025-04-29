@@ -70,6 +70,8 @@ import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import StadiumIcon from "@mui/icons-material/Stadium";
 import ElectricalServicesIcon from "@mui/icons-material/ElectricalServices";
 import EventSeatIcon from "@mui/icons-material/EventSeat";
+import { FundersCreate } from "./pages/funders/create";
+import { FundersEdit } from "./pages/funders/edit";
 
 const customTitleHandler = ({ resource, action, params }: any) => {
   let title = "HKU FOSS Booking System";
@@ -200,6 +202,8 @@ const AppContent = () => {
         {
           name: "funders",
           list: "/funders",
+          create: "/funders/create",
+          edit: "/funders/edit/:id",
           meta: {
             label: t("nav.system.funders"),
             canDelete: false,
@@ -319,6 +323,8 @@ const AppContent = () => {
           </Route>
           <Route path="/funders">
             <Route index element={<FunderListings />} />
+            <Route path="/funders/create" element={<FundersCreate />} />
+            <Route path="/funders/edit/:id" element={<FundersEdit />} />
           </Route>
           <Route path="/activity-natures">
             <Route index element={<ActivityNatureListings />} />
