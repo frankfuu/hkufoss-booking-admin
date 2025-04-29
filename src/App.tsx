@@ -60,6 +60,15 @@ import { ResourceAddonListings } from "./pages/resource-addons/list";
 import { CourseListings } from "./pages/courses/list";
 import { FunderListings } from "./pages/funders/list";
 import { ActivityNatureListings } from "./pages/activity-natures/list";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import BlockIcon from "@mui/icons-material/Block";
+import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
+import TableRestaurantIcon from "@mui/icons-material/TableRestaurant";
+import MenuBookIcon from "@mui/icons-material/MenuBook";
+import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
+import StadiumIcon from "@mui/icons-material/Stadium";
+import ElectricalServicesIcon from "@mui/icons-material/ElectricalServices";
 
 const customTitleHandler = ({ resource, action, params }: any) => {
   let title = "HKU FOSS Booking System";
@@ -97,6 +106,13 @@ const AppContent = () => {
       authProvider={authProvider}
       i18nProvider={i18nProvider}
       resources={[
+        {
+          name: "bookings",
+          meta: {
+            label: t("nav.bookings.title"),
+            icon: <AccessTimeIcon />,
+          },
+        },
         {
           name: "system",
           meta: {
@@ -137,10 +153,10 @@ const AppContent = () => {
           edit: "/bookings/edit/:id",
           create: "/bookings/create",
           meta: {
-            label: t("nav.system.bookings"),
+            label: t("nav.bookings.title"),
             canDelete: false,
             icon: <BookOnlineIcon />,
-            parent: "system",
+            parent: "bookings",
           },
         },
         {
@@ -149,7 +165,17 @@ const AppContent = () => {
           meta: {
             label: t("nav.system.resources"),
             canDelete: false,
-            icon: <BookOnlineIcon />,
+            icon: <MeetingRoomIcon />,
+            parent: "system",
+          },
+        },
+        {
+          name: "resource-addons",
+          list: "/resource-addons",
+          meta: {
+            label: t("nav.system.resource-addons"),
+            canDelete: false,
+            icon: <TableRestaurantIcon />,
             parent: "system",
           },
         },
@@ -157,20 +183,20 @@ const AppContent = () => {
           name: "resource-schedules",
           list: "/resource-schedules",
           meta: {
-            label: t("nav.system.resource-schedules"),
+            label: t("nav.bookings.resource-schedules"),
             canDelete: false,
-            icon: <BookOnlineIcon />,
-            parent: "system",
+            icon: <CalendarMonthIcon />,
+            parent: "bookings",
           },
         },
         {
           name: "resource-exceptions",
           list: "/resource-exceptions",
           meta: {
-            label: t("nav.system.resource-exceptions"),
+            label: t("nav.bookings.resource-exceptions"),
             canDelete: false,
-            icon: <BookOnlineIcon />,
-            parent: "system",
+            icon: <BlockIcon />,
+            parent: "bookings",
           },
         },
         {
@@ -179,7 +205,17 @@ const AppContent = () => {
           meta: {
             label: t("nav.system.funders"),
             canDelete: false,
-            icon: <BookOnlineIcon />,
+            icon: <AccountBalanceIcon />,
+            parent: "system",
+          },
+        },
+        {
+          name: "courses",
+          list: "/courses",
+          meta: {
+            label: t("nav.system.courses"),
+            canDelete: false,
+            icon: <MenuBookIcon />,
             parent: "system",
           },
         },
@@ -189,7 +225,7 @@ const AppContent = () => {
           meta: {
             label: t("nav.system.activity-natures"),
             canDelete: false,
-            icon: <BookOnlineIcon />,
+            icon: <StadiumIcon />,
             parent: "system",
           },
         },
@@ -199,7 +235,7 @@ const AppContent = () => {
           meta: {
             label: t("nav.system.activity-types"),
             canDelete: false,
-            icon: <BookOnlineIcon />,
+            icon: <ElectricalServicesIcon />,
             parent: "system",
           },
         },

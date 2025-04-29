@@ -88,11 +88,8 @@
         },
         "bookings": {
             "title": "預約",
-            "services": "服務",
-            "serviceSessions": "服務時段",
-            "serviceTypes": "服務類型",
-            "reservations": "預約記錄",
-            "serviceAttendance": "服務出席記錄"
+            "resource-schedules": "Resource Schedules zh_HK",
+            "resource-exceptions": "Resource Exceptions zh_HK"
         },
         "system": {
             "title": "系統",
@@ -109,13 +106,12 @@
             "auditLog": "審計日誌",
             "centreControls": "地點控制",
             "bookings": "Bookings zh_HK",
-            "resource-schedules": "Resource Schedules zh_HK",
-            "resource-exceptions": "Resource Exceptions zh_HK",
             "resource-addons": "Resource Addons zh_HK",
             "courses": "Courses zh_HK",
             "funders": "Funders zh_HK",
             "activity-natures": "Activity Natures zh_HK",
-            "activity-types": "Activity Types zh_HK"
+            "activity-types": "Activity Types zh_HK",
+            "resources": "Resources zh_HK"
         }
     },
     "actions": {
