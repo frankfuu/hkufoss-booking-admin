@@ -76,6 +76,8 @@ import { CoursesCreate } from "./pages/courses/create";
 import { CoursesEdit } from "./pages/courses/edit";
 import { ActivityNaturesCreate } from "./pages/activity-natures/create";
 import { ActivityNaturesEdit } from "./pages/activity-natures/edit";
+import { ActivityTypesCreate } from "./pages/activity-types/create";
+import { ActivityTypesEdit } from "./pages/activity-types/edit";
 
 const customTitleHandler = ({ resource, action, params }: any) => {
   let title = "HKU FOSS Booking System";
@@ -242,6 +244,8 @@ const AppContent = () => {
         {
           name: "activity-types",
           list: "/activity-types",
+          create: "/activity-types/create",
+          edit: "/activity-types/edit/:id",
           meta: {
             label: t("nav.system.activity-types"),
             canDelete: true,
@@ -343,6 +347,8 @@ const AppContent = () => {
           </Route>
           <Route path="/activity-types">
             <Route index element={<ActivityNatureListings />} />
+            <Route path="/activity-types/create" element={<ActivityTypesCreate />} />
+            <Route path="/activity-types/edit/:id" element={<ActivityTypesEdit />} />
           </Route>
           <Route path="*" element={<ErrorComponent />} />
         </Route>
