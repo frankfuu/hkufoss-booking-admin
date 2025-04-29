@@ -69,6 +69,7 @@ import MenuBookIcon from "@mui/icons-material/MenuBook";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import StadiumIcon from "@mui/icons-material/Stadium";
 import ElectricalServicesIcon from "@mui/icons-material/ElectricalServices";
+import EventSeatIcon from "@mui/icons-material/EventSeat";
 
 const customTitleHandler = ({ resource, action, params }: any) => {
   let title = "HKU FOSS Booking System";
@@ -84,9 +85,6 @@ const customTitleHandler = ({ resource, action, params }: any) => {
 };
 
 const AppContent = () => {
-  const rawPermissions = useSelector((state: { permissions: any }) => state.permissions);
-  const permissions = Object.values(rawPermissions);
-
   const { t, i18n } = useTranslation();
 
   const i18nProvider: I18nProvider = {
@@ -107,7 +105,7 @@ const AppContent = () => {
       i18nProvider={i18nProvider}
       resources={[
         {
-          name: "bookings",
+          name: "bookingsParent",
           meta: {
             label: t("nav.bookings.title"),
             icon: <AccessTimeIcon />,
@@ -155,8 +153,8 @@ const AppContent = () => {
           meta: {
             label: t("nav.bookings.title"),
             canDelete: false,
-            icon: <BookOnlineIcon />,
-            parent: "bookings",
+            icon: <EventSeatIcon />,
+            parent: "bookingsParent",
           },
         },
         {
@@ -186,7 +184,7 @@ const AppContent = () => {
             label: t("nav.bookings.resource-schedules"),
             canDelete: false,
             icon: <CalendarMonthIcon />,
-            parent: "bookings",
+            parent: "bookingsParent",
           },
         },
         {
@@ -196,7 +194,7 @@ const AppContent = () => {
             label: t("nav.bookings.resource-exceptions"),
             canDelete: false,
             icon: <BlockIcon />,
-            parent: "bookings",
+            parent: "bookingsParent",
           },
         },
         {
@@ -277,7 +275,7 @@ const AppContent = () => {
             </Authenticated>
           }
         >
-          <Route index element={<NavigateToResource resource="members" />} />
+          <Route index element={<NavigateToResource resource="bookings" />} />
 
           {/* <Route path="/forms/builder">
           <Route index element={<FormBuilderPage />} />
