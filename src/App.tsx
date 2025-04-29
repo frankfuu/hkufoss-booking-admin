@@ -78,6 +78,8 @@ import { ActivityNaturesCreate } from "./pages/activity-natures/create";
 import { ActivityNaturesEdit } from "./pages/activity-natures/edit";
 import { ActivityTypesCreate } from "./pages/activity-types/create";
 import { ActivityTypesEdit } from "./pages/activity-types/edit";
+import { ResourceAddonsCreate } from "./pages/resource-addons/create";
+import { ResourceAddonsEdit } from "./pages/resource-addons/edit";
 
 const customTitleHandler = ({ resource, action, params }: any) => {
   let title = "HKU FOSS Booking System";
@@ -178,6 +180,8 @@ const AppContent = () => {
         {
           name: "resource-addons",
           list: "/resource-addons",
+          create: "/resource-addons/create",
+          edit: "/resource-addons/edit/:id",
           meta: {
             label: t("nav.system.resource-addons"),
             canDelete: true,
@@ -329,6 +333,8 @@ const AppContent = () => {
           </Route>
           <Route path="/resource-addons">
             <Route index element={<ResourceAddonListings />} />
+            <Route path="/resource-addons/create" element={<ResourceAddonsCreate />} />
+            <Route path="/resource-addons/edit/:id" element={<ResourceAddonsEdit />} />
           </Route>
           <Route path="/courses">
             <Route index element={<CourseListings />} />
