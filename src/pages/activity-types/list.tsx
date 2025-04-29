@@ -34,21 +34,6 @@ export const ActivityTypeListings = () => {
         minWidth: 200,
         headerName: "Name",
       },
-      // {
-      //   field: "resourceType",
-      //   minWidth: 50,
-      //   headerName: "Type",
-      // },
-      // {
-      //   field: "location",
-      //   minWidth: 50,
-      //   headerName: "Location",
-      // },
-      // {
-      //   field: "floor",
-      //   minWidth: 50,
-      //   headerName: "Floor",
-      // },
       {
         field: "updatedAt",
         // flex: 1,

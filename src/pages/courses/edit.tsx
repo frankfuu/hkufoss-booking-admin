@@ -2,9 +2,10 @@ import { Create, Edit, SaveButton } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Typography } from "@mui/material";
-import EditCreateFunders from "./edit-create-funders";
+import EditCreateFunders from "./edit-create-courses";
+import EditCreateCourses from "./edit-create-courses";
 
-export const FundersEdit = () => {
+export const CoursesEdit = () => {
   const { t } = useTranslation();
 
   const {
@@ -17,11 +18,11 @@ export const FundersEdit = () => {
 
   return (
     <Edit
-      title={<Typography variant="h5">{t("edit") + " " + t("Funder")}</Typography>}
+      title={<Typography variant="h5">{t("edit") + " " + t("Course")}</Typography>}
       isLoading={formLoading}
       saveButtonProps={saveButtonProps}
     >
-      <EditCreateFunders {...{ register, errors, control, action: "edit" }} />
+      <EditCreateCourses {...{ register, errors, control, action: "edit" }} />
     </Edit>
   );
 };

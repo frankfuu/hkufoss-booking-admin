@@ -72,6 +72,8 @@ import ElectricalServicesIcon from "@mui/icons-material/ElectricalServices";
 import EventSeatIcon from "@mui/icons-material/EventSeat";
 import { FundersCreate } from "./pages/funders/create";
 import { FundersEdit } from "./pages/funders/edit";
+import { CoursesCreate } from "./pages/courses/create";
+import { CoursesEdit } from "./pages/courses/edit";
 
 const customTitleHandler = ({ resource, action, params }: any) => {
   let title = "HKU FOSS Booking System";
@@ -128,7 +130,7 @@ const AppContent = () => {
           create: "/users/create",
           meta: {
             label: t("nav.system.users"),
-            canDelete: false,
+            canDelete: true,
             icon: <SupervisorAccountIcon />,
             parent: "system",
           },
@@ -141,7 +143,7 @@ const AppContent = () => {
           create: "/roles/create",
           meta: {
             label: t("nav.system.roles"),
-            canDelete: false,
+            canDelete: true,
             icon: <AssignmentIndIcon />,
             parent: "system",
           },
@@ -154,7 +156,7 @@ const AppContent = () => {
           create: "/bookings/create",
           meta: {
             label: t("nav.bookings.title"),
-            canDelete: false,
+            canDelete: true,
             icon: <EventSeatIcon />,
             parent: "bookingsParent",
           },
@@ -164,7 +166,7 @@ const AppContent = () => {
           list: "/resources",
           meta: {
             label: t("nav.system.resources"),
-            canDelete: false,
+            canDelete: true,
             icon: <MeetingRoomIcon />,
             parent: "system",
           },
@@ -174,7 +176,7 @@ const AppContent = () => {
           list: "/resource-addons",
           meta: {
             label: t("nav.system.resource-addons"),
-            canDelete: false,
+            canDelete: true,
             icon: <TableRestaurantIcon />,
             parent: "system",
           },
@@ -184,7 +186,7 @@ const AppContent = () => {
           list: "/resource-schedules",
           meta: {
             label: t("nav.bookings.resource-schedules"),
-            canDelete: false,
+            canDelete: true,
             icon: <CalendarMonthIcon />,
             parent: "bookingsParent",
           },
@@ -194,7 +196,7 @@ const AppContent = () => {
           list: "/resource-exceptions",
           meta: {
             label: t("nav.bookings.resource-exceptions"),
-            canDelete: false,
+            canDelete: true,
             icon: <BlockIcon />,
             parent: "bookingsParent",
           },
@@ -206,7 +208,7 @@ const AppContent = () => {
           edit: "/funders/edit/:id",
           meta: {
             label: t("nav.system.funders"),
-            canDelete: false,
+            canDelete: true,
             icon: <AccountBalanceIcon />,
             parent: "system",
           },
@@ -214,9 +216,11 @@ const AppContent = () => {
         {
           name: "courses",
           list: "/courses",
+          create: "/courses/create",
+          edit: "/courses/edit/:id",
           meta: {
             label: t("nav.system.courses"),
-            canDelete: false,
+            canDelete: true,
             icon: <MenuBookIcon />,
             parent: "system",
           },
@@ -226,7 +230,7 @@ const AppContent = () => {
           list: "/activity-natures",
           meta: {
             label: t("nav.system.activity-natures"),
-            canDelete: false,
+            canDelete: true,
             icon: <StadiumIcon />,
             parent: "system",
           },
@@ -236,7 +240,7 @@ const AppContent = () => {
           list: "/activity-types",
           meta: {
             label: t("nav.system.activity-types"),
-            canDelete: false,
+            canDelete: true,
             icon: <ElectricalServicesIcon />,
             parent: "system",
           },
@@ -320,6 +324,8 @@ const AppContent = () => {
           </Route>
           <Route path="/courses">
             <Route index element={<CourseListings />} />
+            <Route path="/courses/create" element={<CoursesCreate />} />
+            <Route path="/courses/edit/:id" element={<CoursesEdit />} />
           </Route>
           <Route path="/funders">
             <Route index element={<FunderListings />} />

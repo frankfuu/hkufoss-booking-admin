@@ -15,7 +15,7 @@ type IUser = {
   centreId: number;
 };
 
-export default function EditCreateFunders({ register, errors, control, action }: any) {
+export default function EditCreateCourses({ register, errors, control, action }: any) {
   const { t } = useTranslation();
 
   const { data: user } = useGetIdentity<IUser>();
@@ -41,16 +41,16 @@ export default function EditCreateFunders({ register, errors, control, action }:
       )}
 
       <TextField
-        {...register("accountCode", {
+        {...register("code", {
           required: "This field is required",
         })}
-        error={!!(errors as any)?.accountCode}
-        helperText={(errors as any)?.accountCode?.message}
+        error={!!(errors as any)?.code}
+        helperText={(errors as any)?.code?.message}
         margin="normal"
         fullWidth
         InputLabelProps={{ shrink: true }}
-        label={t("Account Code")}
-        name="accountCode"
+        label={t("Code")}
+        name="code"
       />
       <TextField
         {...register("name", {
