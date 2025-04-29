@@ -6,7 +6,7 @@ import { useNavigation, usePermissions } from "@refinedev/core";
 import moment from "moment-timezone";
 import { k } from "../../common/constants";
 
-export const ResourceListings = () => {
+export const ResourceAddonListings = () => {
   const { dataGridProps } = useDataGrid({
     sorters: {
       initial: [
@@ -30,24 +30,25 @@ export const ResourceListings = () => {
         filterable: false,
       },
       {
+        field: "resourceName",
+        minWidth: 200,
+        headerName: "Name",
+      },
+
+      {
         field: "resourceType",
-        minWidth: 150,
+        minWidth: 50,
         headerName: "Type",
       },
       {
         field: "location",
-        minWidth: 80,
+        minWidth: 50,
         headerName: "Location",
       },
       {
         field: "floor",
         minWidth: 50,
         headerName: "Floor",
-      },
-      {
-        field: "seatingCapacity",
-        minWidth: 50,
-        headerName: "Start",
       },
       {
         field: "updatedAt",

@@ -111,7 +111,8 @@
             "bookings": "Bookings",
             "resources": "Resources",
             "resource-schedules": "Resource Schedules",
-            "resource-exceptions": "Resource Exceptions"
+            "resource-exceptions": "Resource Exceptions",
+            "resource-addons": "Resource Addons"
         }
     },
     "actions": {
