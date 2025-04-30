@@ -1,5 +1,5 @@
 import React from "react";
-import { useDataGrid, EditButton, ShowButton, DeleteButton, List, DateField } from "@refinedev/mui";
+import { useDataGrid, EditButton, ShowButton, DeleteButton, List, DateField, CloneButton } from "@refinedev/mui";
 import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import { Checkbox } from "@mui/material";
 import { useNavigation, usePermissions, useResource } from "@refinedev/core";
@@ -56,7 +56,7 @@ export const ActivityTypeListings = () => {
           return (
             <>
               <EditButton hideText recordItemId={row.id} />
-              <ShowButton hideText recordItemId={row.id} />
+              <CloneButton hideText recordItemId={row.id} />
             </>
           );
         },
