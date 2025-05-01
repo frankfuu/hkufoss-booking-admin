@@ -9,6 +9,7 @@ import { Calendar, Views, momentLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { useAutocomplete } from "@refinedev/mui";
+import "./custom-calendar.css";
 
 const localizer = momentLocalizer(moment);
 const allViews = [Views.MONTH, Views.WEEK, Views.DAY, Views.AGENDA];
@@ -37,14 +38,14 @@ const CustomEvent2 = ({ event }: any) => {
   );
 };
 
-export const AvailableDaysList = ({ onSlotSelect, selectedService }: any) => {
-  const [weekStartDate, setWeekStartDate] = useState(getFirstSundayOfCurrentMonth2());
+export const AvailableDaysList = ({ onSlotSelect, resourceId }: any) => {
+  const [weekStartDate, setWeekStartDate] = useState(getFirstSundayOfWeek());
   const [calendarEvents, setCalendarEvents] = useState<any[]>([]); // State for RBC events
-  const [from, setFrom] = useState(format(getFirstSundayOfCurrentMonth2(), "yyyy-MM-dd"));
-  const [to, setTo] = useState(format(addDays(weekStartDate, 31), "yyyy-MM-dd"));
+  const [from, setFrom] = useState(format(getFirstSundayOfWeek(), "yyyy-MM-dd"));
+  const [to, setTo] = useState(format(addDays(weekStartDate, 7), "yyyy-MM-dd"));
 
   const { data, isLoading, error } = useCustom({
-    url: `resources/available-days?from=${from}&to=${to}`,
+    url: `resources/available-days?from=${from}&to=${to}&resourceId=${resourceId}`,
     method: "get",
     queryOptions: {
       // enabled: !!selectedService?.id,
@@ -77,9 +78,7 @@ export const AvailableDaysList = ({ onSlotSelect, selectedService }: any) => {
             title: (
               <Box display="flex" flexDirection="column" justifyContent="space-evenly" alignItems="center">
                 {/* <span>{`${serviceAutocompleteProps?.options?.find((p) => p?.id == slot.serviceId)?.name}`}</span> */}
-                <span>{`R${slot.resourceId} ${slot.hasException ? "(Unavailable)" : ""} ${
-                  slot.hasBookingConflict ? "(Booked)" : ""
-                }`}</span>
+                <span>{`${slot.hasException ? "Unavailable" : ""} ${slot.hasBookingConflict ? "Booked" : ""}`}</span>
               </Box>
             ),
             start: new Date(`${day.date}T${slot.from}`), // Combine date and time for start
@@ -97,7 +96,6 @@ export const AvailableDaysList = ({ onSlotSelect, selectedService }: any) => {
 
   // Custom Event Style
   const eventPropGetter = (event: any) => {
-    console.log(`event`, event);
     const defaultColor = " #689F38";
     const exceptionColor = " black";
     const bookingConflictColor = " lightcoral";
@@ -140,11 +138,14 @@ export const AvailableDaysList = ({ onSlotSelect, selectedService }: any) => {
       <Calendar
         events={calendarEvents} // Use the transformed events here
         localizer={localizer}
+        allDayAccessor={(event) => false} // Disable all-day behavior entirely
         startAccessor="start"
         endAccessor="end"
-        min={new Date(0, 0, 0, 7, 0, 0)}
-        max={new Date(0, 0, 0, 22, 0, 0)}
-        style={{ width: "100%", height: 750 }}
+        min={new Date(0, 0, 0, 8, 0, 0)}
+        max={new Date(0, 0, 0, 20, 0, 0)}
+        step={60} // 1 slot per hour
+        timeslots={1} // No subdivisions, 1 row per hour
+        style={{ width: "90%", height: 400 }}
         views={allViews}
         defaultView={Views.WEEK}
         formats={{
@@ -153,9 +154,9 @@ export const AvailableDaysList = ({ onSlotSelect, selectedService }: any) => {
           eventTimeRangeEndFormat: () => "",
         }}
         components={{
-          event: CustomEvent2,
+          // event: CustomEvent2,
           week: {
-            event: CustomEvent2,
+            // event: CustomEvent2,
           },
         }}
         eventPropGetter={eventPropGetter}

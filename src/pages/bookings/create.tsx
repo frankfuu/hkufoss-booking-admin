@@ -8,7 +8,7 @@ interface Service {
   id: string;
   name: string;
 }
-import { useGetIdentity, useNotification, useRefineOptions, useResourceParams, useShow } from "@refinedev/core";
+import { useGetIdentity, useList, useNotification, useRefineOptions, useResourceParams, useShow } from "@refinedev/core";
 import { useLocation, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import AvailableDaysList from "./available-days";
@@ -36,32 +36,43 @@ export const BookingCreate = () => {
     setSlotData(modifiedData);
   };
 
-  return (
-    <Create
-      title={<Typography variant="h5">{t("create") + " " + t("Booking")}</Typography>}
-      headerButtons={({ defaultButtons }) => (
-        <>
-          {/* <DeleteButton /> */}
-          {/* <ListButton /> */}
-          {/* <EditButton /> */}
-        </>
-      )}
-      footerButtons={({ defaultButtons }) => <>{/* <CreateButton /> */}</>}
-    >
-      <Box component="form" sx={{ display: "grid", my: 3, px: 2 }} autoComplete="off">
-        <Button onClick={() => {}}></Button>
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr", // Two columns of equal width
-            gap: 3, // Spacing between items
-          }}
-        >
-          <Box sx={{ gridColumn: "span 2" }}>
-            <AvailableDaysList onSlotSelect={onSlotSelect} />
+  const { data: resourceData, isLoading: resourceDataLoading } = useList({ resource: "resources" });
+
+  if (resourceDataLoading) {
+    return <>Loading..</>;
+  } else {
+    return (
+      <Create
+        title={<Typography variant="h5">{t("create") + " " + t("Booking")}</Typography>}
+        headerButtons={({ defaultButtons }) => (
+          <>
+            {/* <DeleteButton /> */}
+            {/* <ListButton /> */}
+            {/* <EditButton /> */}
+          </>
+        )}
+        footerButtons={({ defaultButtons }) => <>{/* <CreateButton /> */}</>}
+      >
+        <Box component="form" sx={{ display: "grid", my: 3, px: 2 }} autoComplete="off">
+          <Button onClick={() => {}}></Button>
+          <Box
+            sx={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr", // Two columns of equal width
+              gap: 1, // Spacing between items
+            }}
+          >
+            {resourceData?.data?.map((r) => (
+              <Box sx={{ gridColumn: "span 3" }}>
+                <h3>
+                  {r.resourceName} (Resource ID: {r.id})
+                </h3>
+                <AvailableDaysList onSlotSelect={onSlotSelect} resourceId={r.id} />
+              </Box>
+            ))}
           </Box>
         </Box>
-      </Box>
-    </Create>
-  );
+      </Create>
+    );
+  }
 };

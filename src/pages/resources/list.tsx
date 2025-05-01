@@ -31,8 +31,13 @@ export const ResourceListings = () => {
         filterable: false,
       },
       {
+        field: "resourceName",
+        minWidth: 200,
+        headerName: "Type",
+      },
+      {
         field: "resourceType",
-        minWidth: 150,
+        minWidth: 130,
         headerName: "Type",
       },
       {
