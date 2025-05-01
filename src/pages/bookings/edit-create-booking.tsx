@@ -219,7 +219,6 @@ export default function EditCreateBookings({ register, errors, control, action }
         helperText={(errors as any)?.scheduleId?.message}
         margin="normal"
         fullWidth
-        disabled
         InputLabelProps={{ shrink: true }}
         label={t("Schedule ID")}
         name="scheduleId"
