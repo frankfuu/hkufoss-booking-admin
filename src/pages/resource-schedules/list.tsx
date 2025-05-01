@@ -38,22 +38,22 @@ export const ResourceScheduleListings = () => {
 
       {
         field: "startDate",
-        minWidth: 200,
+        minWidth: 100,
         headerName: "Start Date",
       },
       {
         field: "endDate",
-        minWidth: 200,
+        minWidth: 100,
         headerName: "End Date",
       },
       {
         field: "startTime",
-        minWidth: 200,
+        minWidth: 100,
         headerName: "Start Time",
       },
       {
         field: "endTime",
-        minWidth: 200,
+        minWidth: 100,
         headerName: "End Time",
       },
       {
