@@ -32,7 +32,7 @@ export const CourseListings = () => {
       },
       {
         field: "name",
-        minWidth: 150,
+        minWidth: 350,
         headerName: "Name",
       },
       {

@@ -32,12 +32,12 @@ export const FunderListings = () => {
       },
       {
         field: "name",
-        minWidth: 150,
+        minWidth: 350,
         headerName: "Name",
       },
       {
         field: "accountCode",
-        minWidth: 250,
+        minWidth: 150,
         headerName: "Account Code",
       },
       {
