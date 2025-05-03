@@ -47,6 +47,7 @@ export default function EditCreateResourceExceptions({ register, errors, control
         error={!!(errors as any)?.resourceId}
         helperText={(errors as any)?.resourceId?.message}
         margin="normal"
+        placeholder="e.g. 5"
         fullWidth
         InputLabelProps={{ shrink: true }}
         label={t("Resource ID")}
@@ -59,6 +60,8 @@ export default function EditCreateResourceExceptions({ register, errors, control
         })}
         error={!!(errors as any)?.startTime}
         helperText={(errors as any)?.startTime?.message}
+        placeholder="e.g. 2025-06-13T14:00:00.000Z"
+        defaultValue={"2025-06-13T14:00:00.000Z"}
         margin="normal"
         fullWidth
         InputLabelProps={{ shrink: true }}
@@ -72,6 +75,8 @@ export default function EditCreateResourceExceptions({ register, errors, control
         })}
         error={!!(errors as any)?.endTime}
         helperText={(errors as any)?.endTime?.message}
+        placeholder="e.g. 2025-06-28T17:00:00.000Z"
+        defaultValue={"2025-06-28T17:00:00.000Z"}
         margin="normal"
         fullWidth
         InputLabelProps={{ shrink: true }}

@@ -61,6 +61,7 @@ export default function EditCreateResourceSchedules({ register, errors, control,
         error={!!(errors as any)?.startDate}
         helperText={(errors as any)?.startDate?.message}
         placeholder="e.g. 2025-07-22"
+        defaultValue={"2025-07-22"}
         margin="normal"
         fullWidth
         InputLabelProps={{ shrink: true }}
@@ -73,7 +74,7 @@ export default function EditCreateResourceSchedules({ register, errors, control,
           required: "This field is required",
         })}
         error={!!(errors as any)?.endDate}
-        placeholder="e.g. 2025-07-25"
+        defaultValue={"2025-08-22"}
         helperText={(errors as any)?.endDate?.message}
         margin="normal"
         fullWidth
@@ -88,6 +89,7 @@ export default function EditCreateResourceSchedules({ register, errors, control,
         })}
         error={!!(errors as any)?.startTime}
         placeholder="e.g. 13:00:00"
+        defaultValue={"09:00:00"}
         helperText={(errors as any)?.startTime?.message}
         margin="normal"
         fullWidth
@@ -102,6 +104,7 @@ export default function EditCreateResourceSchedules({ register, errors, control,
         })}
         error={!!(errors as any)?.endTime}
         placeholder="e.g. 18:00:00"
+        defaultValue={"16:00:00"}
         helperText={(errors as any)?.endTime?.message}
         margin="normal"
         fullWidth
@@ -130,7 +133,7 @@ export default function EditCreateResourceSchedules({ register, errors, control,
           <Controller
             name="monday"
             control={control}
-            defaultValue={false}
+            defaultValue={true}
             render={({ field }) => (
               <Checkbox
                 {...field}
@@ -147,7 +150,7 @@ export default function EditCreateResourceSchedules({ register, errors, control,
           <Controller
             name="tuesday"
             control={control}
-            defaultValue={false}
+            defaultValue={true}
             render={({ field }) => (
               <Checkbox
                 {...field}
@@ -164,7 +167,7 @@ export default function EditCreateResourceSchedules({ register, errors, control,
           <Controller
             name="wednesday"
             control={control}
-            defaultValue={false}
+            defaultValue={true}
             render={({ field }) => (
               <Checkbox
                 {...field}
@@ -181,7 +184,7 @@ export default function EditCreateResourceSchedules({ register, errors, control,
           <Controller
             name="thursday"
             control={control}
-            defaultValue={false}
+            defaultValue={true}
             render={({ field }) => (
               <Checkbox
                 {...field}
@@ -198,7 +201,7 @@ export default function EditCreateResourceSchedules({ register, errors, control,
           <Controller
             name="friday"
             control={control}
-            defaultValue={false}
+            defaultValue={true}
             render={({ field }) => (
               <Checkbox
                 {...field}

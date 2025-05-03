@@ -1,4 +1,4 @@
-import { Create, CreateButton, DeleteButton, EditButton, ListButton, useAutocomplete } from "@refinedev/mui";
+import { Create, CreateButton, DeleteButton, EditButton, ListButton, RefreshButton, useAutocomplete } from "@refinedev/mui";
 import { Box, Autocomplete, TextField, Button, Typography } from "@mui/material";
 import { useForm, useModalForm } from "@refinedev/react-hook-form";
 import { Controller } from "react-hook-form";
@@ -46,9 +46,7 @@ export const BookingCreate = () => {
         title={<Typography variant="h5">{t("create") + " " + t("Booking")}</Typography>}
         headerButtons={({ defaultButtons }) => (
           <>
-            {/* <DeleteButton /> */}
-            {/* <ListButton /> */}
-            {/* <EditButton /> */}
+            <ListButton />
           </>
         )}
         footerButtons={({ defaultButtons }) => <>{/* <CreateButton /> */}</>}
@@ -65,7 +63,7 @@ export const BookingCreate = () => {
             {resourceData?.data?.map((r) => (
               <Box sx={{ gridColumn: "span 3" }}>
                 <h3>
-                  {r.resourceName} (Resource ID: {r.id})
+                  {r.resourceName} - {r.resourceType} (Resource ID: {r.id})
                 </h3>
                 <AvailableDaysList onSlotSelect={onSlotSelect} resourceId={r.id} />
               </Box>
