@@ -286,6 +286,7 @@ const AppContent = () => {
         warnWhenUnsavedChanges: true,
         useNewQueryKeys: true,
         // projectId: "IimQSo-zDjSYp-IeQEwC",
+        disableTelemetry: true,
         title: {
           icon: null,
           text: null,
