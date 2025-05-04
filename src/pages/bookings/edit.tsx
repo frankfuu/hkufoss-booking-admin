@@ -9,17 +9,23 @@ export const BookingsEdit = () => {
 
   const {
     saveButtonProps,
-    refineCore: { formLoading },
+    refineCore: { formLoading, onFinish },
     register,
     control,
+    handleSubmit,
     formState: { errors },
   } = useForm();
+
+  const onSubmit = (data: any) => {
+    // console.log("Intercepted data:", data);
+    onFinish(data);
+  };
 
   return (
     <Edit
       title={<Typography variant="h5">{t("edit") + " " + t("Bookings")}</Typography>}
       isLoading={formLoading}
-      saveButtonProps={saveButtonProps}
+      saveButtonProps={{ ...saveButtonProps, onClick: handleSubmit(onSubmit) }}
     >
       <EditCreateBookings {...{ register, errors, control, action: "edit" }} />
     </Edit>

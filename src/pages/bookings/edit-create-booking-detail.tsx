@@ -1,5 +1,5 @@
 import { Edit, useAutocomplete } from "@refinedev/mui";
-import { Box, TextField, Autocomplete, createFilterOptions, Checkbox, FormControlLabel } from "@mui/material";
+import { Box, TextField, Autocomplete, createFilterOptions, Checkbox, FormControlLabel, Typography } from "@mui/material";
 import { useForm } from "@refinedev/react-hook-form";
 import { Controller } from "react-hook-form";
 import { useParams } from "react-router-dom";
@@ -15,7 +15,7 @@ type IUser = {
   centreId: number;
 };
 
-export default function EditCreateBookings({ register, errors, control, action }: any) {
+export default function EditCreateBookingsDetail({ register, errors, control, action, slotData }: any) {
   const { t } = useTranslation();
 
   const { data: user } = useGetIdentity<IUser>();
@@ -23,6 +23,8 @@ export default function EditCreateBookings({ register, errors, control, action }
 
   return (
     <Box component="form" sx={{ display: "flex", flexDirection: "column" }} autoComplete="off">
+      <Typography variant="h4">Create booking for {slotData.slot.resourceName}</Typography>
+
       {!isCreate && (
         <TextField
           {...register("id", {
@@ -51,20 +53,9 @@ export default function EditCreateBookings({ register, errors, control, action }
         fullWidth
         InputLabelProps={{ shrink: true }}
         label={t("Resource ID")}
+        defaultValue={slotData.slot.resourceId}
         name="resourceId"
-      />
-
-      <TextField
-        {...register("status", {
-          required: "This field is required",
-        })}
-        error={!!(errors as any)?.status}
-        helperText={(errors as any)?.status?.message}
-        margin="normal"
-        fullWidth
-        InputLabelProps={{ shrink: true }}
-        label={t("Status")}
-        name="status"
+        disabled
       />
 
       <TextField
@@ -74,6 +65,7 @@ export default function EditCreateBookings({ register, errors, control, action }
         error={!!(errors as any)?.noAttendees}
         helperText={(errors as any)?.noAttendees?.message}
         margin="normal"
+        defaultValue={10}
         fullWidth
         InputLabelProps={{ shrink: true }}
         label={t("No. Attendees")}
@@ -87,6 +79,7 @@ export default function EditCreateBookings({ register, errors, control, action }
         error={!!(errors as any)?.activityName}
         helperText={(errors as any)?.activityName?.message}
         margin="normal"
+        defaultValue={"My Activity Name"}
         fullWidth
         InputLabelProps={{ shrink: true }}
         label={t("Activity Name")}
@@ -103,10 +96,15 @@ export default function EditCreateBookings({ register, errors, control, action }
         fullWidth
         InputLabelProps={{ shrink: true }}
         label={t("Contact Person")}
+        defaultValue={t("My Contact Person")}
         name="contactPerson"
       />
 
-      <TextField
+      {/*
+
+      
+
+       <TextField
         {...register("externalSpeakers", {
           required: "This field is required",
         })}
@@ -184,6 +182,22 @@ export default function EditCreateBookings({ register, errors, control, action }
         name="funderId"
       />
 
+       <TextField
+        {...register("status", {
+          required: "This field is required",
+        })}
+        error={!!(errors as any)?.status}
+        helperText={(errors as any)?.status?.message}
+        margin="normal"
+        fullWidth
+        InputLabelProps={{ shrink: true }}
+        label={t("Status")}
+        name="status"
+      />
+      
+      
+      */}
+
       <TextField
         {...register("startTime", {
           required: "This field is required",
@@ -194,6 +208,7 @@ export default function EditCreateBookings({ register, errors, control, action }
         fullWidth
         InputLabelProps={{ shrink: true }}
         label={t("Start Time")}
+        defaultValue={`${slotData.date}T${slotData.slot.from}:00Z`} // 2025-04-28T15:00:00Z
         name="startTime"
       />
 
@@ -207,6 +222,7 @@ export default function EditCreateBookings({ register, errors, control, action }
         fullWidth
         InputLabelProps={{ shrink: true }}
         label={t("End Time")}
+        defaultValue={`${slotData.date}T${slotData.slot.to}:00Z`} // 2025-04-28T15:00:00Z
         name="endTime"
       />
 
@@ -214,7 +230,6 @@ export default function EditCreateBookings({ register, errors, control, action }
         {...register("scheduleId", {
           required: "This field is required",
         })}
-        disabled
         error={!!(errors as any)?.scheduleId}
         placeholder="e.g. 5"
         helperText={(errors as any)?.scheduleId?.message}
@@ -222,21 +237,9 @@ export default function EditCreateBookings({ register, errors, control, action }
         fullWidth
         InputLabelProps={{ shrink: true }}
         label={t("Schedule ID")}
+        defaultValue={slotData.slot?.scheduleId}
         name="scheduleId"
-      />
-
-      <TextField
-        {...register("userId", {
-          required: "This field is required",
-        })}
-        error={!!(errors as any)?.userId}
-        helperText={(errors as any)?.userId?.message}
-        margin="normal"
         disabled
-        fullWidth
-        InputLabelProps={{ shrink: true }}
-        label={t("User")}
-        name="userId"
       />
 
       {!isCreate && (

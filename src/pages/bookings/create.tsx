@@ -1,15 +1,12 @@
 import { Create, CreateButton, DeleteButton, EditButton, ListButton, RefreshButton, useAutocomplete } from "@refinedev/mui";
 import { Box, Autocomplete, TextField, Button, Typography } from "@mui/material";
-import { useForm, useModalForm } from "@refinedev/react-hook-form";
-import { Controller } from "react-hook-form";
-import { useEffect, useState } from "react";
 
 interface Service {
   id: string;
   name: string;
 }
-import { useGetIdentity, useList, useNotification, useRefineOptions, useResourceParams, useShow } from "@refinedev/core";
-import { useLocation, useParams } from "react-router-dom";
+import { useGetIdentity, useGo, useList, useNotification, useRefineOptions, useResourceParams, useShow } from "@refinedev/core";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import AvailableDaysList from "./available-days";
 
@@ -22,18 +19,13 @@ type IUser = {
 export const BookingCreate = () => {
   const { t } = useTranslation();
 
-  const [slotData, setSlotData] = useState(null);
+  const navigate = useNavigate();
 
   const onSlotSelect = (data: any) => {
-    const sessions = [
-      {
-        from: `${data.date} ${data.slot.from}:00`,
-        to: `${data.date} ${data.slot.to}:00`,
-      },
-    ];
-    const modifiedData = { ...data, sessions };
-
-    setSlotData(modifiedData);
+    
+    if (!data.slot.hasBookingConflict && !data.slot.hasException) {
+      navigate(`details`, { state: { ...data } });
+    }
   };
 
   const { data: resourceData, isLoading: resourceDataLoading } = useList({ resource: "resources" });
@@ -61,7 +53,7 @@ export const BookingCreate = () => {
             }}
           >
             {resourceData?.data?.map((r) => (
-              <Box sx={{ gridColumn: "span 3" }}>
+              <Box sx={{ gridColumn: "span 3" }} key={r.id}>
                 <h3>
                   {r.resourceName} - {r.resourceType} (Resource ID: {r.id})
                 </h3>

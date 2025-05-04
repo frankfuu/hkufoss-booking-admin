@@ -78,7 +78,9 @@ export const AvailableDaysList = ({ onSlotSelect, resourceId }: any) => {
             title: (
               <Box display="flex" flexDirection="column" justifyContent="space-evenly" alignItems="center">
                 {/* <span>{`${serviceAutocompleteProps?.options?.find((p) => p?.id == slot.serviceId)?.name}`}</span> */}
-                <span>{`${slot.hasException ? "Unavailable" : ""} ${slot.hasBookingConflict ? "Booked" : ""}`}</span>
+                <span>{`${slot.hasException ? "Unavailable" : ""} ${slot.hasBookingConflict ? "Booked" : ""} ${
+                  !slot.hasBookingConflict && !slot.hasException ? "Select" : ""
+                }`}</span>
               </Box>
             ),
             start: new Date(`${day.date}T${slot.from}`), // Combine date and time for start
@@ -129,8 +131,9 @@ export const AvailableDaysList = ({ onSlotSelect, resourceId }: any) => {
   };
 
   const handleEventClick = (event: any) => {
-    const { date, slot, service } = event?.meta;
-    onSlotSelect({ date, slot, service });
+    // const { date, slot, service } = event?.meta;
+    // console.log(`event?.meta`, event?.meta);
+    onSlotSelect(event?.meta);
   };
 
   return (

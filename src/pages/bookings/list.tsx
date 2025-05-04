@@ -31,6 +31,21 @@ export const BookingsList = () => {
         filterable: false,
       },
       {
+        field: "activityName",
+        minWidth: 250,
+        headerName: "Activity",
+      },
+      {
+        field: "status",
+        minWidth: 80,
+        headerName: "Status",
+      },
+      {
+        field: "noAttendees",
+        minWidth: 110,
+        headerName: "No. Attendees",
+      },
+      {
         field: "resourceId",
         minWidth: 50,
         headerName: "Resource ID",
@@ -40,6 +55,7 @@ export const BookingsList = () => {
         minWidth: 50,
         headerName: "Schedule ID",
       },
+
       {
         field: "startTime",
         minWidth: 200,
@@ -71,7 +87,6 @@ export const BookingsList = () => {
           return (
             <>
               <EditButton hideText recordItemId={row.id} />
-              <CloneButton hideText recordItemId={row.id} />
             </>
           );
         },

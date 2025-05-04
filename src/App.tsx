@@ -86,7 +86,7 @@ import { ResourceExceptionsCreate } from "./pages/resource-exceptions/create";
 import { ResourceExceptionsEdit } from "./pages/resource-exceptions/edit";
 import { ResourceSchedulesCreate } from "./pages/resource-schedules/create";
 import { ResourceSchedulesEdit } from "./pages/resource-schedules/edit";
-import { BookingsCreateTemp } from "./pages/bookings/create-temp";
+import { BookingsCreateDetail } from "./pages/bookings/create-detail";
 import { BookingsEdit } from "./pages/bookings/edit";
 
 const customTitleHandler = ({ resource, action, params }: any) => {
@@ -346,8 +346,7 @@ const AppContent = () => {
             <Route index element={<BookingsList />} />
             <Route path="/bookings/create" element={<BookingCreate />} />
             <Route path="/bookings/edit/:id" element={<BookingsEdit />} />
-            <Route path="/bookings/create-temp" element={<BookingsCreateTemp />} />
-            <Route path="/bookings/clone/:id" element={<BookingsCreateTemp />} />
+            <Route path="/bookings/create/details" element={<BookingsCreateDetail />} />
           </Route>
           <Route path="/resources">
             <Route index element={<ResourceListings />} />
