@@ -50,6 +50,44 @@ import { useEffect, useRef, useState } from "react";
 import { Provider, useSelector } from "react-redux";
 import { store } from "./store/store";
 import { startCase } from "lodash";
+import BookOnlineIcon from "@mui/icons-material/BookOnline";
+import { BookingCreate } from "./pages/bookings/create";
+import { BookingsList } from "./pages/bookings/list";
+import { ResourceListings } from "./pages/resources/list";
+import { ResourceScheduleListings } from "./pages/resource-schedules/list";
+import { ResourceExceptionListings } from "./pages/resource-exceptions/list";
+import { ResourceAddonListings } from "./pages/resource-addons/list";
+import { CourseListings } from "./pages/courses/list";
+import { FunderListings } from "./pages/funders/list";
+import { ActivityNatureListings } from "./pages/activity-natures/list";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import BlockIcon from "@mui/icons-material/Block";
+import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
+import TableRestaurantIcon from "@mui/icons-material/TableRestaurant";
+import MenuBookIcon from "@mui/icons-material/MenuBook";
+import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
+import StadiumIcon from "@mui/icons-material/Stadium";
+import ElectricalServicesIcon from "@mui/icons-material/ElectricalServices";
+import EventSeatIcon from "@mui/icons-material/EventSeat";
+import { FundersCreate } from "./pages/funders/create";
+import { FundersEdit } from "./pages/funders/edit";
+import { CoursesCreate } from "./pages/courses/create";
+import { CoursesEdit } from "./pages/courses/edit";
+import { ActivityNaturesCreate } from "./pages/activity-natures/create";
+import { ActivityNaturesEdit } from "./pages/activity-natures/edit";
+import { ActivityTypesCreate } from "./pages/activity-types/create";
+import { ActivityTypesEdit } from "./pages/activity-types/edit";
+import { ResourceAddonsCreate } from "./pages/resource-addons/create";
+import { ResourceAddonsEdit } from "./pages/resource-addons/edit";
+import { ResourcesCreate } from "./pages/resources/create";
+import { ResourcesEdit } from "./pages/resources/edit";
+import { ResourceExceptionsCreate } from "./pages/resource-exceptions/create";
+import { ResourceExceptionsEdit } from "./pages/resource-exceptions/edit";
+import { ResourceSchedulesCreate } from "./pages/resource-schedules/create";
+import { ResourceSchedulesEdit } from "./pages/resource-schedules/edit";
+import { BookingsCreateDetail } from "./pages/bookings/create-detail";
+import { BookingsEdit } from "./pages/bookings/edit";
 
 const customTitleHandler = ({ resource, action, params }: any) => {
   let title = "HKU FOSS Booking System";
@@ -65,9 +103,6 @@ const customTitleHandler = ({ resource, action, params }: any) => {
 };
 
 const AppContent = () => {
-  const rawPermissions = useSelector((state: { permissions: any }) => state.permissions);
-  const permissions = Object.values(rawPermissions);
-
   const { t, i18n } = useTranslation();
 
   const i18nProvider: I18nProvider = {
@@ -88,6 +123,13 @@ const AppContent = () => {
       i18nProvider={i18nProvider}
       resources={[
         {
+          name: "bookingsParent",
+          meta: {
+            label: t("nav.bookings.title"),
+            icon: <AccessTimeIcon />,
+          },
+        },
+        {
           name: "system",
           meta: {
             label: t("nav.system.title"),
@@ -102,7 +144,7 @@ const AppContent = () => {
           create: "/users/create",
           meta: {
             label: t("nav.system.users"),
-            canDelete: false,
+            canDelete: true,
             icon: <SupervisorAccountIcon />,
             parent: "system",
           },
@@ -115,8 +157,126 @@ const AppContent = () => {
           create: "/roles/create",
           meta: {
             label: t("nav.system.roles"),
-            canDelete: false,
+            canDelete: true,
             icon: <AssignmentIndIcon />,
+            parent: "system",
+          },
+        },
+        {
+          name: "bookings",
+          list: "/bookings",
+          show: "/bookings/show/:id",
+          edit: "/bookings/edit/:id",
+          create: "/bookings/create",
+          clone: "/bookings/clone/:id",
+          meta: {
+            label: t("nav.bookings.title"),
+            canDelete: true,
+            icon: <EventSeatIcon />,
+            parent: "bookingsParent",
+          },
+        },
+        {
+          name: "resources",
+          list: "/resources",
+          create: "/resources/create",
+          edit: "/resources/edit/:id",
+          clone: "/resources/clone/:id",
+          meta: {
+            label: t("nav.system.resources"),
+            canDelete: true,
+            icon: <MeetingRoomIcon />,
+            parent: "system",
+          },
+        },
+        {
+          name: "resource-addons",
+          list: "/resource-addons",
+          create: "/resource-addons/create",
+          edit: "/resource-addons/edit/:id",
+          clone: "/resource-addons/clone/:id",
+          meta: {
+            label: t("nav.system.resource-addons"),
+            canDelete: true,
+            icon: <TableRestaurantIcon />,
+            parent: "system",
+          },
+        },
+        {
+          name: "resource-schedules",
+          list: "/resource-schedules",
+          create: "/resource-schedules/create",
+          edit: "/resource-schedules/edit/:id",
+          clone: "/resource-schedules/clone/:id",
+          meta: {
+            label: t("nav.bookings.resource-schedules"),
+            canDelete: true,
+            icon: <CalendarMonthIcon />,
+            parent: "bookingsParent",
+          },
+        },
+        {
+          name: "resource-exceptions",
+          list: "/resource-exceptions",
+          create: "/resource-exceptions/create",
+          edit: "/resource-exceptions/edit/:id",
+          clone: "/resource-exceptions/clone/:id",
+          meta: {
+            label: t("nav.bookings.resource-exceptions"),
+            canDelete: true,
+            icon: <BlockIcon />,
+            parent: "bookingsParent",
+          },
+        },
+        {
+          name: "funders",
+          list: "/funders",
+          create: "/funders/create",
+          edit: "/funders/edit/:id",
+          clone: "/funders/clone/:id",
+          meta: {
+            label: t("nav.system.funders"),
+            canDelete: true,
+            icon: <AccountBalanceIcon />,
+            parent: "system",
+          },
+        },
+        {
+          name: "courses",
+          list: "/courses",
+          create: "/courses/create",
+          edit: "/courses/edit/:id",
+          clone: "/courses/clone/:id",
+          meta: {
+            label: t("nav.system.courses"),
+            canDelete: true,
+            icon: <MenuBookIcon />,
+            parent: "system",
+          },
+        },
+        {
+          name: "activity-natures",
+          list: "/activity-natures",
+          create: "/activity-natures/create",
+          edit: "/activity-natures/edit/:id",
+          clone: "/activity-natures/clone/:id",
+          meta: {
+            label: t("nav.system.activity-natures"),
+            canDelete: true,
+            icon: <StadiumIcon />,
+            parent: "system",
+          },
+        },
+        {
+          name: "activity-types",
+          list: "/activity-types",
+          create: "/activity-types/create",
+          edit: "/activity-types/edit/:id",
+          clone: "/activity-types/clone/:id",
+          meta: {
+            label: t("nav.system.activity-types"),
+            canDelete: true,
+            icon: <ElectricalServicesIcon />,
             parent: "system",
           },
         },
@@ -125,7 +285,8 @@ const AppContent = () => {
         // syncWithLocation: true,
         warnWhenUnsavedChanges: true,
         useNewQueryKeys: true,
-        projectId: "IimQSo-zDjSYp-IeQEwC",
+        // projectId: "IimQSo-zDjSYp-IeQEwC",
+        disableTelemetry: true,
         title: {
           icon: null,
           text: null,
@@ -158,7 +319,7 @@ const AppContent = () => {
             </Authenticated>
           }
         >
-          <Route index element={<NavigateToResource resource="members" />} />
+          <Route index element={<NavigateToResource resource="bookings" />} />
 
           {/* <Route path="/forms/builder">
           <Route index element={<FormBuilderPage />} />
@@ -181,7 +342,60 @@ const AppContent = () => {
             <Route path="/users/edit/:id" element={<UserEdit />} />
             <Route path="/users/create" element={<UserCreate />} />
           </Route>
-
+          <Route path="/bookings">
+            <Route index element={<BookingsList />} />
+            <Route path="/bookings/create" element={<BookingCreate />} />
+            <Route path="/bookings/edit/:id" element={<BookingsEdit />} />
+            <Route path="/bookings/create/details" element={<BookingsCreateDetail />} />
+          </Route>
+          <Route path="/resources">
+            <Route index element={<ResourceListings />} />
+            <Route path="/resources/create" element={<ResourcesCreate />} />
+            <Route path="/resources/edit/:id" element={<ResourcesEdit />} />
+            <Route path="/resources/clone/:id" element={<ResourcesCreate />} />
+          </Route>
+          <Route path="/resource-schedules">
+            <Route index element={<ResourceScheduleListings />} />
+            <Route path="/resource-schedules/create" element={<ResourceSchedulesCreate />} />
+            <Route path="/resource-schedules/edit/:id" element={<ResourceSchedulesEdit />} />
+            <Route path="/resource-schedules/clone/:id" element={<ResourceSchedulesCreate />} />
+          </Route>
+          <Route path="/resource-exceptions">
+            <Route index element={<ResourceExceptionListings />} />
+            <Route path="/resource-exceptions/create" element={<ResourceExceptionsCreate />} />
+            <Route path="/resource-exceptions/edit/:id" element={<ResourceExceptionsEdit />} />
+            <Route path="/resource-exceptions/clone/:id" element={<ResourceExceptionsCreate />} />
+          </Route>
+          <Route path="/resource-addons">
+            <Route index element={<ResourceAddonListings />} />
+            <Route path="/resource-addons/create" element={<ResourceAddonsCreate />} />
+            <Route path="/resource-addons/edit/:id" element={<ResourceAddonsEdit />} />
+            <Route path="/resource-addons/clone/:id" element={<ResourceAddonsCreate />} />
+          </Route>
+          <Route path="/courses">
+            <Route index element={<CourseListings />} />
+            <Route path="/courses/create" element={<CoursesCreate />} />
+            <Route path="/courses/edit/:id" element={<CoursesEdit />} />
+            <Route path="/courses/clone/:id" element={<CoursesCreate />} />
+          </Route>
+          <Route path="/funders">
+            <Route index element={<FunderListings />} />
+            <Route path="/funders/create" element={<FundersCreate />} />
+            <Route path="/funders/edit/:id" element={<FundersEdit />} />
+            <Route path="/funders/clone/:id" element={<FundersCreate />} />
+          </Route>
+          <Route path="/activity-natures">
+            <Route index element={<ActivityNatureListings />} />
+            <Route path="/activity-natures/create" element={<ActivityNaturesCreate />} />
+            <Route path="/activity-natures/edit/:id" element={<ActivityNaturesEdit />} />
+            <Route path="/activity-natures/clone/:id" element={<ActivityNaturesCreate />} />
+          </Route>
+          <Route path="/activity-types">
+            <Route index element={<ActivityNatureListings />} />
+            <Route path="/activity-types/create" element={<ActivityTypesCreate />} />
+            <Route path="/activity-types/edit/:id" element={<ActivityTypesEdit />} />
+            <Route path="/activity-types/clone/:id" element={<ActivityTypesCreate />} />
+          </Route>
           <Route path="*" element={<ErrorComponent />} />
         </Route>
         <Route

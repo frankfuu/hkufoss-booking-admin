@@ -1,12 +1,12 @@
 import React from "react";
-import { useDataGrid, EditButton, ShowButton, DeleteButton, List, DateField } from "@refinedev/mui";
+import { useDataGrid, EditButton, ShowButton, DeleteButton, List, DateField, CloneButton } from "@refinedev/mui";
 import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import { Checkbox } from "@mui/material";
-import { k } from "../../common/constants";
 import { useNavigation, usePermissions, useResource } from "@refinedev/core";
 import moment from "moment-timezone";
+import { k } from "../../common/constants";
 
-export const RolesList = () => {
+export const ResourceExceptionListings = () => {
   const { dataGridProps } = useDataGrid({
     sorters: {
       initial: [
@@ -31,19 +31,21 @@ export const RolesList = () => {
         filterable: false,
       },
       {
-        field: "name",
-        // flex: 1,
-        minWidth: 200,
-        headerName: "Name",
+        field: "resourceId",
+        minWidth: 50,
+        headerName: "Resource ID",
       },
-      // {
-      //   field: "enabled",
-      //   headerName: "Enabled",
-      //   minWidth: 100,
-      //   renderCell: function render({ value }) {
-      //     return <Checkbox checked={!!value} />;
-      //   },
-      // },
+
+      {
+        field: "startTime",
+        minWidth: 200,
+        headerName: "Start",
+      },
+      {
+        field: "endTime",
+        minWidth: 200,
+        headerName: "End",
+      },
       {
         field: "updatedAt",
         // flex: 1,
@@ -65,7 +67,7 @@ export const RolesList = () => {
           return (
             <>
               <EditButton hideText recordItemId={row.id} />
-              <ShowButton hideText recordItemId={row.id} />
+              <CloneButton hideText recordItemId={row.id} />
             </>
           );
         },

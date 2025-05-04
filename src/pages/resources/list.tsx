@@ -1,12 +1,12 @@
 import React from "react";
-import { useDataGrid, EditButton, ShowButton, DeleteButton, List, DateField } from "@refinedev/mui";
+import { useDataGrid, EditButton, ShowButton, DeleteButton, List, DateField, CloneButton } from "@refinedev/mui";
 import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import { Checkbox } from "@mui/material";
-import { k } from "../../common/constants";
 import { useNavigation, usePermissions, useResource } from "@refinedev/core";
 import moment from "moment-timezone";
+import { k } from "../../common/constants";
 
-export const RolesList = () => {
+export const ResourceListings = () => {
   const { dataGridProps } = useDataGrid({
     sorters: {
       initial: [
@@ -31,19 +31,31 @@ export const RolesList = () => {
         filterable: false,
       },
       {
-        field: "name",
-        // flex: 1,
+        field: "resourceName",
         minWidth: 200,
-        headerName: "Name",
+        headerName: "Type",
       },
-      // {
-      //   field: "enabled",
-      //   headerName: "Enabled",
-      //   minWidth: 100,
-      //   renderCell: function render({ value }) {
-      //     return <Checkbox checked={!!value} />;
-      //   },
-      // },
+      {
+        field: "resourceType",
+        minWidth: 130,
+        headerName: "Type",
+      },
+      {
+        field: "seatingCapacity",
+        minWidth: 50,
+        headerName: "Capacity",
+      },
+      {
+        field: "location",
+        minWidth: 80,
+        headerName: "Location",
+      },
+      {
+        field: "floor",
+        minWidth: 50,
+        headerName: "Floor",
+      },
+
       {
         field: "updatedAt",
         // flex: 1,
@@ -65,7 +77,7 @@ export const RolesList = () => {
           return (
             <>
               <EditButton hideText recordItemId={row.id} />
-              <ShowButton hideText recordItemId={row.id} />
+              <CloneButton hideText recordItemId={row.id} />
             </>
           );
         },

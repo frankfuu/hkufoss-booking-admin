@@ -88,11 +88,8 @@
         },
         "bookings": {
             "title": "Bookings",
-            "services": "Services",
-            "serviceSessions": "Service Sessions",
-            "serviceTypes": "Service Types",
-            "reservations": "Reservations",
-            "serviceAttendance": "Service Attendance"
+            "resource-schedules": "Resource Schedules",
+            "resource-exceptions": "Resource Exceptions"
         },
         "system": {
             "title": "System",
@@ -107,7 +104,13 @@
             "memberNoteCategories": "Member Note Categories",
             "checkIns": "Check-Ins",
             "auditLog": "Audit Log",
-            "centreControls": "Location Controls"
+            "centreControls": "Location Controls",
+            "resource-addons": "Resource Addons",
+            "courses": "Courses",
+            "funders": "Funders",
+            "resources": "Resources",
+            "activity-natures": "Activity Natures",
+            "activity-types": "Activity Types"
         }
     },
     "actions": {
@@ -373,6 +376,7 @@
     "Districts": "Districts",
     "Choose member": "Choose member",
     "Create reservation": "Create reservation",
+    "Create Booking": "Create Booking",
     "Cancel": "Cancel",
     "Day": "Day",
     "Service Attendance": "Service Attendance",

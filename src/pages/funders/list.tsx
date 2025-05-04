@@ -1,12 +1,12 @@
 import React from "react";
-import { useDataGrid, EditButton, ShowButton, DeleteButton, List, DateField } from "@refinedev/mui";
+import { useDataGrid, EditButton, ShowButton, DeleteButton, List, DateField, CloneButton } from "@refinedev/mui";
 import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import { Checkbox } from "@mui/material";
-import { k } from "../../common/constants";
 import { useNavigation, usePermissions, useResource } from "@refinedev/core";
 import moment from "moment-timezone";
+import { k } from "../../common/constants";
 
-export const RolesList = () => {
+export const FunderListings = () => {
   const { dataGridProps } = useDataGrid({
     sorters: {
       initial: [
@@ -32,21 +32,16 @@ export const RolesList = () => {
       },
       {
         field: "name",
-        // flex: 1,
-        minWidth: 200,
+        minWidth: 350,
         headerName: "Name",
       },
-      // {
-      //   field: "enabled",
-      //   headerName: "Enabled",
-      //   minWidth: 100,
-      //   renderCell: function render({ value }) {
-      //     return <Checkbox checked={!!value} />;
-      //   },
-      // },
+      {
+        field: "accountCode",
+        minWidth: 150,
+        headerName: "Account Code",
+      },
       {
         field: "updatedAt",
-        // flex: 1,
         filterable: false,
         headerName: "Updated At",
         minWidth: 180,
@@ -65,7 +60,7 @@ export const RolesList = () => {
           return (
             <>
               <EditButton hideText recordItemId={row.id} />
-              <ShowButton hideText recordItemId={row.id} />
+              <CloneButton hideText recordItemId={row.id} />
             </>
           );
         },
@@ -84,9 +79,7 @@ export const RolesList = () => {
         autoHeight
         onRowClick={({ id }) => resource?.name && edit(resource.name, id)}
         sx={{
-          "& .MuiDataGrid-row": {
-            cursor: "pointer",
-          },
+          "& .MuiDataGrid-row": { cursor: "pointer" },
         }}
         slots={{ toolbar: GridToolbar }}
       />
