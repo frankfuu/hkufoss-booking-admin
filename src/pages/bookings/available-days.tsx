@@ -74,13 +74,20 @@ export const AvailableDaysList = ({ onSlotSelect, resourceId }: any) => {
             resourceName: string;
             hasBookingConflict: boolean;
             hasException: boolean;
+            bookingId: number;
+            bookingStatus: string;
           }) => ({
             title: (
-              <Box display="flex" flexDirection="column" justifyContent="space-evenly" alignItems="center">
-                {/* <span>{`${serviceAutocompleteProps?.options?.find((p) => p?.id == slot.serviceId)?.name}`}</span> */}
-                <span>{`${slot.hasException ? "Closed" : ""} ${slot.hasBookingConflict ? "Booked" : ""} ${
-                  !slot.hasBookingConflict && !slot.hasException ? "Select" : ""
-                }`}</span>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center", // Vertically center the content
+                  justifyContent: "center", // Horizontally center the content (optional)
+                }}
+              >
+                <Typography variant="h6">{`${slot.hasException ? "Closed" : ""} ${
+                  slot.hasBookingConflict ? slot?.bookingStatus : ""
+                } ${!slot.hasBookingConflict && !slot.hasException ? "Select" : ""}`}</Typography>
               </Box>
             ),
             start: new Date(`${day.date}T${slot.from}`), // Combine date and time for start
@@ -109,7 +116,7 @@ export const AvailableDaysList = ({ onSlotSelect, resourceId }: any) => {
       style: {
         backgroundColor: bgColor,
         color: "#FFFFFF", // Set the text color to white for better contrast
-        borderRadius: "5px", // Optional: Add rounded corners
+        // borderRadius: "5px", // Optional: Add rounded corners
         border: "none", // Optional: Remove border
         // padding: "5px", // Optional: Add padding
       },
