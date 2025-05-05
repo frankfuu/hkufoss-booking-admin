@@ -104,32 +104,6 @@ export default function EditCreateBookings({ register, errors, control, action, 
           />
         )}
       />
-      <TextField
-        {...register("startTime", {
-          required: "This field is required",
-        })}
-        error={!!(errors as any)?.startTime}
-        helperText={(errors as any)?.startTime?.message}
-        margin="normal"
-        fullWidth
-        InputLabelProps={{ shrink: true }}
-        label={t("Start Time")}
-        name="startTime"
-        defaultValue={slotData ? `${slotData.date}T${slotData.slot.from}:00Z` : null} // 2025-04-28T15:00:00Z
-      />
-      <TextField
-        {...register("endTime", {
-          required: "This field is required",
-        })}
-        error={!!(errors as any)?.endTime}
-        helperText={(errors as any)?.endTime?.message}
-        margin="normal"
-        fullWidth
-        InputLabelProps={{ shrink: true }}
-        label={t("End Time")}
-        name="endTime"
-        defaultValue={slotData ? `${slotData.date}T${slotData.slot.to}:00Z` : null} // 2025-04-28T15:00:00Z
-      />
       <Controller
         control={control}
         name="status"
@@ -159,6 +133,33 @@ export default function EditCreateBookings({ register, errors, control, action, 
           />
         )}
       />
+      <TextField
+        {...register("startTime", {
+          required: "This field is required",
+        })}
+        error={!!(errors as any)?.startTime}
+        helperText={(errors as any)?.startTime?.message}
+        margin="normal"
+        fullWidth
+        InputLabelProps={{ shrink: true }}
+        label={t("Start Time")}
+        name="startTime"
+        defaultValue={slotData ? `${slotData.date}T${slotData.slot.from}:00Z` : null} // 2025-04-28T15:00:00Z
+      />
+      <TextField
+        {...register("endTime", {
+          required: "This field is required",
+        })}
+        error={!!(errors as any)?.endTime}
+        helperText={(errors as any)?.endTime?.message}
+        margin="normal"
+        fullWidth
+        InputLabelProps={{ shrink: true }}
+        label={t("End Time")}
+        name="endTime"
+        defaultValue={slotData ? `${slotData.date}T${slotData.slot.to}:00Z` : null} // 2025-04-28T15:00:00Z
+      />
+
       <TextField
         {...register("noAttendees", {
           required: "This field is required",

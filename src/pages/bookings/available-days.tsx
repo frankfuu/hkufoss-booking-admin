@@ -78,7 +78,7 @@ export const AvailableDaysList = ({ onSlotSelect, resourceId }: any) => {
             title: (
               <Box display="flex" flexDirection="column" justifyContent="space-evenly" alignItems="center">
                 {/* <span>{`${serviceAutocompleteProps?.options?.find((p) => p?.id == slot.serviceId)?.name}`}</span> */}
-                <span>{`${slot.hasException ? "Unavailable" : ""} ${slot.hasBookingConflict ? "Booked" : ""} ${
+                <span>{`${slot.hasException ? "Closed" : ""} ${slot.hasBookingConflict ? "Booked" : ""} ${
                   !slot.hasBookingConflict && !slot.hasException ? "Select" : ""
                 }`}</span>
               </Box>

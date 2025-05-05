@@ -69,6 +69,20 @@ export default function EditCreateResourceSchedules({ register, errors, control,
       />
 
       <TextField
+        {...register("name", {
+          required: "This field is required",
+        })}
+        error={!!(errors as any)?.name}
+        helperText={(errors as any)?.name?.message}
+        margin="normal"
+        fullWidth
+        InputLabelProps={{ shrink: true }}
+        label={t("Schedule Name")}
+        placeholder="e.g. Schedule FY25"
+        name="name"
+      />
+
+      <TextField
         {...register("startDate", {
           required: "This field is required",
         })}

@@ -69,6 +69,20 @@ export default function EditCreateResourceExceptions({ register, errors, control
       />
 
       <TextField
+        {...register("name", {
+          required: "This field is required",
+        })}
+        error={!!(errors as any)?.name}
+        helperText={(errors as any)?.name?.message}
+        margin="normal"
+        fullWidth
+        InputLabelProps={{ shrink: true }}
+        label={t("Exception Name")}
+        placeholder="e.g. Monthly Maintenance, Christmas Shutdown, Chinese New Year etc"
+        name="name"
+      />
+
+      <TextField
         {...register("startTime", {
           required: "This field is required",
         })}
