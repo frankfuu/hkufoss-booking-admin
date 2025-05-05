@@ -1,13 +1,16 @@
 import React from "react";
 import { useDataGrid, EditButton, ShowButton, DeleteButton, List, DateField, CloneButton } from "@refinedev/mui";
-import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
-import { Checkbox } from "@mui/material";
-import { useList, useNavigation, usePermissions, useResource } from "@refinedev/core";
+import { DataGrid, GridColDef, GridToolbar, getGridSingleSelectOperators } from "@mui/x-data-grid";
+import { Button, Checkbox, Chip } from "@mui/material";
+import { useCustomMutation, useList, useNavigation, usePermissions, useResource } from "@refinedev/core";
 import moment from "moment-timezone";
-import { k } from "../../common/constants";
+import { d, k } from "../../common/constants";
 
 export const BookingsList = () => {
-  const { dataGridProps } = useDataGrid({
+  const {
+    dataGridProps,
+    tableQuery: { refetch },
+  } = useDataGrid({
     sorters: {
       initial: [
         {
@@ -29,6 +32,71 @@ export const BookingsList = () => {
   const { edit } = useNavigation();
   const { resource } = useResource();
 
+  const getChipProps = (status: string) => {
+    if (status == d.BOOKINGS.STATUS.LIST.CONFIRMED) {
+      return {
+        color: "success" as "success",
+        variant: "filled" as "filled",
+      };
+    }
+
+    if (status == d.BOOKINGS.STATUS.LIST.PENDING) {
+      return {
+        color: "warning" as "warning",
+        variant: "filled" as "filled",
+      };
+    }
+
+    if (status == d.BOOKINGS.STATUS.LIST.ATTENDED) {
+      return {
+        color: "success" as "success",
+        variant: "filled" as "filled",
+      };
+    }
+
+    if (status == d.BOOKINGS.STATUS.LIST.CANCELLED) {
+      return {
+        color: "error" as "error",
+        variant: "filled" as "filled",
+      };
+    }
+
+    return {
+      color: "default" as "default",
+    };
+  };
+
+  const { mutate } = useCustomMutation({});
+
+  const handleStatusUpdate = (row: any, newStatus: string) => {
+    const targetUrl = `bookings/${row.id}`;
+    mutate(
+      {
+        url: targetUrl,
+        // @ts-ignore,
+        // case sensitivity issue, need to fix on server, refine.dev expecting lower case but server expects upper case
+        method: "PATCH",
+        values: {
+          status: newStatus,
+        },
+        successNotification: (data, values) => {
+          return {
+            message: `Booking ${data?.data?.status}`,
+            type: "success",
+          };
+        },
+      },
+      {
+        // onError: (error, variables, context) => {
+        //   console.log(error);
+        // },
+        onSuccess: (data, variables, context) => {
+          refetch();
+        },
+      }
+    );
+  };
+
   const columns = React.useMemo<GridColDef[]>(
     () => [
       {
@@ -45,12 +113,22 @@ export const BookingsList = () => {
       },
       {
         field: "status",
-        minWidth: 120,
         headerName: "Status",
+        minWidth: 120,
+        type: "singleSelect",
+        valueOptions: d.BOOKINGS.STATUS.OPTIONS,
+        getOptionValue: (value: any) => value?.value,
+        getOptionLabel: (value: any) => value?.label,
+        filterOperators: getGridSingleSelectOperators().filter((operator) => {
+          return operator.value === "is" || operator.value === "not";
+        }),
+        renderCell: ({ row }) => {
+          return <Chip label={row.status} size="small" variant="outlined" {...getChipProps(row.status)} />;
+        },
       },
       {
         field: "noAttendees",
-        minWidth: 110,
+        minWidth: 80,
         headerName: "No. Attendees",
       },
       {
@@ -105,7 +183,42 @@ export const BookingsList = () => {
         renderCell: function render({ row }) {
           return (
             <>
-              <EditButton hideText recordItemId={row.id} />
+              {/* <EditButton hideText recordItemId={row.id} /> */}
+
+              {row.status == d.BOOKINGS.STATUS.LIST.PENDING ? (
+                <>
+                  <Button
+                    size="small"
+                    sx={{ mr: 2 }}
+                    onClick={() => handleStatusUpdate(row, d.BOOKINGS.STATUS.LIST.CONFIRMED)}
+                    variant="outlined"
+                    color="success"
+                  >
+                    Confirm
+                  </Button>
+                  <Button
+                    size="small"
+                    sx={{ mr: 2 }}
+                    onClick={() => handleStatusUpdate(row, d.BOOKINGS.STATUS.LIST.CANCELLED)}
+                    variant="outlined"
+                    color="error"
+                  >
+                    Cancel
+                  </Button>
+                </>
+              ) : null}
+
+              {row.status == d.BOOKINGS.STATUS.LIST.CONFIRMED || row.status == d.BOOKINGS.STATUS.LIST.CANCELLED ? (
+                <Button
+                  size="small"
+                  sx={{ mr: 2 }}
+                  onClick={() => handleStatusUpdate(row, d.BOOKINGS.STATUS.LIST.PENDING)}
+                  variant="outlined"
+                  color="warning"
+                >
+                  Change to pending
+                </Button>
+              ) : null}
             </>
           );
         },
