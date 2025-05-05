@@ -23,7 +23,7 @@ export const BookingsEdit = () => {
 
   return (
     <Edit
-      title={<Typography variant="h5">{t("edit") + " " + t("Bookings")}</Typography>}
+      title={<Typography variant="h5">{t("edit") + " " + t("Booking")}</Typography>}
       isLoading={formLoading}
       saveButtonProps={{ ...saveButtonProps, onClick: handleSubmit(onSubmit) }}
     >

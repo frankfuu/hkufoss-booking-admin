@@ -20,11 +20,17 @@ export const BookingCreate = () => {
   const { t } = useTranslation();
 
   const navigate = useNavigate();
+  const go = useGo();
 
   const onSlotSelect = (data: any) => {
-    
     if (!data.slot.hasBookingConflict && !data.slot.hasException) {
       navigate(`details`, { state: { ...data } });
+    }
+
+    if (data.slot.hasBookingConflict && data.slot.bookingId) {
+      go({
+        to: { resource: "bookings", action: "edit", id: data.slot.bookingId },
+      });
     }
   };
 

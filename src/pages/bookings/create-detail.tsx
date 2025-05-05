@@ -3,7 +3,6 @@ import { useForm } from "@refinedev/react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Typography } from "@mui/material";
 import { useLocation } from "react-router-dom";
-import EditCreateBookingsDetail from "./edit-create-booking-detail";
 import EditCreateBookings from "./edit-create-booking";
 
 export const BookingsCreateDetail = () => {
@@ -38,7 +37,6 @@ export const BookingsCreateDetail = () => {
       isLoading={formLoading}
       saveButtonProps={{ ...saveButtonProps, onClick: handleSubmit(onSubmit) }}
     >
-      
       <EditCreateBookings {...{ register, errors, control, action: "create", slotData: slotData }} />
     </Create>
   );
