@@ -2,7 +2,7 @@ import React from "react";
 import { useDataGrid, EditButton, ShowButton, DeleteButton, List, DateField, CloneButton } from "@refinedev/mui";
 import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import { Checkbox } from "@mui/material";
-import { useNavigation, usePermissions, useResource } from "@refinedev/core";
+import { useList, useNavigation, usePermissions, useResource } from "@refinedev/core";
 import moment from "moment-timezone";
 import { k } from "../../common/constants";
 
@@ -16,6 +16,14 @@ export const ResourceScheduleListings = () => {
         },
       ],
     },
+  });
+
+  const {
+    data: resourcesData,
+    isLoading: resourcesDataLoading,
+    isError: resourcesDataError,
+  } = useList({
+    resource: "resources",
   });
 
   const { edit } = useNavigation();
@@ -32,8 +40,12 @@ export const ResourceScheduleListings = () => {
       },
       {
         field: "resourceId",
-        minWidth: 50,
-        headerName: "Resource ID",
+        minWidth: 240,
+        headerName: "Resource",
+        renderCell: ({ row }) => {
+          const resource = resourcesData?.data.find((x) => x.id == row.resourceId);
+          return `${resource?.resourceName} - ${resource?.resourceType}`;
+        },
       },
 
       {
@@ -85,7 +97,7 @@ export const ResourceScheduleListings = () => {
         headerAlign: "left",
       },
     ],
-    []
+    [resourcesDataLoading]
   );
 
   return (

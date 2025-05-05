@@ -21,6 +21,15 @@ export default function EditCreateResourceSchedules({ register, errors, control,
   const { data: user } = useGetIdentity<IUser>();
   const isCreate = action === "create";
 
+  const { autocompleteProps: resourceAutocompleteProps } = useAutocomplete({
+    resource: "resources",
+  });
+
+  const filterOptionsResources = createFilterOptions({
+    matchFrom: "any",
+    stringify: (option: any) => `${option?.resourceId} ${option?.resourceName} ${option?.resourceType}`,
+  });
+
   return (
     <Box component="form" sx={{ display: "flex", flexDirection: "column" }} autoComplete="off">
       {!isCreate && (
@@ -40,18 +49,23 @@ export default function EditCreateResourceSchedules({ register, errors, control,
         />
       )}
 
-      <TextField
-        {...register("resourceId", {
-          required: "This field is required",
-        })}
-        error={!!(errors as any)?.resourceId}
-        placeholder="e.g. 5"
-        helperText={(errors as any)?.resourceId?.message}
-        margin="normal"
-        fullWidth
-        InputLabelProps={{ shrink: true }}
-        label={t("Resource ID")}
+      <Controller
+        control={control}
         name="resourceId"
+        rules={{ required: "This field is required" }}
+        defaultValue={null as any}
+        render={({ field }) => (
+          <Autocomplete
+            {...resourceAutocompleteProps}
+            {...field}
+            onChange={(_, value) => field.onChange(value?.id ?? value)}
+            filterOptions={filterOptionsResources}
+            onInputChange={(event, value) => {}}
+            value={resourceAutocompleteProps?.options?.find((option) => option.id === field.value) || null}
+            getOptionLabel={(option) => `(RID ${option?.id}) ${option?.resourceName} - ${option?.resourceType}`}
+            renderInput={(params) => <TextField {...params} label={t("Resource")} margin="normal" variant="outlined" required />}
+          />
+        )}
       />
 
       <TextField
