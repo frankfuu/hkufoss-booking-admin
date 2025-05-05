@@ -45,7 +45,7 @@ export const BookingsList = () => {
       },
       {
         field: "status",
-        minWidth: 80,
+        minWidth: 120,
         headerName: "Status",
       },
       {

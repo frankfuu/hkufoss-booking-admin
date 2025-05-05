@@ -59,6 +59,23 @@ const dropdownOptions = {
       },
     },
   },
+  BOOKINGS: {
+    STATUS: {
+      DEFAULT: "PENDING",
+      OPTIONS: [
+        { label: "ATTENDED", value: "ATTENDED", apiAction: "complate" },
+        { label: "CONFIRMED", value: "CONFIRMED", apiAction: "confirm" },
+        { label: "PENDING", value: "PENDING", apiAction: null, notSelectable: true },
+        { label: "CANCELLED", value: "CANCELLED", apiAction: "cancel" },
+      ],
+      LIST: {
+        ATTENDED: "ATTENDED",
+        CONFIRMED: "CONFIRMED",
+        PENDING: "PENDING",
+        CANCELLED: "CANCELLED",
+      },
+    },
+  },
   CENTRE: {
     CENTRE_TYPE: {
       DEFAULT: "CARER_SPACE",
