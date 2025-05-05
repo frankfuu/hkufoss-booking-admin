@@ -1,5 +1,5 @@
 import { Edit, useAutocomplete } from "@refinedev/mui";
-import { Box, TextField, Autocomplete, createFilterOptions, Checkbox, FormControlLabel } from "@mui/material";
+import { Box, TextField, Autocomplete, createFilterOptions, Checkbox, FormControlLabel, Typography } from "@mui/material";
 import { useForm } from "@refinedev/react-hook-form";
 import { Controller } from "react-hook-form";
 import { useParams } from "react-router-dom";
@@ -15,7 +15,7 @@ type IUser = {
   centreId: number;
 };
 
-export default function EditCreateBookings({ register, errors, control, action }: any) {
+export default function EditCreateBookings({ register, errors, control, action, slotData }: any) {
   const { t } = useTranslation();
 
   const { data: user } = useGetIdentity<IUser>();
@@ -84,17 +84,17 @@ export default function EditCreateBookings({ register, errors, control, action }
           disabled
         />
       )}
-
       <Controller
         control={control}
         name="resourceId"
-        disabled
         rules={{ required: "This field is required" }}
-        defaultValue={null as any}
+        // defaultValue={null as any}
+        defaultValue={slotData ? slotData.slot.resourceId : null}
         render={({ field }) => (
           <Autocomplete
             {...resourceAutocompleteProps}
             {...field}
+            disabled
             onChange={(_, value) => field.onChange(value?.id ?? value)}
             filterOptions={filterOptionsResources}
             onInputChange={(event, value) => {}}
@@ -104,7 +104,32 @@ export default function EditCreateBookings({ register, errors, control, action }
           />
         )}
       />
-
+      <TextField
+        {...register("startTime", {
+          required: "This field is required",
+        })}
+        error={!!(errors as any)?.startTime}
+        helperText={(errors as any)?.startTime?.message}
+        margin="normal"
+        fullWidth
+        InputLabelProps={{ shrink: true }}
+        label={t("Start Time")}
+        name="startTime"
+        defaultValue={slotData ? `${slotData.date}T${slotData.slot.from}:00Z` : null} // 2025-04-28T15:00:00Z
+      />
+      <TextField
+        {...register("endTime", {
+          required: "This field is required",
+        })}
+        error={!!(errors as any)?.endTime}
+        helperText={(errors as any)?.endTime?.message}
+        margin="normal"
+        fullWidth
+        InputLabelProps={{ shrink: true }}
+        label={t("End Time")}
+        name="endTime"
+        defaultValue={slotData ? `${slotData.date}T${slotData.slot.to}:00Z` : null} // 2025-04-28T15:00:00Z
+      />
       <Controller
         control={control}
         name="status"
@@ -114,6 +139,7 @@ export default function EditCreateBookings({ register, errors, control, action }
           <Autocomplete
             {...field}
             options={d.BOOKINGS.STATUS.OPTIONS}
+            disabled={isCreate}
             getOptionLabel={(option) => t(option.label)}
             value={d.BOOKINGS.STATUS.OPTIONS.find((option) => option.value === field.value) || null}
             onChange={(_, newValue) => {
@@ -133,7 +159,6 @@ export default function EditCreateBookings({ register, errors, control, action }
           />
         )}
       />
-
       <TextField
         {...register("noAttendees", {
           required: "This field is required",
@@ -146,7 +171,6 @@ export default function EditCreateBookings({ register, errors, control, action }
         label={t("No. Attendees")}
         name="noAttendees"
       />
-
       <TextField
         {...register("activityName", {
           required: "This field is required",
@@ -159,7 +183,6 @@ export default function EditCreateBookings({ register, errors, control, action }
         label={t("Activity Name")}
         name="activityName"
       />
-
       <TextField
         {...register("contactPerson", {
           required: "This field is required",
@@ -172,7 +195,6 @@ export default function EditCreateBookings({ register, errors, control, action }
         label={t("Contact Person")}
         name="contactPerson"
       />
-
       <Controller
         control={control}
         name="activityNatureId"
@@ -187,13 +209,10 @@ export default function EditCreateBookings({ register, errors, control, action }
             onInputChange={(event, value) => {}}
             value={activityNatureAutocompleteProps?.options?.find((option) => option.id === field.value) || null}
             getOptionLabel={(option) => `(ANID ${option?.id}) ${option?.name}`}
-            renderInput={(params) => (
-              <TextField {...params} label={t("Activity Nature")} margin="normal" variant="outlined" required />
-            )}
+            renderInput={(params) => <TextField {...params} label={t("Activity Nature")} margin="normal" variant="outlined" />}
           />
         )}
       />
-
       <Controller
         control={control}
         name="activityTypeId"
@@ -208,13 +227,10 @@ export default function EditCreateBookings({ register, errors, control, action }
             onInputChange={(event, value) => {}}
             value={activityTypeAutocompleteProps?.options?.find((option) => option.id === field.value) || null}
             getOptionLabel={(option) => `(ATID ${option?.id}) ${option?.name}`}
-            renderInput={(params) => (
-              <TextField {...params} label={t("Activity Type")} margin="normal" variant="outlined" required />
-            )}
+            renderInput={(params) => <TextField {...params} label={t("Activity Type")} margin="normal" variant="outlined" />}
           />
         )}
       />
-
       <Controller
         control={control}
         name="courseId"
@@ -229,11 +245,10 @@ export default function EditCreateBookings({ register, errors, control, action }
             onInputChange={(event, value) => {}}
             value={courseAutocompleteProps?.options?.find((option) => option.id === field.value) || null}
             getOptionLabel={(option) => `(CID ${option?.id}) ${option?.name}`}
-            renderInput={(params) => <TextField {...params} label={t("Course")} margin="normal" variant="outlined" required />}
+            renderInput={(params) => <TextField {...params} label={t("Course")} margin="normal" variant="outlined" />}
           />
         )}
       />
-
       <Controller
         control={control}
         name="funderId"
@@ -248,35 +263,9 @@ export default function EditCreateBookings({ register, errors, control, action }
             onInputChange={(event, value) => {}}
             value={funderAutocompleteProps?.options?.find((option) => option.id === field.value) || null}
             getOptionLabel={(option) => `(FID ${option?.id}) ${option?.name}`}
-            renderInput={(params) => <TextField {...params} label={t("Funder")} margin="normal" variant="outlined" required />}
+            renderInput={(params) => <TextField {...params} label={t("Funder")} margin="normal" variant="outlined" />}
           />
         )}
-      />
-
-      <TextField
-        {...register("startTime", {
-          required: "This field is required",
-        })}
-        error={!!(errors as any)?.startTime}
-        helperText={(errors as any)?.startTime?.message}
-        margin="normal"
-        fullWidth
-        InputLabelProps={{ shrink: true }}
-        label={t("Start Time")}
-        name="startTime"
-      />
-
-      <TextField
-        {...register("endTime", {
-          required: "This field is required",
-        })}
-        error={!!(errors as any)?.endTime}
-        helperText={(errors as any)?.endTime?.message}
-        margin="normal"
-        fullWidth
-        InputLabelProps={{ shrink: true }}
-        label={t("End Time")}
-        name="endTime"
       />
 
       <TextField
@@ -289,7 +278,6 @@ export default function EditCreateBookings({ register, errors, control, action }
         label={t("External Speakers")}
         name="externalSpeakers"
       />
-
       <TextField
         {...register("specialRequests", {})}
         error={!!(errors as any)?.specialRequests}
@@ -300,12 +288,10 @@ export default function EditCreateBookings({ register, errors, control, action }
         label={t("Special Requests")}
         name="specialRequests"
       />
-
       <TextField
         {...register("scheduleId", {
           required: "This field is required",
         })}
-        disabled
         error={!!(errors as any)?.scheduleId}
         placeholder="e.g. 5"
         helperText={(errors as any)?.scheduleId?.message}
@@ -313,21 +299,9 @@ export default function EditCreateBookings({ register, errors, control, action }
         fullWidth
         InputLabelProps={{ shrink: true }}
         label={t("Schedule ID")}
+        defaultValue={slotData ? slotData.slot?.scheduleId : null}
         name="scheduleId"
-      />
-
-      <TextField
-        {...register("userId", {
-          required: "This field is required",
-        })}
-        error={!!(errors as any)?.userId}
-        helperText={(errors as any)?.userId?.message}
-        margin="normal"
         disabled
-        fullWidth
-        InputLabelProps={{ shrink: true }}
-        label={t("User")}
-        name="userId"
       />
 
       {!isCreate && (
