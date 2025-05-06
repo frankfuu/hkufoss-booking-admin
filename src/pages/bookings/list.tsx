@@ -103,12 +103,12 @@ export const BookingsList = () => {
         field: "id",
         headerName: "Id",
         type: "number",
-        minWidth: 50,
+        minWidth: 10,
         filterable: false,
       },
       {
         field: "activityName",
-        minWidth: 250,
+        minWidth: 150,
         headerName: "Activity",
       },
       {
@@ -126,11 +126,11 @@ export const BookingsList = () => {
           return <Chip label={row.status} size="small" variant="outlined" {...getChipProps(row.status)} />;
         },
       },
-      {
-        field: "noAttendees",
-        minWidth: 80,
-        headerName: "No. Attendees",
-      },
+      // {
+      //   field: "noAttendees",
+      //   minWidth: 80,
+      //   headerName: "No. Attendees",
+      // },
       {
         field: "resourceId",
         minWidth: 240,

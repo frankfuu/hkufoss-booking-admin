@@ -27,7 +27,7 @@ export const BookingsCreateDetail = () => {
   });
 
   const onSubmit = (data: any) => {
-    console.log("Intercepted data:", data);
+    // console.log("Intercepted data:", data);
     onFinish(data);
   };
 

@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useGetIdentity } from "@refinedev/core";
-import { d } from "../../common/constants";
+import { d, k } from "../../common/constants";
 
 type IUser = {
   id: number;
@@ -23,6 +23,9 @@ export default function EditCreateBookings({ register, errors, control, action, 
 
   const { autocompleteProps: activityTypeAutocompleteProps } = useAutocomplete({
     resource: "activity-types",
+    pagination: {
+      pageSize: k.DROPDOWN_PAGE_SIZE_DEFAULT,
+    },
   });
 
   const filterOptionsActivityTypes = createFilterOptions({
@@ -32,6 +35,9 @@ export default function EditCreateBookings({ register, errors, control, action, 
 
   const { autocompleteProps: activityNatureAutocompleteProps } = useAutocomplete({
     resource: "activity-natures",
+    pagination: {
+      pageSize: k.DROPDOWN_PAGE_SIZE_DEFAULT,
+    },
   });
 
   const filterOptionsactivityNatures = createFilterOptions({
@@ -41,24 +47,33 @@ export default function EditCreateBookings({ register, errors, control, action, 
 
   const { autocompleteProps: courseAutocompleteProps } = useAutocomplete({
     resource: "courses",
+    pagination: {
+      pageSize: k.DROPDOWN_PAGE_SIZE_DEFAULT,
+    },
   });
 
   const filterOptionsCourses = createFilterOptions({
     matchFrom: "any",
-    stringify: (option: any) => `${option?.id} ${option?.name}`,
+    stringify: (option: any) => `${option?.id} ${option?.name} ${option?.code}`,
   });
 
   const { autocompleteProps: funderAutocompleteProps } = useAutocomplete({
     resource: "funders",
+    pagination: {
+      pageSize: k.DROPDOWN_PAGE_SIZE_DEFAULT,
+    },
   });
 
   const filterOptionsFunders = createFilterOptions({
     matchFrom: "any",
-    stringify: (option: any) => `${option?.id} ${option?.name}`,
+    stringify: (option: any) => `${option?.id} ${option?.name} ${option?.accountCode}`,
   });
 
   const { autocompleteProps: resourceAutocompleteProps } = useAutocomplete({
     resource: "resources",
+    pagination: {
+      pageSize: k.DROPDOWN_PAGE_SIZE_DEFAULT,
+    },
   });
 
   const filterOptionsResources = createFilterOptions({
@@ -171,6 +186,7 @@ export default function EditCreateBookings({ register, errors, control, action, 
         InputLabelProps={{ shrink: true }}
         label={t("No. Attendees")}
         name="noAttendees"
+        required
       />
       <TextField
         {...register("activityName", {
@@ -183,6 +199,7 @@ export default function EditCreateBookings({ register, errors, control, action, 
         InputLabelProps={{ shrink: true }}
         label={t("Activity Name")}
         name="activityName"
+        required
       />
       <TextField
         {...register("contactPerson", {
@@ -245,7 +262,7 @@ export default function EditCreateBookings({ register, errors, control, action, 
             onChange={(_, value) => field.onChange(value?.id ?? value)}
             onInputChange={(event, value) => {}}
             value={courseAutocompleteProps?.options?.find((option) => option.id === field.value) || null}
-            getOptionLabel={(option) => `(CID ${option?.id}) ${option?.name}`}
+            getOptionLabel={(option) => `(CID ${option?.id}) ${option?.name} ${option?.code}`}
             renderInput={(params) => <TextField {...params} label={t("Course")} margin="normal" variant="outlined" />}
           />
         )}
@@ -263,7 +280,7 @@ export default function EditCreateBookings({ register, errors, control, action, 
             onChange={(_, value) => field.onChange(value?.id ?? value)}
             onInputChange={(event, value) => {}}
             value={funderAutocompleteProps?.options?.find((option) => option.id === field.value) || null}
-            getOptionLabel={(option) => `(FID ${option?.id}) ${option?.name}`}
+            getOptionLabel={(option) => `(FID ${option?.id}) ${option?.name} (Acc. ${option?.accountCode})`}
             renderInput={(params) => <TextField {...params} label={t("Funder")} margin="normal" variant="outlined" />}
           />
         )}

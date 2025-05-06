@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Card, CardContent, Grid, Typography, CircularProgress, Container, IconButton, Button, Box } from "@mui/material";
-import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
+import { ArrowBackIos, ArrowForwardIos, BorderColor } from "@mui/icons-material";
 import { useCustom } from "@refinedev/core";
 import { addDays, subDays, format } from "date-fns";
 import moment from "moment";
@@ -85,7 +85,7 @@ export const AvailableDaysList = ({ onSlotSelect, resourceId }: any) => {
                   justifyContent: "center", // Horizontally center the content (optional)
                 }}
               >
-                <Typography variant="h6">{`${slot.hasException ? "Closed" : ""} ${
+                <Typography variant="subtitle1">{`${slot.hasException ? "Closed" : ""} ${
                   slot.hasBookingConflict ? slot?.bookingStatus : ""
                 } ${!slot.hasBookingConflict && !slot.hasException ? "Select" : ""}`}</Typography>
               </Box>
@@ -115,10 +115,9 @@ export const AvailableDaysList = ({ onSlotSelect, resourceId }: any) => {
     return {
       style: {
         backgroundColor: bgColor,
-        color: "#FFFFFF", // Set the text color to white for better contrast
-        // borderRadius: "5px", // Optional: Add rounded corners
-        border: "none", // Optional: Remove border
-        // padding: "5px", // Optional: Add padding
+        borderColor: bgColor,
+        borderRadius: "0px", // Optional: Add rounded corners
+        padding: "2px", // Optional: Add padding
       },
     };
   };
