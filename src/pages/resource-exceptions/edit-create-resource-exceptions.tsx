@@ -63,7 +63,7 @@ export default function EditCreateResourceExceptions({ register, errors, control
             onInputChange={(event, value) => {}}
             value={resourceAutocompleteProps?.options?.find((option) => option.id === field.value) || null}
             getOptionLabel={(option) => `(RID ${option?.id}) ${option?.resourceName} - ${option?.resourceType}`}
-            renderInput={(params) => <TextField {...params} label={t("Resource")} margin="normal" variant="outlined" required />}
+            renderInput={(params) => <TextField {...params} label={t("resource")} margin="normal" variant="outlined" required />}
           />
         )}
       />
@@ -77,7 +77,7 @@ export default function EditCreateResourceExceptions({ register, errors, control
         margin="normal"
         fullWidth
         InputLabelProps={{ shrink: true }}
-        label={t("Exception Name")}
+        label={t("name")}
         placeholder="e.g. Monthly Maintenance, Christmas Shutdown, Chinese New Year etc"
         name="name"
       />

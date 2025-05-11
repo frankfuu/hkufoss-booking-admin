@@ -348,6 +348,7 @@
     "reserve": "Reserve",
     "addSessions": "Add Sessions",
     "serviceTypes": "Service Types",
+    "resourceAddons": "Resource Addons",
     "numberOfSessions": "Number Of Sessions",
     "description": "Description",
     "Start Date": "Start Date",
@@ -446,5 +447,27 @@
     "Low": "Low",
     "Medium": "Medium",
     "Medium High": "Medium High",
-    "High": "High"
+    "High": "High",
+    "resource": "Resource",
+    "resourceType": "Resource Type",
+    "resourceName": "Resource Name",
+    "activityName": "Activity",
+    "seatingCapacity": {
+        "short": "Capacity",
+        "full": "Seating Capacity"
+    },
+    "floor": "Floor",
+    "booking": "Booking",
+    "courses": "Courses",
+    "funders": "Funders",
+    "activity-natures": "Activity Natures",
+    "activity-types": "Activity Types",
+    "resources": "Resources",
+    "resource-addons": "Resource Addons",
+    "resource-schedules": "Resource Schedules",
+    "resource-exceptions": "Resource Exceptions",
+    "noAttendees": "No. Attendees",
+    "contactPerson": "Contact Person",
+    "externalSpeakers": "External Speakers",
+    "specialRequests": "Special Requests"
 }

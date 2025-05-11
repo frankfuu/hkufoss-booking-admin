@@ -18,7 +18,7 @@ export const ResourceSchedulesEdit = () => {
 
   return (
     <Edit
-      title={<Typography variant="h5">{t("edit") + " " + t("Resource Schedules")}</Typography>}
+      title={<Typography variant="h5">{t("edit") + " " + t("resource-schedules")}</Typography>}
       isLoading={formLoading}
       saveButtonProps={saveButtonProps}
     >

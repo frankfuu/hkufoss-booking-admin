@@ -17,7 +17,7 @@ export const ResourceExceptionsEdit = () => {
 
   return (
     <Edit
-      title={<Typography variant="h5">{t("edit") + " " + t("Resource Exceptions")}</Typography>}
+      title={<Typography variant="h5">{t("edit") + " " + t("resource-exceptions")}</Typography>}
       isLoading={formLoading}
       saveButtonProps={saveButtonProps}
     >

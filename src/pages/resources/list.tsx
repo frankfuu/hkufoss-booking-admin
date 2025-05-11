@@ -3,10 +3,12 @@ import { useDataGrid, EditButton, ShowButton, DeleteButton, List, DateField, Clo
 import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import { Checkbox } from "@mui/material";
 import { useNavigation, usePermissions, useResource } from "@refinedev/core";
+import { useTranslation } from "react-i18next";
 import moment from "moment-timezone";
 import { k } from "../../common/constants";
 
 export const ResourceListings = () => {
+  const { t } = useTranslation();
   const { dataGridProps } = useDataGrid({
     sorters: {
       initial: [
@@ -33,34 +35,33 @@ export const ResourceListings = () => {
       {
         field: "resourceName",
         minWidth: 200,
-        headerName: "Type",
+        headerName: t("resourceName"),
       },
       {
         field: "resourceType",
         minWidth: 130,
-        headerName: "Type",
+        headerName: t("resourceType"),
       },
       {
         field: "seatingCapacity",
         minWidth: 50,
-        headerName: "Capacity",
+        headerName: t("seatingCapacity.short"),
       },
       {
         field: "location",
         minWidth: 80,
-        headerName: "Location",
+        headerName: t("location"),
       },
       {
         field: "floor",
         minWidth: 50,
-        headerName: "Floor",
+        headerName: t("floor"),
       },
 
       {
         field: "updatedAt",
-        // flex: 1,
         filterable: false,
-        headerName: "Updated At",
+        headerName: t("updatedAt"),
         minWidth: 180,
         renderCell: function render({ value }) {
           const localTime = moment.utc(value).tz(moment.tz.guess()).toDate();
@@ -69,7 +70,7 @@ export const ResourceListings = () => {
       },
       {
         field: "actions",
-        headerName: "Actions",
+        headerName: t("Actions"),
         sortable: false,
         type: "actions",
         minWidth: 200,
@@ -85,7 +86,7 @@ export const ResourceListings = () => {
         headerAlign: "left",
       },
     ],
-    []
+    [t]
   );
 
   return (

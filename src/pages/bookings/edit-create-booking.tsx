@@ -115,7 +115,7 @@ export default function EditCreateBookings({ register, errors, control, action, 
             onInputChange={(event, value) => {}}
             value={resourceAutocompleteProps?.options?.find((option) => option.id === field.value) || null}
             getOptionLabel={(option) => `(RID ${option?.id}) ${option?.resourceName} - ${option?.resourceType}`}
-            renderInput={(params) => <TextField {...params} label={t("Resource")} margin="normal" variant="outlined" required />}
+            renderInput={(params) => <TextField {...params} label={t("resource")} margin="normal" variant="outlined" required />}
           />
         )}
       />
@@ -137,7 +137,7 @@ export default function EditCreateBookings({ register, errors, control, action, 
             renderInput={(params) => (
               <TextField
                 {...params}
-                label={t("Status")}
+                label={t("status")}
                 margin="normal"
                 variant="outlined"
                 error={!!(errors as any)?.status}
@@ -184,7 +184,7 @@ export default function EditCreateBookings({ register, errors, control, action, 
         margin="normal"
         fullWidth
         InputLabelProps={{ shrink: true }}
-        label={t("No. Attendees")}
+        label={t("noAttendees")}
         name="noAttendees"
         required
       />
@@ -197,7 +197,7 @@ export default function EditCreateBookings({ register, errors, control, action, 
         margin="normal"
         fullWidth
         InputLabelProps={{ shrink: true }}
-        label={t("Activity Name")}
+        label={t("activityName")}
         name="activityName"
         required
       />
@@ -210,7 +210,7 @@ export default function EditCreateBookings({ register, errors, control, action, 
         margin="normal"
         fullWidth
         InputLabelProps={{ shrink: true }}
-        label={t("Contact Person")}
+        label={t("contactPerson")}
         name="contactPerson"
       />
       <Controller
@@ -227,7 +227,7 @@ export default function EditCreateBookings({ register, errors, control, action, 
             onInputChange={(event, value) => {}}
             value={activityNatureAutocompleteProps?.options?.find((option) => option.id === field.value) || null}
             getOptionLabel={(option) => `(ANID ${option?.id}) ${option?.name}`}
-            renderInput={(params) => <TextField {...params} label={t("Activity Nature")} margin="normal" variant="outlined" />}
+            renderInput={(params) => <TextField {...params} label={t("activity-natures")} margin="normal" variant="outlined" />}
           />
         )}
       />
@@ -245,7 +245,7 @@ export default function EditCreateBookings({ register, errors, control, action, 
             onInputChange={(event, value) => {}}
             value={activityTypeAutocompleteProps?.options?.find((option) => option.id === field.value) || null}
             getOptionLabel={(option) => `(ATID ${option?.id}) ${option?.name}`}
-            renderInput={(params) => <TextField {...params} label={t("Activity Type")} margin="normal" variant="outlined" />}
+            renderInput={(params) => <TextField {...params} label={t("activity-types")} margin="normal" variant="outlined" />}
           />
         )}
       />
@@ -263,7 +263,7 @@ export default function EditCreateBookings({ register, errors, control, action, 
             onInputChange={(event, value) => {}}
             value={courseAutocompleteProps?.options?.find((option) => option.id === field.value) || null}
             getOptionLabel={(option) => `(CID ${option?.id}) ${option?.name} ${option?.code}`}
-            renderInput={(params) => <TextField {...params} label={t("Course")} margin="normal" variant="outlined" />}
+            renderInput={(params) => <TextField {...params} label={t("courses")} margin="normal" variant="outlined" />}
           />
         )}
       />
@@ -281,7 +281,7 @@ export default function EditCreateBookings({ register, errors, control, action, 
             onInputChange={(event, value) => {}}
             value={funderAutocompleteProps?.options?.find((option) => option.id === field.value) || null}
             getOptionLabel={(option) => `(FID ${option?.id}) ${option?.name} (Acc. ${option?.accountCode})`}
-            renderInput={(params) => <TextField {...params} label={t("Funder")} margin="normal" variant="outlined" />}
+            renderInput={(params) => <TextField {...params} label={t("funders")} margin="normal" variant="outlined" />}
           />
         )}
       />
@@ -293,7 +293,7 @@ export default function EditCreateBookings({ register, errors, control, action, 
         margin="normal"
         fullWidth
         InputLabelProps={{ shrink: true }}
-        label={t("External Speakers")}
+        label={t("externalSpeakers")}
         name="externalSpeakers"
       />
       <TextField
@@ -303,7 +303,7 @@ export default function EditCreateBookings({ register, errors, control, action, 
         margin="normal"
         fullWidth
         InputLabelProps={{ shrink: true }}
-        label={t("Special Requests")}
+        label={t("specialRequests")}
         name="specialRequests"
       />
       <TextField

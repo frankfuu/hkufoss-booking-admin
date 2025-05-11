@@ -5,8 +5,10 @@ import { Button, Checkbox, Chip } from "@mui/material";
 import { useCustomMutation, useList, useNavigation, usePermissions, useResource } from "@refinedev/core";
 import moment from "moment-timezone";
 import { d, k } from "../../common/constants";
+import { useTranslation } from "react-i18next";
 
 export const BookingsList = () => {
+  const { t } = useTranslation();
   const {
     dataGridProps,
     tableQuery: { refetch },
@@ -109,11 +111,11 @@ export const BookingsList = () => {
       {
         field: "activityName",
         minWidth: 150,
-        headerName: "Activity",
+        headerName: t("activityName"),
       },
       {
         field: "status",
-        headerName: "Status",
+        headerName: t("status"),
         minWidth: 120,
         type: "singleSelect",
         valueOptions: d.BOOKINGS.STATUS.OPTIONS,
@@ -134,7 +136,7 @@ export const BookingsList = () => {
       {
         field: "resourceId",
         minWidth: 240,
-        headerName: "Resource",
+        headerName: t("resources"),
         renderCell: ({ row }) => {
           const resource = resourcesData?.data.find((r) => r.id == row.resourceId);
           return `${resource?.resourceName} ${resource?.resourceType}`;
@@ -148,7 +150,7 @@ export const BookingsList = () => {
       {
         field: "startTime",
         minWidth: 150,
-        headerName: "Start",
+        headerName: t("Start Time"),
         renderCell: function render({ value }) {
           const localTime = moment.utc(value).tz(moment.tz.guess()).toDate();
           return <DateField value={localTime} format={k.DATE_FM_DEFAULT} />;
@@ -157,7 +159,7 @@ export const BookingsList = () => {
       {
         field: "endTime",
         minWidth: 150,
-        headerName: "End",
+        headerName: t("End Time"),
         renderCell: function render({ value }) {
           const localTime = moment.utc(value).tz(moment.tz.guess()).toDate();
           return <DateField value={localTime} format={k.DATE_FM_DEFAULT} />;
@@ -167,7 +169,7 @@ export const BookingsList = () => {
         field: "updatedAt",
         // flex: 1,
         filterable: false,
-        headerName: "Updated At",
+        headerName: t("updatedAt"),
         minWidth: 150,
         renderCell: function render({ value }) {
           const localTime = moment.utc(value).tz(moment.tz.guess()).toDate();
@@ -176,7 +178,7 @@ export const BookingsList = () => {
       },
       {
         field: "actions",
-        headerName: "Actions",
+        headerName: t("Actions"),
         sortable: false,
         type: "actions",
         minWidth: 200,
@@ -226,7 +228,7 @@ export const BookingsList = () => {
         headerAlign: "left",
       },
     ],
-    [resourcesData]
+    [resourcesData, t]
   );
 
   return (

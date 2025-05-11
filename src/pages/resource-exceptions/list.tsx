@@ -5,8 +5,11 @@ import { Checkbox } from "@mui/material";
 import { useList, useNavigation, usePermissions, useResource } from "@refinedev/core";
 import moment from "moment-timezone";
 import { k } from "../../common/constants";
+import { useTranslation } from "react-i18next";
 
 export const ResourceExceptionListings = () => {
+  const { t } = useTranslation();
+
   const { dataGridProps } = useDataGrid({
     sorters: {
       initial: [
@@ -41,16 +44,21 @@ export const ResourceExceptionListings = () => {
       {
         field: "resourceId",
         minWidth: 240,
-        headerName: "Resource",
+        headerName: t("resourceName"),
         renderCell: ({ row }) => {
           const resource = resourcesData?.data.find((r) => r.id == row.resourceId);
           return `${resource?.resourceName} ${resource?.resourceType}`;
         },
       },
       {
+        field: "name",
+        minWidth: 240,
+        headerName: t("name"),
+      },
+      {
         field: "startTime",
         minWidth: 150,
-        headerName: "Start",
+        headerName: t("Start Time"),
         renderCell: function render({ value }) {
           const localTime = moment.utc(value).tz(moment.tz.guess()).toDate();
           return <DateField value={localTime} format={k.DATE_FM_DEFAULT} />;
@@ -59,7 +67,7 @@ export const ResourceExceptionListings = () => {
       {
         field: "endTime",
         minWidth: 150,
-        headerName: "End",
+        headerName: t("End Time"),
         renderCell: function render({ value }) {
           const localTime = moment.utc(value).tz(moment.tz.guess()).toDate();
           return <DateField value={localTime} format={k.DATE_FM_DEFAULT} />;
@@ -69,7 +77,7 @@ export const ResourceExceptionListings = () => {
         field: "updatedAt",
         // flex: 1,
         filterable: false,
-        headerName: "Updated At",
+        headerName: t("updatedAt"),
         minWidth: 150,
         renderCell: function render({ value }) {
           const localTime = moment.utc(value).tz(moment.tz.guess()).toDate();
@@ -78,7 +86,7 @@ export const ResourceExceptionListings = () => {
       },
       {
         field: "actions",
-        headerName: "Actions",
+        headerName: t("Actions"),
         sortable: false,
         type: "actions",
         minWidth: 200,
@@ -94,7 +102,7 @@ export const ResourceExceptionListings = () => {
         headerAlign: "left",
       },
     ],
-    [resourcesData]
+    [resourcesData, t]
   );
 
   return (

@@ -5,8 +5,10 @@ import { Checkbox } from "@mui/material";
 import { useList, useNavigation, usePermissions, useResource } from "@refinedev/core";
 import moment from "moment-timezone";
 import { k } from "../../common/constants";
+import { useTranslation } from "react-i18next";
 
 export const ResourceScheduleListings = () => {
+  const { t } = useTranslation();
   const { dataGridProps } = useDataGrid({
     sorters: {
       initial: [
@@ -41,7 +43,7 @@ export const ResourceScheduleListings = () => {
       {
         field: "resourceId",
         minWidth: 240,
-        headerName: "Resource",
+        headerName: t("resources"),
         renderCell: ({ row }) => {
           const resource = resourcesData?.data.find((x) => x.id == row.resourceId);
           return `${resource?.resourceName} - ${resource?.resourceType}`;
@@ -51,28 +53,28 @@ export const ResourceScheduleListings = () => {
       {
         field: "startDate",
         minWidth: 100,
-        headerName: "Start Date",
+        headerName: t("Start Date"),
       },
       {
         field: "endDate",
         minWidth: 100,
-        headerName: "End Date",
+        headerName: t("End Date"),
       },
       {
         field: "startTime",
         minWidth: 100,
-        headerName: "Start Time",
+        headerName: t("Start Time"),
       },
       {
         field: "endTime",
         minWidth: 100,
-        headerName: "End Time",
+        headerName: t("End Time"),
       },
       {
         field: "updatedAt",
         // flex: 1,
         filterable: false,
-        headerName: "Updated At",
+        headerName: t("updatedAt"),
         minWidth: 180,
         renderCell: function render({ value }) {
           const localTime = moment.utc(value).tz(moment.tz.guess()).toDate();
@@ -97,7 +99,7 @@ export const ResourceScheduleListings = () => {
         headerAlign: "left",
       },
     ],
-    [resourcesDataLoading]
+    [resourcesDataLoading, t]
   );
 
   return (
