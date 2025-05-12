@@ -102,7 +102,7 @@ export default function EditCreateResources({ register, errors, control, action,
           margin="normal"
           fullWidth
           InputLabelProps={{ shrink: true }}
-          label={t("seatingCapacity")}
+          label={t("seatingCapacity.full")}
           name="seatingCapacity"
         />
 

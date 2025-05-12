@@ -49,7 +49,7 @@ export default function EditCreateResourceAddons({ register, errors, control, ac
         margin="normal"
         fullWidth
         InputLabelProps={{ shrink: true }}
-        label={t("Resource Name")}
+        label={t("resourceName")}
         name="resourceName"
       />
 
@@ -62,7 +62,7 @@ export default function EditCreateResourceAddons({ register, errors, control, ac
         margin="normal"
         fullWidth
         InputLabelProps={{ shrink: true }}
-        label={t("Type")}
+        label={t("resourceType")}
         name="resourceType"
       />
 
@@ -75,7 +75,7 @@ export default function EditCreateResourceAddons({ register, errors, control, ac
         margin="normal"
         fullWidth
         InputLabelProps={{ shrink: true }}
-        label={t("Location")}
+        label={t("location")}
         name="location"
       />
 
@@ -88,7 +88,7 @@ export default function EditCreateResourceAddons({ register, errors, control, ac
         margin="normal"
         fullWidth
         InputLabelProps={{ shrink: true }}
-        label={t("Floor")}
+        label={t("floor")}
         name="floor"
       />
 

@@ -349,7 +349,7 @@
     "reserve": "預約",
     "addSessions": "新增服務時段",
     "serviceTypes": "服務類型",
-    "resourceAddons": "Resource 類型",
+    "resourceAddons": "資源配件",
     "numberOfSessions": "服務時段數量",
     "description": "描述",
     "Start Date": "開始日期",
@@ -451,7 +451,10 @@
     "resource": "資源",
     "resourceType": "資源類型",
     "resourceName": "資源名稱",
-    "activityName": "活動",
+    "activity": {
+        "short": "活動",
+        "full": "活動名稱"
+    },
     "seatingCapacity": {
         "short": "容量",
         "full": "座位容量"

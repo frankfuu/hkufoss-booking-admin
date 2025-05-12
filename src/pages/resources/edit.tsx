@@ -22,7 +22,7 @@ export const ResourcesEdit = () => {
 
   return (
     <Edit
-      title={<Typography variant="h5">{t("edit") + " " + t("Resources")}</Typography>}
+      title={<Typography variant="h5">{t("edit") + " " + t("resources")}</Typography>}
       isLoading={formLoading}
       saveButtonProps={saveButtonProps}
     >

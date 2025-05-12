@@ -197,7 +197,7 @@ export default function EditCreateBookings({ register, errors, control, action, 
         margin="normal"
         fullWidth
         InputLabelProps={{ shrink: true }}
-        label={t("activityName")}
+        label={t("activity.full")}
         name="activityName"
         required
       />

@@ -451,7 +451,10 @@
     "resource": "Resource",
     "resourceType": "Resource Type",
     "resourceName": "Resource Name",
-    "activityName": "Activity",
+    "activity": {
+        "short": "Activity",
+        "full": "Activity Name"
+    },
     "seatingCapacity": {
         "short": "Capacity",
         "full": "Seating Capacity"

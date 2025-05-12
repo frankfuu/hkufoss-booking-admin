@@ -111,7 +111,7 @@ export const BookingsList = () => {
       {
         field: "activityName",
         minWidth: 150,
-        headerName: t("activityName"),
+        headerName: t("activity.short"),
       },
       {
         field: "status",
