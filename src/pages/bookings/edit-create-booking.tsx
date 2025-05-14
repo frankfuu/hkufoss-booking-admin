@@ -93,14 +93,6 @@ export default function EditCreateBookings({ register, errors, control, action, 
     stringify: (option: any) => `${option?.resourceId} ${option?.resourceName} ${option?.resourceType}`,
   });
 
-  const hourOptions = [
-    { label: "1 hour", value: 1 },
-    { label: "2 hours", value: 2 },
-    { label: "3 hours", value: 3 },
-    { label: "4 hours", value: 4 },
-    { label: "5 hours", value: 5 },
-  ];
-
   return (
     <Box component="form" sx={{ display: "flex", flexDirection: "column" }} autoComplete="off">
       {!isCreate && (
@@ -173,6 +165,7 @@ export default function EditCreateBookings({ register, errors, control, action, 
         {...register("startTime", {
           required: "This field is required",
         })}
+        disabled
         error={!!(errors as any)?.startTime}
         helperText={(errors as any)?.startTime?.message}
         margin="normal"
@@ -182,24 +175,24 @@ export default function EditCreateBookings({ register, errors, control, action, 
         name="startTime"
         defaultValue={slotData ? `${slotData.date}T${slotData.slot.from}:00Z` : null} // 2025-04-28T15:00:00Z
       />
-      <FormControl fullWidth>
-        <InputLabel id="hour-select-label">Duration</InputLabel>
-        <Controller
-          name="duration"
-          control={control}
-          rules={{ required: "Duration is required" }}
-          defaultValue={1}
-          render={({ field }) => (
-            <Select labelId="hour-select-label" id="hour-select" label="Duration" {...field}>
-              {hourOptions.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </Select>
-          )}
-        />
-      </FormControl>
+
+      <Controller
+        control={control}
+        name="duration"
+        rules={{ required: "This field is required" }}
+        defaultValue={d.BOOKINGS.DURATION.DEFAULT}
+        render={({ field }) => (
+          <Autocomplete
+            options={d.BOOKINGS.DURATION.OPTIONS}
+            getOptionLabel={(option) => option.label}
+            onChange={(_, value) => field.onChange(value?.value ?? value)}
+            onInputChange={(event, value) => {}}
+            value={d.BOOKINGS.DURATION.OPTIONS.find((option) => option.value === field.value) || null}
+            sx={{ mt: 2 }}
+            renderInput={(params) => <TextField {...params} label={t("Duration")} InputLabelProps={{ shrink: true }} />}
+          />
+        )}
+      />
       {/* <TextField
         {...register("endTime", {
           required: "This field is required",
@@ -269,7 +262,15 @@ export default function EditCreateBookings({ register, errors, control, action, 
             onInputChange={(event, value) => {}}
             value={activityNatureAutocompleteProps?.options?.find((option) => option.id === field.value) || null}
             getOptionLabel={(option) => `(ANID ${option?.id}) ${option?.name}`}
-            renderInput={(params) => <TextField {...params} label={t("activity-natures")} margin="normal" variant="outlined" />}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label={t("activity-natures")}
+                margin="normal"
+                variant="outlined"
+                InputLabelProps={{ shrink: true }}
+              />
+            )}
           />
         )}
       />
@@ -287,7 +288,15 @@ export default function EditCreateBookings({ register, errors, control, action, 
             onInputChange={(event, value) => {}}
             value={activityTypeAutocompleteProps?.options?.find((option) => option.id === field.value) || null}
             getOptionLabel={(option) => `(ATID ${option?.id}) ${option?.name}`}
-            renderInput={(params) => <TextField {...params} label={t("activity-types")} margin="normal" variant="outlined" />}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label={t("activity-types")}
+                margin="normal"
+                variant="outlined"
+                InputLabelProps={{ shrink: true }}
+              />
+            )}
           />
         )}
       />
@@ -305,7 +314,9 @@ export default function EditCreateBookings({ register, errors, control, action, 
             onInputChange={(event, value) => {}}
             value={courseAutocompleteProps?.options?.find((option) => option.id === field.value) || null}
             getOptionLabel={(option) => `(CID ${option?.id}) ${option?.name} ${option?.code}`}
-            renderInput={(params) => <TextField {...params} label={t("courses")} margin="normal" variant="outlined" />}
+            renderInput={(params) => (
+              <TextField {...params} label={t("courses")} margin="normal" variant="outlined" InputLabelProps={{ shrink: true }} />
+            )}
           />
         )}
       />
@@ -323,7 +334,9 @@ export default function EditCreateBookings({ register, errors, control, action, 
             onInputChange={(event, value) => {}}
             value={funderAutocompleteProps?.options?.find((option) => option.id === field.value) || null}
             getOptionLabel={(option) => `(FID ${option?.id}) ${option?.name} (Acc. ${option?.accountCode})`}
-            renderInput={(params) => <TextField {...params} label={t("funders")} margin="normal" variant="outlined" />}
+            renderInput={(params) => (
+              <TextField {...params} label={t("funders")} margin="normal" variant="outlined" InputLabelProps={{ shrink: true }} />
+            )}
           />
         )}
       />
