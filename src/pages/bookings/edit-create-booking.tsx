@@ -21,6 +21,9 @@ import { useState } from "react";
 import { useGetIdentity } from "@refinedev/core";
 import { d, k } from "../../common/constants";
 
+import { DatePicker, DateTimePicker } from "@mui/x-date-pickers";
+import dayjs, { Dayjs } from "dayjs";
+
 type IUser = {
   id: number;
   username: string;
@@ -161,19 +164,28 @@ export default function EditCreateBookings({ register, errors, control, action, 
           />
         )}
       />
-      <TextField
-        {...register("startTime", {
-          required: "This field is required",
-        })}
-        disabled
-        error={!!(errors as any)?.startTime}
-        helperText={(errors as any)?.startTime?.message}
-        margin="normal"
-        fullWidth
-        InputLabelProps={{ shrink: true }}
-        label={t("Start Time")}
+
+      <Controller
+        control={control}
         name="startTime"
-        defaultValue={slotData ? `${slotData.date}T${slotData.slot.from}:00Z` : null} // 2025-04-28T15:00:00Z
+        defaultValue={slotData ? dayjs(slotData.slot.fromDateTimeISOString) : null}
+        render={({ field }) => (
+          <DateTimePicker
+            {...field}
+            disabled
+            format={k.DATE_FM_DEFAULT}
+            value={field.value ? dayjs(field.value) : null}
+            onChange={(date) => field.onChange(date)}
+            slotProps={{
+              textField: {
+                fullWidth: true,
+                margin: "normal",
+                label: t("Start Time"),
+                InputLabelProps: { shrink: true },
+              },
+            }}
+          />
+        )}
       />
 
       <Controller
@@ -193,19 +205,6 @@ export default function EditCreateBookings({ register, errors, control, action, 
           />
         )}
       />
-      {/* <TextField
-        {...register("endTime", {
-          required: "This field is required",
-        })}
-        error={!!(errors as any)?.endTime}
-        helperText={(errors as any)?.endTime?.message}
-        margin="normal"
-        fullWidth
-        InputLabelProps={{ shrink: true }}
-        label={t("End Time")}
-        name="endTime"
-        defaultValue={slotData ? `${slotData.date}T${slotData.slot.to}:00Z` : null} // 2025-04-28T15:00:00Z
-      /> */}
 
       <TextField
         {...register("noAttendees", {

@@ -63,7 +63,17 @@ export default function EditCreateResourceSchedules({ register, errors, control,
             onInputChange={(event, value) => {}}
             value={resourceAutocompleteProps?.options?.find((option) => option.id === field.value) || null}
             getOptionLabel={(option) => `(RID ${option?.id}) ${option?.resourceName} - ${option?.resourceType}`}
-            renderInput={(params) => <TextField {...params} label={t("Resource")} margin="normal" variant="outlined" required />}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label={t("Resource")}
+                margin="normal"
+                variant="outlined"
+                placeholder="Choose resource"
+                required
+                InputLabelProps={{ shrink: true }}
+              />
+            )}
           />
         )}
       />

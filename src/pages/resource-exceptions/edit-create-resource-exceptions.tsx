@@ -7,13 +7,30 @@ import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useGetIdentity } from "@refinedev/core";
-import { d } from "../../common/constants";
+import { d, k } from "../../common/constants";
+
+import { DatePicker, DateTimePicker } from "@mui/x-date-pickers";
+import dayjs, { Dayjs } from "dayjs";
 
 type IUser = {
   id: number;
   username: string;
   centreId: number;
 };
+
+function roundToNearestHour(date: Dayjs) {
+  // Get the current minutes
+  const minutes = date.minute();
+
+  // Round the time:
+  // If minutes are 30 or more, round up to the next hour
+  // Otherwise, round down to the current hour
+  if (minutes >= 30) {
+    return date.startOf("hour").add(1, "hour");
+  } else {
+    return date.startOf("hour");
+  }
+}
 
 export default function EditCreateResourceExceptions({ register, errors, control, action }: any) {
   const { t } = useTranslation();
@@ -63,7 +80,17 @@ export default function EditCreateResourceExceptions({ register, errors, control
             onInputChange={(event, value) => {}}
             value={resourceAutocompleteProps?.options?.find((option) => option.id === field.value) || null}
             getOptionLabel={(option) => `(RID ${option?.id}) ${option?.resourceName} - ${option?.resourceType}`}
-            renderInput={(params) => <TextField {...params} label={t("resource")} margin="normal" variant="outlined" required />}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label={t("resource")}
+                margin="normal"
+                variant="outlined"
+                placeholder="Choose resource"
+                required
+                InputLabelProps={{ shrink: true }}
+              />
+            )}
           />
         )}
       />
@@ -82,47 +109,71 @@ export default function EditCreateResourceExceptions({ register, errors, control
         name="name"
       />
 
-      <TextField
-        {...register("startTime", {
-          required: "This field is required",
-        })}
-        error={!!(errors as any)?.startTime}
-        helperText={(errors as any)?.startTime?.message}
-        placeholder="e.g. 2025-06-13T14:00:00.000Z"
-        defaultValue={"2025-06-13T14:00:00.000Z"}
-        margin="normal"
-        fullWidth
-        InputLabelProps={{ shrink: true }}
-        label={t("Start Time")}
+      <Controller
+        // disabled
+        control={control}
         name="startTime"
+        defaultValue={roundToNearestHour(dayjs())}
+        render={({ field }) => (
+          <DateTimePicker
+            {...field}
+            format={k.DATE_FM_DEFAULT}
+            value={field.value ? dayjs(field.value) : null}
+            onChange={(date) => field.onChange(date)}
+            slotProps={{
+              textField: {
+                fullWidth: true,
+                margin: "normal",
+                label: t("Start Time"),
+              },
+            }}
+          />
+        )}
       />
 
-      <TextField
-        {...register("endTime", {
-          required: "This field is required",
-        })}
-        error={!!(errors as any)?.endTime}
-        helperText={(errors as any)?.endTime?.message}
-        placeholder="e.g. 2025-06-28T17:00:00.000Z"
-        defaultValue={"2025-06-28T17:00:00.000Z"}
-        margin="normal"
-        fullWidth
-        InputLabelProps={{ shrink: true }}
-        label={t("End Time")}
+      <Controller
+        // disabled
+        control={control}
         name="endTime"
+        defaultValue={roundToNearestHour(dayjs().add(2, "day"))}
+        render={({ field }) => (
+          <DateTimePicker
+            {...field}
+            format={k.DATE_FM_DEFAULT}
+            value={field.value ? dayjs(field.value) : null}
+            onChange={(date) => field.onChange(date)}
+            slotProps={{
+              textField: {
+                fullWidth: true,
+                margin: "normal",
+                label: t("End Time"),
+                InputLabelProps: { shrink: true },
+              },
+            }}
+          />
+        )}
       />
-
       {!isCreate && (
-        <TextField
-          {...register("updatedAt", {})}
-          error={!!(errors as any)?.updatedAt}
-          helperText={(errors as any)?.updatedAt?.message}
-          margin="normal"
-          fullWidth
-          InputLabelProps={{ shrink: true }}
-          label={t("updatedAt")}
-          name="updatedAt"
+        <Controller
           disabled
+          control={control}
+          name="updatedAt"
+          render={({ field }) => (
+            <DateTimePicker
+              {...field}
+              format={k.DATE_FM_DEFAULT}
+              value={field.value ? dayjs(field.value) : null}
+              onChange={(date) => field.onChange(date)}
+              slotProps={{
+                textField: {
+                  fullWidth: true,
+                  margin: "normal",
+                  label: "Updated",
+                  InputLabelProps: { shrink: true },
+                },
+              }}
+            />
+          )}
         />
       )}
 
@@ -134,11 +185,7 @@ export default function EditCreateResourceExceptions({ register, errors, control
             control={control}
             defaultValue={false}
             render={({ field }) => (
-              <Checkbox
-                {...field}
-                checked={field.value}
-                onChange={(e) => field.onChange(e.target.checked)} // Update the value on change
-              />
+              <Checkbox {...field} checked={field.value} onChange={(e) => field.onChange(e.target.checked)} />
             )}
           />
         }
