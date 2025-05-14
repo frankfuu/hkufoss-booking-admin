@@ -89,6 +89,9 @@ import { ResourceSchedulesEdit } from "./pages/resource-schedules/edit";
 import { BookingsCreateDetail } from "./pages/bookings/create-detail";
 import { BookingsEdit } from "./pages/bookings/edit";
 
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+
 const customTitleHandler = ({ resource, action, params }: any) => {
   let title = "HKU FOSS Booking System";
 
@@ -429,29 +432,31 @@ function App() {
         <RefineKbarProvider>
           <ColorModeContextProvider>
             <UserOptionsProvider>
-              <CssBaseline />
-              <GlobalStyles styles={{ html: { WebkitFontSmoothing: "auto" } }} />
-              <SnackbarProvider
-                ref={snackbarRef}
-                iconVariant={{
-                  error: <Error sx={{ fontSize: "20px", marginRight: "8px" }} />,
-                }}
-                action={
-                  <IconButton
-                    onClick={() => {
-                      snackbarRef.current?.closeSnackbar();
-                    }}
-                  >
-                    <CancelOutlined sx={{ color: "white" }} fontSize="small" />
-                  </IconButton>
-                }
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-              >
-                <AppContent />
-              </SnackbarProvider>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <CssBaseline />
+                <GlobalStyles styles={{ html: { WebkitFontSmoothing: "auto" } }} />
+                <SnackbarProvider
+                  ref={snackbarRef}
+                  iconVariant={{
+                    error: <Error sx={{ fontSize: "20px", marginRight: "8px" }} />,
+                  }}
+                  action={
+                    <IconButton
+                      onClick={() => {
+                        snackbarRef.current?.closeSnackbar();
+                      }}
+                    >
+                      <CancelOutlined sx={{ color: "white" }} fontSize="small" />
+                    </IconButton>
+                  }
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                >
+                  <AppContent />
+                </SnackbarProvider>
+              </LocalizationProvider>
             </UserOptionsProvider>
           </ColorModeContextProvider>
         </RefineKbarProvider>

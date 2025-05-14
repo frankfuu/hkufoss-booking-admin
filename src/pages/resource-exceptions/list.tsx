@@ -60,8 +60,7 @@ export const ResourceExceptionListings = () => {
         minWidth: 150,
         headerName: t("Start Time"),
         renderCell: function render({ value }) {
-          const localTime = moment.utc(value).tz(moment.tz.guess()).toDate();
-          return <DateField value={localTime} format={k.DATE_FM_DEFAULT} />;
+          return <DateField value={value} format={k.DATE_FM_DEFAULT} />;
         },
       },
       {
@@ -69,8 +68,7 @@ export const ResourceExceptionListings = () => {
         minWidth: 150,
         headerName: t("End Time"),
         renderCell: function render({ value }) {
-          const localTime = moment.utc(value).tz(moment.tz.guess()).toDate();
-          return <DateField value={localTime} format={k.DATE_FM_DEFAULT} />;
+          return <DateField value={value} format={k.DATE_FM_DEFAULT} />;
         },
       },
       {
@@ -80,8 +78,7 @@ export const ResourceExceptionListings = () => {
         headerName: t("updatedAt"),
         minWidth: 150,
         renderCell: function render({ value }) {
-          const localTime = moment.utc(value).tz(moment.tz.guess()).toDate();
-          return <DateField value={localTime} format={k.DATE_FM_DEFAULT} />;
+          return <DateField value={value} format={k.DATE_FM_DEFAULT} />;
         },
       },
       {

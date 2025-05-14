@@ -472,5 +472,6 @@
     "noAttendees": "No. Attendees",
     "contactPerson": "Contact Person",
     "externalSpeakers": "External Speakers",
-    "specialRequests": "Special Requests"
+    "specialRequests": "Special Requests",
+    "scheduleName": "Schedule Name"
 }

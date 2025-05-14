@@ -472,5 +472,6 @@
     "noAttendees": "出席人數",
     "contactPerson": "聯絡人",
     "externalSpeakers": "外來講者",
-    "specialRequests": "特別安排"
+    "specialRequests": "特別安排",
+    "scheduleName": "排程名稱"
 }

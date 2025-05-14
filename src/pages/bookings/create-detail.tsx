@@ -11,7 +11,7 @@ export const BookingsCreateDetail = () => {
   const location = useLocation();
   const slotData = location.state;
 
-  console.log(`BookingsCreateTemp, data`, slotData);
+  // console.log(`BookingsCreateTemp, data`, slotData);
 
   const {
     saveButtonProps,
@@ -33,7 +33,7 @@ export const BookingsCreateDetail = () => {
 
   return (
     <Create
-      title={<Typography variant="h5">{t("create") + " " + t("Booking")}</Typography>}
+      title={<Typography variant="h5">{t("create") + " " + t("booking")}</Typography>}
       isLoading={formLoading}
       saveButtonProps={{ ...saveButtonProps, onClick: handleSubmit(onSubmit) }}
     >

@@ -77,7 +77,7 @@ export default function EditCreateResourceSchedules({ register, errors, control,
         margin="normal"
         fullWidth
         InputLabelProps={{ shrink: true }}
-        label={t("Schedule Name")}
+        label={t("scheduleName")}
         placeholder="e.g. Schedule FY25"
         name="name"
       />
