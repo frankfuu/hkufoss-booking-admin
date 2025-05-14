@@ -1,5 +1,17 @@
 import { Edit, useAutocomplete } from "@refinedev/mui";
-import { Box, TextField, Autocomplete, createFilterOptions, Checkbox, FormControlLabel, Typography } from "@mui/material";
+import {
+  Box,
+  TextField,
+  Autocomplete,
+  createFilterOptions,
+  Checkbox,
+  FormControlLabel,
+  Typography,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from "@mui/material";
 import { useForm } from "@refinedev/react-hook-form";
 import { Controller } from "react-hook-form";
 import { useParams } from "react-router-dom";
@@ -81,6 +93,14 @@ export default function EditCreateBookings({ register, errors, control, action, 
     stringify: (option: any) => `${option?.resourceId} ${option?.resourceName} ${option?.resourceType}`,
   });
 
+  const hourOptions = [
+    { label: "1 hour", value: 1 },
+    { label: "2 hours", value: 2 },
+    { label: "3 hours", value: 3 },
+    { label: "4 hours", value: 4 },
+    { label: "5 hours", value: 5 },
+  ];
+
   return (
     <Box component="form" sx={{ display: "flex", flexDirection: "column" }} autoComplete="off">
       {!isCreate && (
@@ -99,6 +119,7 @@ export default function EditCreateBookings({ register, errors, control, action, 
           disabled
         />
       )}
+
       <Controller
         control={control}
         name="resourceId"
@@ -161,7 +182,25 @@ export default function EditCreateBookings({ register, errors, control, action, 
         name="startTime"
         defaultValue={slotData ? `${slotData.date}T${slotData.slot.from}:00Z` : null} // 2025-04-28T15:00:00Z
       />
-      <TextField
+      <FormControl fullWidth>
+        <InputLabel id="hour-select-label">Duration</InputLabel>
+        <Controller
+          name="duration"
+          control={control}
+          rules={{ required: "Duration is required" }}
+          defaultValue={1}
+          render={({ field }) => (
+            <Select labelId="hour-select-label" id="hour-select" label="Duration" {...field}>
+              {hourOptions.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </Select>
+          )}
+        />
+      </FormControl>
+      {/* <TextField
         {...register("endTime", {
           required: "This field is required",
         })}
@@ -173,7 +212,7 @@ export default function EditCreateBookings({ register, errors, control, action, 
         label={t("End Time")}
         name="endTime"
         defaultValue={slotData ? `${slotData.date}T${slotData.slot.to}:00Z` : null} // 2025-04-28T15:00:00Z
-      />
+      /> */}
 
       <TextField
         {...register("noAttendees", {
@@ -183,6 +222,7 @@ export default function EditCreateBookings({ register, errors, control, action, 
         helperText={(errors as any)?.noAttendees?.message}
         margin="normal"
         fullWidth
+        defaultValue={10}
         InputLabelProps={{ shrink: true }}
         label={t("noAttendees")}
         name="noAttendees"
@@ -196,6 +236,7 @@ export default function EditCreateBookings({ register, errors, control, action, 
         helperText={(errors as any)?.activityName?.message}
         margin="normal"
         fullWidth
+        defaultValue={"My Activity name"}
         InputLabelProps={{ shrink: true }}
         label={t("activity.full")}
         name="activityName"
@@ -209,6 +250,7 @@ export default function EditCreateBookings({ register, errors, control, action, 
         helperText={(errors as any)?.contactPerson?.message}
         margin="normal"
         fullWidth
+        defaultValue={"Contact Person Name"}
         InputLabelProps={{ shrink: true }}
         label={t("contactPerson")}
         name="contactPerson"
