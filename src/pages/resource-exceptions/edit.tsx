@@ -12,6 +12,9 @@ export const ResourceExceptionsEdit = () => {
     refineCore: { formLoading },
     register,
     control,
+    setValue,
+    setError,
+    clearErrors,
     formState: { errors },
   } = useForm();
 
@@ -21,7 +24,7 @@ export const ResourceExceptionsEdit = () => {
       isLoading={formLoading}
       saveButtonProps={saveButtonProps}
     >
-      <EditCreateResourceExceptions {...{ register, errors, control, action: "edit" }} />
+      <EditCreateResourceExceptions {...{ register, errors, control, action: "edit", setValue, setError, clearErrors }} />
     </Edit>
   );
 };

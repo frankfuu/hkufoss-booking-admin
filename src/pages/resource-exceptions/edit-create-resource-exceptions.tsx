@@ -1,5 +1,5 @@
 import { Edit, useAutocomplete } from "@refinedev/mui";
-import { Box, TextField, Autocomplete, createFilterOptions, Checkbox, FormControlLabel } from "@mui/material";
+import { Box, TextField, Autocomplete, createFilterOptions, Checkbox, FormControlLabel, FormHelperText } from "@mui/material";
 import { useForm } from "@refinedev/react-hook-form";
 import { Controller } from "react-hook-form";
 import { useParams } from "react-router-dom";
@@ -32,11 +32,33 @@ function roundToNearestHour(date: Dayjs) {
   }
 }
 
-export default function EditCreateResourceExceptions({ register, errors, control, action }: any) {
+export default function EditCreateResourceExceptions({
+  register,
+  errors,
+  control,
+  action,
+  setValue,
+  setError,
+  clearErrors,
+}: any) {
   const { t } = useTranslation();
+  const [timeError, setTimeError] = useState<string | null>(null);
 
   const { data: user } = useGetIdentity<IUser>();
   const isCreate = action === "create";
+
+  const TIME_CONSTRAINT_ERROR = "End time must be after start time";
+
+  useEffect(() => {
+    if (timeError) {
+      setError("timingValidation", {
+        type: "custom",
+        message: timeError,
+      });
+    } else {
+      clearErrors();
+    }
+  }, [timeError, setError]);
 
   const { autocompleteProps: resourceAutocompleteProps } = useAutocomplete({
     resource: "resources",
@@ -119,7 +141,15 @@ export default function EditCreateResourceExceptions({ register, errors, control
             {...field}
             format={k.DATE_FM_DEFAULT}
             value={field.value ? dayjs(field.value) : null}
-            onChange={(date) => field.onChange(date)}
+            onChange={(date) => {
+              field.onChange(date);
+              const endTime = control._formValues.endTime;
+              if (date && endTime && !dayjs(endTime).isAfter(dayjs(date))) {
+                setTimeError(t(TIME_CONSTRAINT_ERROR));
+              } else {
+                setTimeError(null);
+              }
+            }}
             slotProps={{
               textField: {
                 fullWidth: true,
@@ -137,20 +167,32 @@ export default function EditCreateResourceExceptions({ register, errors, control
         name="endTime"
         defaultValue={roundToNearestHour(dayjs().add(2, "day"))}
         render={({ field }) => (
-          <DateTimePicker
-            {...field}
-            format={k.DATE_FM_DEFAULT}
-            value={field.value ? dayjs(field.value) : null}
-            onChange={(date) => field.onChange(date)}
-            slotProps={{
-              textField: {
-                fullWidth: true,
-                margin: "normal",
-                label: t("End Time"),
-                InputLabelProps: { shrink: true },
-              },
-            }}
-          />
+          <>
+            <DateTimePicker
+              {...field}
+              format={k.DATE_FM_DEFAULT}
+              value={field.value ? dayjs(field.value) : null}
+              onChange={(date) => {
+                field.onChange(date);
+                const startTime = control._formValues.startTime;
+                if (startTime && date && !dayjs(date).isAfter(dayjs(startTime))) {
+                  setTimeError(t(TIME_CONSTRAINT_ERROR));
+                } else {
+                  setTimeError(null);
+                }
+              }}
+              slotProps={{
+                textField: {
+                  fullWidth: true,
+                  margin: "normal",
+                  label: t("End Time"),
+                  InputLabelProps: { shrink: true },
+                  error: !!timeError,
+                },
+              }}
+            />
+            {timeError && <FormHelperText error>{timeError}</FormHelperText>}
+          </>
         )}
       />
       {!isCreate && (
@@ -168,7 +210,7 @@ export default function EditCreateResourceExceptions({ register, errors, control
                 textField: {
                   fullWidth: true,
                   margin: "normal",
-                  label: "Updated",
+                  label: t("updatedAt"),
                   InputLabelProps: { shrink: true },
                 },
               }}
