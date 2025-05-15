@@ -75,6 +75,9 @@
             "404": "抱歉，您訪問的頁面不存在。",
             "resource404": "您確定已經創建了{{resource}}資源嗎？",
             "backHome": "返回首頁"
+        },
+        "common": {
+            "startBeforeEndTime": "結束時間必須在開始時間之後"
         }
     },
     "nav": {

@@ -1,5 +1,5 @@
 import { Edit, useAutocomplete } from "@refinedev/mui";
-import { Box, TextField, Autocomplete, createFilterOptions, Checkbox, FormControlLabel } from "@mui/material";
+import { Box, TextField, Autocomplete, createFilterOptions, Checkbox, FormControlLabel, FormHelperText } from "@mui/material";
 import { useForm } from "@refinedev/react-hook-form";
 import { Controller } from "react-hook-form";
 import { useParams } from "react-router-dom";
@@ -17,11 +17,13 @@ type IUser = {
   centreId: number;
 };
 
-export default function EditCreateResourceSchedules({ register, errors, control, action }: any) {
+export default function EditCreateResourceSchedules({ register, errors, control, action, setError, setValue, clearErrors }: any) {
   const { t } = useTranslation();
 
   const { data: user } = useGetIdentity<IUser>();
   const isCreate = action === "create";
+
+  const [timeError, setTimeError] = useState<string | null>(null);
 
   const { autocompleteProps: resourceAutocompleteProps } = useAutocomplete({
     resource: "resources",
@@ -31,6 +33,35 @@ export default function EditCreateResourceSchedules({ register, errors, control,
     matchFrom: "any",
     stringify: (option: any) => `${option?.resourceId} ${option?.resourceName} ${option?.resourceType}`,
   });
+
+  const TIME_CONSTRAINT_ERROR = t("pages.common.startBeforeEndTime");
+
+  const validateTimeConstraint = () => {
+    const { endDate, startDate, startTime, endTime } = control._formValues;
+
+    if (!startDate || !endDate || !startTime || !endTime) {
+      setTimeError(t(TIME_CONSTRAINT_ERROR));
+      return;
+    }
+
+    if (startDate !== endDate) {
+      setTimeError(dayjs(endDate).isAfter(dayjs(startDate)) ? null : t(TIME_CONSTRAINT_ERROR));
+      return;
+    }
+
+    setTimeError(endTime >= startTime ? null : t(TIME_CONSTRAINT_ERROR));
+  };
+
+  useEffect(() => {
+    if (timeError) {
+      setError("timingValidation", {
+        type: "custom",
+        message: timeError,
+      });
+    } else {
+      clearErrors();
+    }
+  }, [timeError, setError]);
 
   return (
     <Box component="form" sx={{ display: "flex", flexDirection: "column" }} autoComplete="off">
@@ -109,6 +140,7 @@ export default function EditCreateResourceSchedules({ register, errors, control,
             onChange={(date) => {
               const dateString = date ? dayjs(date).format(k.DATE_ONLY_FM_DEFAULT) : null; // ensure no time component
               field.onChange(dateString);
+              validateTimeConstraint();
             }}
             slotProps={{
               textField: {
@@ -127,24 +159,29 @@ export default function EditCreateResourceSchedules({ register, errors, control,
         name="endDate"
         defaultValue={dayjs().add(7, "day").format(k.DATE_ONLY_FM_DEFAULT)}
         render={({ field }) => (
-          <DatePicker
-            {...field}
-            format={k.DATE_ONLY_FM_DEFAULT}
-            views={["year", "month", "day"]}
-            value={field.value ? dayjs(field.value) : null}
-            onChange={(date) => {
-              const dateString = date ? dayjs(date).format(k.DATE_ONLY_FM_DEFAULT) : null; // ensure no time element
-              field.onChange(dateString);
-            }}
-            slotProps={{
-              textField: {
-                fullWidth: true,
-                margin: "normal",
-                label: t("End Date"),
-                InputLabelProps: { shrink: true },
-              },
-            }}
-          />
+          <>
+            <DatePicker
+              {...field}
+              format={k.DATE_ONLY_FM_DEFAULT}
+              views={["year", "month", "day"]}
+              value={field.value ? dayjs(field.value) : null}
+              onChange={(date) => {
+                const dateString = date ? dayjs(date).format(k.DATE_ONLY_FM_DEFAULT) : null; // ensure no time element
+                field.onChange(dateString);
+                validateTimeConstraint();
+              }}
+              slotProps={{
+                textField: {
+                  fullWidth: true,
+                  margin: "normal",
+                  label: t("End Date"),
+                  InputLabelProps: { shrink: true },
+                  error: !!timeError,
+                },
+              }}
+            />
+            {timeError && <FormHelperText error>{timeError}</FormHelperText>}
+          </>
         )}
       />
 
@@ -163,6 +200,7 @@ export default function EditCreateResourceSchedules({ register, errors, control,
             onChange={(time) => {
               const timeString = time ? dayjs(time).format(k.TIME_ONLY_RETAIN_SECS_FM_DEFAULT) : null; // display HH:mm but send HH:mm:00
               field.onChange(timeString);
+              validateTimeConstraint();
             }}
             slotProps={{
               textField: {
@@ -194,6 +232,7 @@ export default function EditCreateResourceSchedules({ register, errors, control,
             onChange={(time) => {
               const timeString = time ? dayjs(time).format(k.TIME_ONLY_RETAIN_SECS_FM_DEFAULT) : null; // display HH:mm but send HH:mm:00
               field.onChange(timeString);
+              validateTimeConstraint();
             }}
             slotProps={{
               textField: {
@@ -211,16 +250,26 @@ export default function EditCreateResourceSchedules({ register, errors, control,
       />
 
       {!isCreate && (
-        <TextField
-          {...register("updatedAt", {})}
-          error={!!(errors as any)?.updatedAt}
-          helperText={(errors as any)?.updatedAt?.message}
-          margin="normal"
-          fullWidth
-          InputLabelProps={{ shrink: true }}
-          label={t("updatedAt")}
-          name="updatedAt"
+        <Controller
           disabled
+          control={control}
+          name="updatedAt"
+          render={({ field }) => (
+            <DateTimePicker
+              {...field}
+              format={k.DATE_FM_DEFAULT}
+              value={field.value ? dayjs(field.value) : null}
+              onChange={(date) => field.onChange(date)}
+              slotProps={{
+                textField: {
+                  fullWidth: true,
+                  margin: "normal",
+                  label: t("updatedAt"),
+                  InputLabelProps: { shrink: true },
+                },
+              }}
+            />
+          )}
         />
       )}
 

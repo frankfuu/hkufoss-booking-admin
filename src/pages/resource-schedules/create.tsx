@@ -13,6 +13,9 @@ export const ResourceSchedulesCreate = () => {
     refineCore: { formLoading },
     register,
     control,
+    setError,
+    setValue,
+    clearErrors,
     formState: { errors },
   } = useForm();
 
@@ -29,7 +32,7 @@ export const ResourceSchedulesCreate = () => {
         </>
       )}
     >
-      <EditCreateResourceSchedules {...{ register, errors, control, action: "create" }} />
+      <EditCreateResourceSchedules {...{ register, errors, control, action: "create", setValue, setError, clearErrors }} />
     </Create>
   );
 };
