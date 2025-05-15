@@ -377,16 +377,26 @@ export default function EditCreateBookings({ register, errors, control, action, 
       />
 
       {!isCreate && (
-        <TextField
-          {...register("updatedAt", {})}
-          error={!!(errors as any)?.updatedAt}
-          helperText={(errors as any)?.updatedAt?.message}
-          margin="normal"
-          fullWidth
-          InputLabelProps={{ shrink: true }}
-          label={t("updatedAt")}
-          name="updatedAt"
+        <Controller
           disabled
+          control={control}
+          name="updatedAt"
+          render={({ field }) => (
+            <DateTimePicker
+              {...field}
+              format={k.DATE_FM_DEFAULT}
+              value={field.value ? dayjs(field.value) : null}
+              onChange={(date) => field.onChange(date)}
+              slotProps={{
+                textField: {
+                  fullWidth: true,
+                  margin: "normal",
+                  label: t("updatedAt"),
+                  InputLabelProps: { shrink: true },
+                },
+              }}
+            />
+          )}
         />
       )}
     </Box>

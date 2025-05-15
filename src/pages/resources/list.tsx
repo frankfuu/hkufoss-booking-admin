@@ -4,7 +4,6 @@ import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import { Checkbox } from "@mui/material";
 import { useNavigation, usePermissions, useResource } from "@refinedev/core";
 import { useTranslation } from "react-i18next";
-import moment from "moment-timezone";
 import { k } from "../../common/constants";
 
 export const ResourceListings = () => {
@@ -64,8 +63,7 @@ export const ResourceListings = () => {
         headerName: t("updatedAt"),
         minWidth: 180,
         renderCell: function render({ value }) {
-          const localTime = moment.utc(value).tz(moment.tz.guess()).toDate();
-          return <DateField value={localTime} format={k.DATE_FM_DEFAULT} />;
+          return <DateField value={value} format={k.DATE_FM_DEFAULT} />;
         },
       },
       {
@@ -79,6 +77,7 @@ export const ResourceListings = () => {
             <>
               <EditButton hideText recordItemId={row.id} />
               <CloneButton hideText recordItemId={row.id} />
+              <DeleteButton hideText recordItemId={row.id} />
             </>
           );
         },

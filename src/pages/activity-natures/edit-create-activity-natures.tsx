@@ -7,7 +7,9 @@ import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useGetIdentity } from "@refinedev/core";
-import { d } from "../../common/constants";
+import { d, k } from "../../common/constants";
+import { DatePicker, DateTimePicker } from "@mui/x-date-pickers";
+import dayjs, { Dayjs } from "dayjs";
 
 type IUser = {
   id: number;
@@ -54,16 +56,26 @@ export default function EditCreateActivityNatures({ register, errors, control, a
       />
 
       {!isCreate && (
-        <TextField
-          {...register("updatedAt", {})}
-          error={!!(errors as any)?.updatedAt}
-          helperText={(errors as any)?.updatedAt?.message}
-          margin="normal"
-          fullWidth
-          InputLabelProps={{ shrink: true }}
-          label={t("updatedAt")}
-          name="updatedAt"
+        <Controller
           disabled
+          control={control}
+          name="updatedAt"
+          render={({ field }) => (
+            <DateTimePicker
+              {...field}
+              format={k.DATE_FM_DEFAULT}
+              value={field.value ? dayjs(field.value) : null}
+              onChange={(date) => field.onChange(date)}
+              slotProps={{
+                textField: {
+                  fullWidth: true,
+                  margin: "normal",
+                  label: t("updatedAt"),
+                  InputLabelProps: { shrink: true },
+                },
+              }}
+            />
+          )}
         />
       )}
     </Box>

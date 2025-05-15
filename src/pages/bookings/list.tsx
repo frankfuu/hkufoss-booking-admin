@@ -3,7 +3,6 @@ import { useDataGrid, EditButton, ShowButton, DeleteButton, List, DateField, Clo
 import { DataGrid, GridColDef, GridToolbar, getGridSingleSelectOperators } from "@mui/x-data-grid";
 import { Button, Checkbox, Chip } from "@mui/material";
 import { useCustomMutation, useList, useNavigation, usePermissions, useResource } from "@refinedev/core";
-import moment from "moment-timezone";
 import { d, k } from "../../common/constants";
 import { useTranslation } from "react-i18next";
 

@@ -3,7 +3,6 @@ import { useDataGrid, EditButton, ShowButton, DeleteButton, List, DateField, Clo
 import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import { Checkbox } from "@mui/material";
 import { useList, useNavigation, usePermissions, useResource } from "@refinedev/core";
-import moment from "moment-timezone";
 import { k } from "../../common/constants";
 import { useTranslation } from "react-i18next";
 
@@ -92,6 +91,7 @@ export const ResourceExceptionListings = () => {
             <>
               <EditButton hideText recordItemId={row.id} />
               <CloneButton hideText recordItemId={row.id} />
+              <DeleteButton hideText recordItemId={row.id} />
             </>
           );
         },
