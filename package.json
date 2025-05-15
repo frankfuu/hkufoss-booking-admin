@@ -62,6 +62,7 @@
     "vite": "^4.3.1"
   },
   "scripts": {
+    "debug": "refine dev --devtools=false",
     "dev": "refine dev --devtools=false",
     "build": "tsc && refine build --base=/admin/",
     "start": "refine start",

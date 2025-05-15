@@ -107,8 +107,7 @@ export default function EditCreateResourceSchedules({ register, errors, control,
             views={["year", "month", "day"]}
             value={field.value ? dayjs(field.value) : null}
             onChange={(date) => {
-              // Convert the date to YYYY-MM-DD string format to ensure no time component
-              const dateString = date ? dayjs(date).format(k.DATE_ONLY_FM_DEFAULT) : null;
+              const dateString = date ? dayjs(date).format(k.DATE_ONLY_FM_DEFAULT) : null; // ensure no time component
               field.onChange(dateString);
             }}
             slotProps={{
@@ -126,7 +125,7 @@ export default function EditCreateResourceSchedules({ register, errors, control,
       <Controller
         control={control}
         name="endDate"
-        defaultValue={dayjs().format(k.DATE_ONLY_FM_DEFAULT)}
+        defaultValue={dayjs().add(7, "day").format(k.DATE_ONLY_FM_DEFAULT)}
         render={({ field }) => (
           <DatePicker
             {...field}
@@ -134,8 +133,7 @@ export default function EditCreateResourceSchedules({ register, errors, control,
             views={["year", "month", "day"]}
             value={field.value ? dayjs(field.value) : null}
             onChange={(date) => {
-              // Convert the date to YYYY-MM-DD string format to ensure no time component
-              const dateString = date ? dayjs(date).format(k.DATE_ONLY_FM_DEFAULT) : null;
+              const dateString = date ? dayjs(date).format(k.DATE_ONLY_FM_DEFAULT) : null; // ensure no time element
               field.onChange(dateString);
             }}
             slotProps={{
@@ -150,34 +148,66 @@ export default function EditCreateResourceSchedules({ register, errors, control,
         )}
       />
 
-      <TextField
-        {...register("startTime", {
-          required: "This field is required",
-        })}
-        error={!!(errors as any)?.startTime}
-        placeholder="e.g. 13:00:00"
-        defaultValue={"09:00:00"}
-        helperText={(errors as any)?.startTime?.message}
-        margin="normal"
-        fullWidth
-        InputLabelProps={{ shrink: true }}
-        label={t("Start Time")}
+      <Controller
+        control={control}
         name="startTime"
+        rules={{ required: "This field is required" }}
+        defaultValue={"09:00:00"}
+        render={({ field, fieldState }) => (
+          <TimePicker
+            {...field}
+            views={["hours", "minutes"]}
+            format={k.TIME_ONLY_FM_DEFAULT}
+            ampm={false}
+            value={field.value ? dayjs(`${k.DUMMY_DATE_ONLY_PREFIX}T${field.value}`) : null}
+            onChange={(time) => {
+              const timeString = time ? dayjs(time).format(k.TIME_ONLY_RETAIN_SECS_FM_DEFAULT) : null; // display HH:mm but send HH:mm:00
+              field.onChange(timeString);
+            }}
+            slotProps={{
+              textField: {
+                fullWidth: true,
+                margin: "normal",
+                label: t("Start Time"),
+                error: !!fieldState.error,
+                helperText: fieldState.error?.message,
+                InputLabelProps: { shrink: true },
+                placeholder: "e.g. 13:00",
+              },
+            }}
+          />
+        )}
       />
 
-      <TextField
-        {...register("endTime", {
-          required: "This field is required",
-        })}
-        error={!!(errors as any)?.endTime}
-        placeholder="e.g. 18:00:00"
-        defaultValue={"16:00:00"}
-        helperText={(errors as any)?.endTime?.message}
-        margin="normal"
-        fullWidth
-        InputLabelProps={{ shrink: true }}
-        label={t("End Time")}
+      <Controller
+        control={control}
         name="endTime"
+        rules={{ required: "This field is required" }}
+        defaultValue={"16:00:00"}
+        render={({ field, fieldState }) => (
+          <TimePicker
+            {...field}
+            views={["hours", "minutes"]}
+            format={k.TIME_ONLY_FM_DEFAULT}
+            ampm={false}
+            value={field.value ? dayjs(`${k.DUMMY_DATE_ONLY_PREFIX}T${field.value}`) : null}
+            onChange={(time) => {
+              const timeString = time ? dayjs(time).format(k.TIME_ONLY_RETAIN_SECS_FM_DEFAULT) : null; // display HH:mm but send HH:mm:00
+              field.onChange(timeString);
+            }}
+            slotProps={{
+              textField: {
+                fullWidth: true,
+                margin: "normal",
+                label: t("End Time"),
+                error: !!fieldState.error,
+                helperText: fieldState.error?.message,
+                InputLabelProps: { shrink: true },
+                placeholder: "e.g. 18:00",
+              },
+            }}
+          />
+        )}
       />
 
       {!isCreate && (
@@ -202,11 +232,7 @@ export default function EditCreateResourceSchedules({ register, errors, control,
             control={control}
             defaultValue={true}
             render={({ field }) => (
-              <Checkbox
-                {...field}
-                checked={field.value}
-                onChange={(e) => field.onChange(e.target.checked)} // Update the value on change
-              />
+              <Checkbox {...field} checked={field.value} onChange={(e) => field.onChange(e.target.checked)} />
             )}
           />
         }
@@ -219,11 +245,7 @@ export default function EditCreateResourceSchedules({ register, errors, control,
             control={control}
             defaultValue={true}
             render={({ field }) => (
-              <Checkbox
-                {...field}
-                checked={field.value}
-                onChange={(e) => field.onChange(e.target.checked)} // Update the value on change
-              />
+              <Checkbox {...field} checked={field.value} onChange={(e) => field.onChange(e.target.checked)} />
             )}
           />
         }
