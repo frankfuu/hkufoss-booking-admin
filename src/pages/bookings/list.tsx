@@ -109,7 +109,7 @@ export const BookingsList = () => {
       },
       {
         field: "activityName",
-        minWidth: 150,
+        minWidth: 180,
         headerName: t("activity.short"),
       },
       {
@@ -134,11 +134,11 @@ export const BookingsList = () => {
       // },
       {
         field: "resourceId",
-        minWidth: 240,
-        headerName: t("resources"),
+        minWidth: 100,
+        headerName: t("resource"),
         renderCell: ({ row }) => {
           const resource = resourcesData?.data.find((r) => r.id == row.resourceId);
-          return `${resource?.resourceName} ${resource?.resourceType}`;
+          return `${resource?.resourceName} `;
         },
       },
       // {
@@ -148,26 +148,33 @@ export const BookingsList = () => {
       // },
       {
         field: "startTime",
-        minWidth: 150,
+        minWidth: 130,
         headerName: t("Start Time"),
         renderCell: function render({ value }) {
           return <DateField value={value} format={k.DATE_FM_DEFAULT} />;
         },
       },
       {
-        field: "endTime",
-        minWidth: 150,
-        headerName: t("End Time"),
-        renderCell: function render({ value }) {
-          return <DateField value={value} format={k.DATE_FM_DEFAULT} />;
-        },
+        field: "duration",
+        minWidth: 10,
+        headerName: t("Duration"),
+        align: "center",
+        headerAlign: "center",
       },
+      // {
+      //   field: "endTime",
+      //   minWidth: 130,
+      //   headerName: t("End Time"),
+      //   renderCell: function render({ value }) {
+      //     return <DateField value={value} format={k.DATE_FM_DEFAULT} />;
+      //   },
+      // },
       {
         field: "updatedAt",
         // flex: 1,
         filterable: false,
         headerName: t("updatedAt"),
-        minWidth: 150,
+        minWidth: 130,
         renderCell: function render({ value }) {
           return <DateField value={value} format={k.DATE_FM_DEFAULT} />;
         },

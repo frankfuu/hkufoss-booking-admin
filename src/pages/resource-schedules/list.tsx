@@ -5,6 +5,7 @@ import { Checkbox } from "@mui/material";
 import { useList, useNavigation, usePermissions, useResource } from "@refinedev/core";
 import { k } from "../../common/constants";
 import { useTranslation } from "react-i18next";
+import dayjs, { Dayjs } from "dayjs";
 
 export const ResourceScheduleListings = () => {
   const { t } = useTranslation();
@@ -41,32 +42,38 @@ export const ResourceScheduleListings = () => {
       },
       {
         field: "resourceId",
-        minWidth: 240,
-        headerName: t("resources"),
+        minWidth: 140,
+        headerName: t("resource"),
         renderCell: ({ row }) => {
           const resource = resourcesData?.data.find((x) => x.id == row.resourceId);
-          return `${resource?.resourceName} - ${resource?.resourceType}`;
+          return `${resource?.resourceName}`;
         },
       },
 
       {
+        field: "name",
+        minWidth: 140,
+        headerName: t("scheduleName"),
+      },
+
+      {
         field: "startDate",
-        minWidth: 100,
+        minWidth: 50,
         headerName: t("Start Date"),
       },
       {
         field: "endDate",
-        minWidth: 100,
+        minWidth: 50,
         headerName: t("End Date"),
       },
       {
         field: "startTime",
-        minWidth: 100,
+        minWidth: 50,
         headerName: t("Start Time"),
       },
       {
         field: "endTime",
-        minWidth: 100,
+        minWidth: 50,
         headerName: t("End Time"),
       },
       {
@@ -74,7 +81,7 @@ export const ResourceScheduleListings = () => {
         // flex: 1,
         filterable: false,
         headerName: t("updatedAt"),
-        minWidth: 180,
+        minWidth: 150,
         renderCell: function render({ value }) {
           return <DateField value={value} format={k.DATE_FM_DEFAULT} />;
         },

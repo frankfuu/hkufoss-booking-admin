@@ -42,8 +42,8 @@ export const ResourceExceptionListings = () => {
       },
       {
         field: "resourceId",
-        minWidth: 240,
-        headerName: t("resourceName"),
+        minWidth: 230,
+        headerName: t("resource"),
         renderCell: ({ row }) => {
           const resource = resourcesData?.data.find((r) => r.id == row.resourceId);
           return `${resource?.resourceName} ${resource?.resourceType}`;
@@ -51,12 +51,12 @@ export const ResourceExceptionListings = () => {
       },
       {
         field: "name",
-        minWidth: 240,
+        minWidth: 200,
         headerName: t("name"),
       },
       {
         field: "startTime",
-        minWidth: 150,
+        minWidth: 130,
         headerName: t("Start Time"),
         renderCell: function render({ value }) {
           return <DateField value={value} format={k.DATE_FM_DEFAULT} />;
@@ -64,7 +64,7 @@ export const ResourceExceptionListings = () => {
       },
       {
         field: "endTime",
-        minWidth: 150,
+        minWidth: 130,
         headerName: t("End Time"),
         renderCell: function render({ value }) {
           return <DateField value={value} format={k.DATE_FM_DEFAULT} />;
@@ -75,7 +75,7 @@ export const ResourceExceptionListings = () => {
         // flex: 1,
         filterable: false,
         headerName: t("updatedAt"),
-        minWidth: 150,
+        minWidth: 130,
         renderCell: function render({ value }) {
           return <DateField value={value} format={k.DATE_FM_DEFAULT} />;
         },

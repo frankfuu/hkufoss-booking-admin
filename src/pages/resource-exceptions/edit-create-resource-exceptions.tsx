@@ -81,160 +81,148 @@ export default function EditCreateResourceExceptions({
   });
 
   return (
-    <Box component="form" sx={{ display: "flex", flexDirection: "column" }} autoComplete="off">
-      {!isCreate && (
-        <TextField
-          {...register("id", {
-            valueAsNumber: true,
-          })}
-          error={!!(errors as any)?.id}
-          helperText={(errors as any)?.id?.message}
-          margin="normal"
-          fullWidth
-          InputLabelProps={{ shrink: true }}
-          type="number"
-          label={t("id")}
-          name="id"
-          disabled
+    <Box component="form" sx={{ display: "flex", flexDirection: "row" }} autoComplete="off">
+      <Box sx={{ flex: 1, display: "flex", flexDirection: "column", padding: 2 }}>
+        {!isCreate && (
+          <TextField
+            {...register("id", {
+              valueAsNumber: true,
+            })}
+            error={!!(errors as any)?.id}
+            helperText={(errors as any)?.id?.message}
+            margin="normal"
+            fullWidth
+            InputLabelProps={{ shrink: true }}
+            type="number"
+            label={t("id")}
+            name="id"
+            disabled
+          />
+        )}
+
+        <Controller
+          control={control}
+          name="resourceId"
+          rules={{ required: "This field is required" }}
+          defaultValue={null as any}
+          render={({ field }) => (
+            <Autocomplete
+              {...resourceAutocompleteProps}
+              {...field}
+              onChange={(_, value) => field.onChange(value?.id ?? value)}
+              filterOptions={filterOptionsResources}
+              onInputChange={(event, value) => {}}
+              value={resourceAutocompleteProps?.options?.find((option) => option.id === field.value) || null}
+              getOptionLabel={(option) => `(RID ${option?.id}) ${option?.resourceName} - ${option?.resourceType}`}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label={t("resource")}
+                  margin="normal"
+                  variant="outlined"
+                  placeholder="Choose resource"
+                  required
+                  InputLabelProps={{ shrink: true }}
+                />
+              )}
+            />
+          )}
         />
-      )}
 
-      <Controller
-        control={control}
-        name="resourceId"
-        rules={{ required: "This field is required" }}
-        defaultValue={null as any}
-        render={({ field }) => (
-          <Autocomplete
-            {...resourceAutocompleteProps}
-            {...field}
-            onChange={(_, value) => field.onChange(value?.id ?? value)}
-            filterOptions={filterOptionsResources}
-            onInputChange={(event, value) => {}}
-            value={resourceAutocompleteProps?.options?.find((option) => option.id === field.value) || null}
-            getOptionLabel={(option) => `(RID ${option?.id}) ${option?.resourceName} - ${option?.resourceType}`}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label={t("resource")}
-                margin="normal"
-                variant="outlined"
-                placeholder="Choose resource"
-                required
-                InputLabelProps={{ shrink: true }}
-              />
-            )}
-          />
-        )}
-      />
-
-      <TextField
-        {...register("name", {
-          required: "This field is required",
-        })}
-        error={!!(errors as any)?.name}
-        helperText={(errors as any)?.name?.message}
-        margin="normal"
-        fullWidth
-        InputLabelProps={{ shrink: true }}
-        label={t("name")}
-        placeholder="e.g. Monthly Maintenance, Christmas Shutdown, Chinese New Year etc"
-        name="name"
-      />
-
-      <Controller
-        // disabled
-        control={control}
-        name="startTime"
-        defaultValue={roundToNearestHour(dayjs())}
-        render={({ field }) => (
-          <DateTimePicker
-            {...field}
-            format={k.DATE_FM_DEFAULT}
-            value={field.value ? dayjs(field.value) : null}
-            onChange={(date) => {
-              field.onChange(date);
-              const endTime = control._formValues.endTime;
-              validateTimeConstraint();
-            }}
-            slotProps={{
-              textField: {
-                fullWidth: true,
-                margin: "normal",
-                label: t("Start Time"),
-              },
-            }}
-          />
-        )}
-      />
-
-      <Controller
-        // disabled
-        control={control}
-        name="endTime"
-        defaultValue={roundToNearestHour(dayjs().add(2, "day"))}
-        render={({ field }) => (
-          <>
+        <Controller
+          // disabled
+          control={control}
+          name="startTime"
+          defaultValue={roundToNearestHour(dayjs())}
+          render={({ field }) => (
             <DateTimePicker
               {...field}
               format={k.DATE_FM_DEFAULT}
               value={field.value ? dayjs(field.value) : null}
               onChange={(date) => {
                 field.onChange(date);
-                const startTime = control._formValues.startTime;
+                const endTime = control._formValues.endTime;
                 validateTimeConstraint();
               }}
               slotProps={{
                 textField: {
                   fullWidth: true,
                   margin: "normal",
-                  label: t("End Time"),
-                  InputLabelProps: { shrink: true },
-                  error: !!timeError,
-                },
-              }}
-            />
-            {timeError && <FormHelperText error>{timeError}</FormHelperText>}
-          </>
-        )}
-      />
-      {!isCreate && (
-        <Controller
-          disabled
-          control={control}
-          name="updatedAt"
-          render={({ field }) => (
-            <DateTimePicker
-              {...field}
-              format={k.DATE_FM_DEFAULT}
-              value={field.value ? dayjs(field.value) : null}
-              onChange={(date) => field.onChange(date)}
-              slotProps={{
-                textField: {
-                  fullWidth: true,
-                  margin: "normal",
-                  label: t("updatedAt"),
-                  InputLabelProps: { shrink: true },
+                  label: t("Start Time"),
                 },
               }}
             />
           )}
         />
-      )}
-
-      <FormControlLabel
-        label="Is Available"
-        control={
+      </Box>
+      <Box sx={{ flex: 1, display: "flex", flexDirection: "column", padding: 2 }}>
+        {!isCreate && (
           <Controller
-            name="isAvailable"
+            disabled
             control={control}
-            defaultValue={false}
+            name="updatedAt"
             render={({ field }) => (
-              <Checkbox {...field} checked={field.value} onChange={(e) => field.onChange(e.target.checked)} />
+              <DateTimePicker
+                {...field}
+                format={k.DATE_FM_DEFAULT}
+                value={field.value ? dayjs(field.value) : null}
+                onChange={(date) => field.onChange(date)}
+                slotProps={{
+                  textField: {
+                    fullWidth: true,
+                    margin: "normal",
+                    label: t("updatedAt"),
+                    InputLabelProps: { shrink: true },
+                  },
+                }}
+              />
             )}
           />
-        }
-      />
+        )}
+        <TextField
+          {...register("name", {
+            required: "This field is required",
+          })}
+          error={!!(errors as any)?.name}
+          helperText={(errors as any)?.name?.message}
+          margin="normal"
+          fullWidth
+          InputLabelProps={{ shrink: true }}
+          label={t("name")}
+          placeholder="e.g. Monthly Maintenance, Christmas Shutdown, Chinese New Year etc"
+          name="name"
+        />
+        <Controller
+          // disabled
+          control={control}
+          name="endTime"
+          defaultValue={roundToNearestHour(dayjs().add(2, "day"))}
+          render={({ field }) => (
+            <>
+              <DateTimePicker
+                {...field}
+                format={k.DATE_FM_DEFAULT}
+                value={field.value ? dayjs(field.value) : null}
+                onChange={(date) => {
+                  field.onChange(date);
+                  const startTime = control._formValues.startTime;
+                  validateTimeConstraint();
+                }}
+                slotProps={{
+                  textField: {
+                    fullWidth: true,
+                    margin: "normal",
+                    label: t("End Time"),
+                    InputLabelProps: { shrink: true },
+                    error: !!timeError,
+                  },
+                }}
+              />
+              {timeError && <FormHelperText error>{timeError}</FormHelperText>}
+            </>
+          )}
+        />
+      </Box>
     </Box>
   );
 }
