@@ -7,7 +7,9 @@ import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useGetIdentity } from "@refinedev/core";
-import { d } from "../../common/constants";
+import { DatePicker, DateTimePicker, TimePicker } from "@mui/x-date-pickers";
+import dayjs, { Dayjs } from "dayjs";
+import { d, k } from "../../common/constants";
 
 type IUser = {
   id: number;
@@ -53,7 +55,8 @@ export default function EditCreateResourceSchedules({ register, errors, control,
         control={control}
         name="resourceId"
         rules={{ required: "This field is required" }}
-        defaultValue={null as any}
+        // defaultValue={null as any}
+        defaultValue={1}
         render={({ field }) => (
           <Autocomplete
             {...resourceAutocompleteProps}
@@ -82,6 +85,7 @@ export default function EditCreateResourceSchedules({ register, errors, control,
         {...register("name", {
           required: "This field is required",
         })}
+        defaultValue={"My Schedule Name"}
         error={!!(errors as any)?.name}
         helperText={(errors as any)?.name?.message}
         margin="normal"
@@ -92,33 +96,58 @@ export default function EditCreateResourceSchedules({ register, errors, control,
         name="name"
       />
 
-      <TextField
-        {...register("startDate", {
-          required: "This field is required",
-        })}
-        error={!!(errors as any)?.startDate}
-        helperText={(errors as any)?.startDate?.message}
-        placeholder="e.g. 2025-07-22"
-        defaultValue={"2025-07-22"}
-        margin="normal"
-        fullWidth
-        InputLabelProps={{ shrink: true }}
-        label={t("Start Date")}
+      <Controller
+        control={control}
         name="startDate"
+        defaultValue={dayjs().format(k.DATE_ONLY_FM_DEFAULT)}
+        render={({ field }) => (
+          <DatePicker
+            {...field}
+            format={k.DATE_ONLY_FM_DEFAULT}
+            views={["year", "month", "day"]}
+            value={field.value ? dayjs(field.value) : null}
+            onChange={(date) => {
+              // Convert the date to YYYY-MM-DD string format to ensure no time component
+              const dateString = date ? dayjs(date).format(k.DATE_ONLY_FM_DEFAULT) : null;
+              field.onChange(dateString);
+            }}
+            slotProps={{
+              textField: {
+                fullWidth: true,
+                margin: "normal",
+                label: t("Start Date"),
+                InputLabelProps: { shrink: true },
+              },
+            }}
+          />
+        )}
       />
 
-      <TextField
-        {...register("endDate", {
-          required: "This field is required",
-        })}
-        error={!!(errors as any)?.endDate}
-        defaultValue={"2025-08-22"}
-        helperText={(errors as any)?.endDate?.message}
-        margin="normal"
-        fullWidth
-        InputLabelProps={{ shrink: true }}
-        label={t("End Date")}
+      <Controller
+        control={control}
         name="endDate"
+        defaultValue={dayjs().format(k.DATE_ONLY_FM_DEFAULT)}
+        render={({ field }) => (
+          <DatePicker
+            {...field}
+            format={k.DATE_ONLY_FM_DEFAULT}
+            views={["year", "month", "day"]}
+            value={field.value ? dayjs(field.value) : null}
+            onChange={(date) => {
+              // Convert the date to YYYY-MM-DD string format to ensure no time component
+              const dateString = date ? dayjs(date).format(k.DATE_ONLY_FM_DEFAULT) : null;
+              field.onChange(dateString);
+            }}
+            slotProps={{
+              textField: {
+                fullWidth: true,
+                margin: "normal",
+                label: t("End Date"),
+                InputLabelProps: { shrink: true },
+              },
+            }}
+          />
+        )}
       />
 
       <TextField
@@ -207,11 +236,7 @@ export default function EditCreateResourceSchedules({ register, errors, control,
             control={control}
             defaultValue={true}
             render={({ field }) => (
-              <Checkbox
-                {...field}
-                checked={field.value}
-                onChange={(e) => field.onChange(e.target.checked)} // Update the value on change
-              />
+              <Checkbox {...field} checked={field.value} onChange={(e) => field.onChange(e.target.checked)} />
             )}
           />
         }
@@ -224,11 +249,7 @@ export default function EditCreateResourceSchedules({ register, errors, control,
             control={control}
             defaultValue={true}
             render={({ field }) => (
-              <Checkbox
-                {...field}
-                checked={field.value}
-                onChange={(e) => field.onChange(e.target.checked)} // Update the value on change
-              />
+              <Checkbox {...field} checked={field.value} onChange={(e) => field.onChange(e.target.checked)} />
             )}
           />
         }
@@ -241,11 +262,7 @@ export default function EditCreateResourceSchedules({ register, errors, control,
             control={control}
             defaultValue={true}
             render={({ field }) => (
-              <Checkbox
-                {...field}
-                checked={field.value}
-                onChange={(e) => field.onChange(e.target.checked)} // Update the value on change
-              />
+              <Checkbox {...field} checked={field.value} onChange={(e) => field.onChange(e.target.checked)} />
             )}
           />
         }
@@ -258,11 +275,7 @@ export default function EditCreateResourceSchedules({ register, errors, control,
             control={control}
             defaultValue={false}
             render={({ field }) => (
-              <Checkbox
-                {...field}
-                checked={field.value}
-                onChange={(e) => field.onChange(e.target.checked)} // Update the value on change
-              />
+              <Checkbox {...field} checked={field.value} onChange={(e) => field.onChange(e.target.checked)} />
             )}
           />
         }
@@ -275,11 +288,7 @@ export default function EditCreateResourceSchedules({ register, errors, control,
             control={control}
             defaultValue={false}
             render={({ field }) => (
-              <Checkbox
-                {...field}
-                checked={field.value}
-                onChange={(e) => field.onChange(e.target.checked)} // Update the value on change
-              />
+              <Checkbox {...field} checked={field.value} onChange={(e) => field.onChange(e.target.checked)} />
             )}
           />
         }
