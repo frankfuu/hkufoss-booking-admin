@@ -47,7 +47,18 @@ export default function EditCreateResourceExceptions({
   const { data: user } = useGetIdentity<IUser>();
   const isCreate = action === "create";
 
-  const TIME_CONSTRAINT_ERROR = "End time must be after start time";
+  const TIME_CONSTRAINT_ERROR = t("pages.common.startBeforeEndTime");
+
+  const validateTimeConstraint = () => {
+    const { startTime, endTime } = control._formValues;
+
+    if (!startTime || !endTime) {
+      setTimeError(t(TIME_CONSTRAINT_ERROR));
+      return;
+    }
+
+    setTimeError(endTime >= startTime ? null : t(TIME_CONSTRAINT_ERROR));
+  };
 
   useEffect(() => {
     if (timeError) {
@@ -144,11 +155,7 @@ export default function EditCreateResourceExceptions({
             onChange={(date) => {
               field.onChange(date);
               const endTime = control._formValues.endTime;
-              if (date && endTime && !dayjs(endTime).isAfter(dayjs(date))) {
-                setTimeError(t(TIME_CONSTRAINT_ERROR));
-              } else {
-                setTimeError(null);
-              }
+              validateTimeConstraint();
             }}
             slotProps={{
               textField: {
@@ -175,11 +182,7 @@ export default function EditCreateResourceExceptions({
               onChange={(date) => {
                 field.onChange(date);
                 const startTime = control._formValues.startTime;
-                if (startTime && date && !dayjs(date).isAfter(dayjs(startTime))) {
-                  setTimeError(t(TIME_CONSTRAINT_ERROR));
-                } else {
-                  setTimeError(null);
-                }
+                validateTimeConstraint();
               }}
               slotProps={{
                 textField: {
