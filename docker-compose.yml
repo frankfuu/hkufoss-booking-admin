@@ -4,7 +4,7 @@ services:
     container_name: hkufoss-booking-frontend
     build:
       context: .
-      dockerfile: Dockerfile.local
+      dockerfile: Dockerfile.prod
     ports:
       - "5173:5173"
     # restart: unless-stopped
@@ -12,9 +12,6 @@ services:
       - hkufoss
     volumes:
       - .:/app
-    # environment:
-    # - NODE_ENV=development # Set environment variables
-    # command: pnpm dev --host # Command to run your app
 
 networks:
   hkufoss:
