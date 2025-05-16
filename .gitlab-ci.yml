@@ -21,6 +21,7 @@ Versioning:
   only:
     - main
     - beta
+    - dev
 
 Build Admin:
   stage: build
@@ -40,6 +41,7 @@ Build Admin:
   only:
     - main
     - beta
+    - dev
 
 # Deploy:
 #   stage: deploy
