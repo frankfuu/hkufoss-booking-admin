@@ -15,8 +15,3 @@ services:
     # environment:
     # - NODE_ENV=development # Set environment variables
     # command: pnpm dev --host # Command to run your app
-
-networks:
-  hkufoss:
-    name: hkufoss
-    external: true

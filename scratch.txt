@@ -1,6 +1,0 @@
-- filterable on type
-- caller of component needs play nice with form 
-  - perhaps using control?
-
-
-- select bind dropdown to chosen value 
