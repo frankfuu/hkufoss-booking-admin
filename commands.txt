@@ -17,3 +17,7 @@ npm create refine-app@latest
 ✔ Do you need any Authentication logic?: · auth-provider-custom
 ✔ Choose a package manager: · pnpm
 ✔ Mind sharing your email? (We reach out to developers for free priority support, events, and SWAG kits. We never spam.) · 
+
+
+pnpm install --config.platform=linux --config.architecture=x64 --force
+docker compose -f docker-compose-local.yml up --build -d; docker compose -f docker-compose-local.yml logs -f;
