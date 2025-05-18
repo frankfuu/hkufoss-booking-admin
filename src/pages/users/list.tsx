@@ -5,7 +5,6 @@ import { useList, useMany, useNavigation, usePermissions, useResource } from "@r
 import { Checkbox, Typography } from "@mui/material";
 import { k, s } from "../../common/constants";
 import { useResourceNavigation } from "../../common/helpers";
-import moment from "moment-timezone";
 import { useTranslation } from "react-i18next";
 
 export const UsersList = () => {
@@ -69,8 +68,7 @@ export const UsersList = () => {
         headerName: "Updated At",
         minWidth: 130,
         renderCell: function render({ value }) {
-          const localTime = moment.utc(value).tz(moment.tz.guess()).toDate();
-          return <DateField value={localTime} format={k.DATE_FM_DEFAULT} />;
+          return <DateField value={value} format={k.DATE_FM_DEFAULT} />;
         },
       },
       {

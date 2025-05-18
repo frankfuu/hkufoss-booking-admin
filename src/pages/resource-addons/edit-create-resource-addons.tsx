@@ -1,13 +1,12 @@
 import { Edit, useAutocomplete } from "@refinedev/mui";
 import { Box, TextField, Autocomplete, createFilterOptions } from "@mui/material";
-import { useForm } from "@refinedev/react-hook-form";
-import { Controller } from "react-hook-form";
-import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useEffect } from "react";
-import { useState } from "react";
+
 import { useGetIdentity } from "@refinedev/core";
-import { d } from "../../common/constants";
+import { d, k } from "../../common/constants";
+import { DatePicker, DateTimePicker } from "@mui/x-date-pickers";
+import dayjs, { Dayjs } from "dayjs";
+import { Controller } from "react-hook-form";
 
 type IUser = {
   id: number;
@@ -49,7 +48,7 @@ export default function EditCreateResourceAddons({ register, errors, control, ac
         margin="normal"
         fullWidth
         InputLabelProps={{ shrink: true }}
-        label={t("Resource Name")}
+        label={t("resourceName")}
         name="resourceName"
       />
 
@@ -62,7 +61,7 @@ export default function EditCreateResourceAddons({ register, errors, control, ac
         margin="normal"
         fullWidth
         InputLabelProps={{ shrink: true }}
-        label={t("Type")}
+        label={t("resourceType")}
         name="resourceType"
       />
 
@@ -75,7 +74,7 @@ export default function EditCreateResourceAddons({ register, errors, control, ac
         margin="normal"
         fullWidth
         InputLabelProps={{ shrink: true }}
-        label={t("Location")}
+        label={t("location")}
         name="location"
       />
 
@@ -88,7 +87,7 @@ export default function EditCreateResourceAddons({ register, errors, control, ac
         margin="normal"
         fullWidth
         InputLabelProps={{ shrink: true }}
-        label={t("Floor")}
+        label={t("floor")}
         name="floor"
       />
 
@@ -126,16 +125,26 @@ export default function EditCreateResourceAddons({ register, errors, control, ac
       />
 
       {!isCreate && (
-        <TextField
-          {...register("updatedAt", {})}
-          error={!!(errors as any)?.updatedAt}
-          helperText={(errors as any)?.updatedAt?.message}
-          margin="normal"
-          fullWidth
-          InputLabelProps={{ shrink: true }}
-          label={t("updatedAt")}
-          name="updatedAt"
+        <Controller
           disabled
+          control={control}
+          name="updatedAt"
+          render={({ field }) => (
+            <DateTimePicker
+              {...field}
+              format={k.DATE_FM_DEFAULT}
+              value={field.value ? dayjs(field.value) : null}
+              onChange={(date) => field.onChange(date)}
+              slotProps={{
+                textField: {
+                  fullWidth: true,
+                  margin: "normal",
+                  label: t("updatedAt"),
+                  InputLabelProps: { shrink: true },
+                },
+              }}
+            />
+          )}
         />
       )}
     </Box>

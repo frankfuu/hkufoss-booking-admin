@@ -13,16 +13,19 @@ export const ResourceSchedulesEdit = () => {
     refineCore: { formLoading },
     register,
     control,
+    setValue,
+    setError,
+    clearErrors,
     formState: { errors },
   } = useForm();
 
   return (
     <Edit
-      title={<Typography variant="h5">{t("edit") + " " + t("Resource Schedules")}</Typography>}
+      title={<Typography variant="h5">{t("edit") + " " + t("resource-schedules")}</Typography>}
       isLoading={formLoading}
       saveButtonProps={saveButtonProps}
     >
-      <EditCreateResourceSchedules {...{ register, errors, control, action: "edit" }} />
+      <EditCreateResourceSchedules {...{ register, errors, control, action: "edit", setValue, setError, clearErrors }} />
     </Edit>
   );
 };

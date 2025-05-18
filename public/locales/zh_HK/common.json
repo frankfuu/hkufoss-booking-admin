@@ -75,6 +75,9 @@
             "404": "抱歉，您訪問的頁面不存在。",
             "resource404": "您確定已經創建了{{resource}}資源嗎？",
             "backHome": "返回首頁"
+        },
+        "common": {
+            "startBeforeEndTime": "結束時間必須在開始時間之後"
         }
     },
     "nav": {
@@ -88,8 +91,8 @@
         },
         "bookings": {
             "title": "預約",
-            "resource-schedules": "Resource Schedules zh_HK",
-            "resource-exceptions": "Resource Exceptions zh_HK"
+            "resource-schedules": "資源排程",
+            "resource-exceptions": "資源排程特殊情況"
         },
         "system": {
             "title": "系統",
@@ -105,13 +108,13 @@
             "checkIns": "簽到記錄",
             "auditLog": "審計日誌",
             "centreControls": "地點控制",
-            "bookings": "Bookings zh_HK",
-            "resource-addons": "Resource Addons zh_HK",
-            "courses": "Courses zh_HK",
-            "funders": "Funders zh_HK",
-            "activity-natures": "Activity Natures zh_HK",
-            "activity-types": "Activity Types zh_HK",
-            "resources": "Resources zh_HK"
+            "bookings": "預訂",
+            "courses": "課程",
+            "funders": "資助機構",
+            "activity-natures": "活動性質",
+            "activity-types": "活動類型",
+            "resources": "資源",
+            "resource-addons": "資源配件"
         }
     },
     "actions": {
@@ -349,6 +352,7 @@
     "reserve": "預約",
     "addSessions": "新增服務時段",
     "serviceTypes": "服務類型",
+    "resourceAddons": "資源配件",
     "numberOfSessions": "服務時段數量",
     "description": "描述",
     "Start Date": "開始日期",
@@ -446,5 +450,31 @@
     "Low": "低",
     "Medium": "中",
     "Medium High": "中高",
-    "High": "高"
+    "High": "高",
+    "resource": "資源",
+    "resourceType": "資源類型",
+    "resourceName": "資源名稱",
+    "activity": {
+        "short": "活動",
+        "full": "活動名稱"
+    },
+    "seatingCapacity": {
+        "short": "容量",
+        "full": "座位容量"
+    },
+    "floor": "樓層",
+    "booking": "預約",
+    "courses": "課程",
+    "funders": "資助機構",
+    "activity-natures": "活動性質",
+    "activity-types": "活動類型",
+    "resources": "資源",
+    "resource-addons": "資源配件",
+    "resource-schedules": "資源排程",
+    "resource-exceptions": "資源排程特殊情況",
+    "noAttendees": "出席人數",
+    "contactPerson": "聯絡人",
+    "externalSpeakers": "外來講者",
+    "specialRequests": "特別安排",
+    "scheduleName": "排程名稱"
 }

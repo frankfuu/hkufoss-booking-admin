@@ -1,19 +1,6 @@
-npm create refine-app@latest
 
-/ They asked for a robust B2B solution. We \
-\ heard 'time to shine with Refine'!       /
- ------------------------------------------
-        \   ^__^
-            ■-■¬\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
-✔ Downloaded remote source successfully.
-✔ Choose a project template · refine-vite
-✔ What would you like to name your project?: · tall-buses-relate
-✔ Choose your backend service to connect: · data-provider-custom-json-rest
-✔ Do you want to use a UI Framework?: · mui
-✔ Do you want to add example pages?: · mui-example
-✔ Do you need any Authentication logic?: · auth-provider-custom
-✔ Choose a package manager: · pnpm
-✔ Mind sharing your email? (We reach out to developers for free priority support, events, and SWAG kits. We never spam.) · 
+pnpm install --config.platform=linux --config.architecture=x64 --force
+docker compose up --build -d; docker compose logs -f;
+
+when commit, need to install devDependencies otherwise husky and commitlint will not work
+pnpm install --only=dev

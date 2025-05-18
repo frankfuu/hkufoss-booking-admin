@@ -12,19 +12,21 @@ export const ResourcesEdit = () => {
 
   const {
     saveButtonProps,
-    refineCore: { formLoading },
+    refineCore: { query, formLoading, onFinish },
     register,
     control,
+    setValue,
+    handleSubmit,
     formState: { errors },
   } = useForm();
 
   return (
     <Edit
-      title={<Typography variant="h5">{t("edit") + " " + t("Resources")}</Typography>}
+      title={<Typography variant="h5">{t("edit") + " " + t("resources")}</Typography>}
       isLoading={formLoading}
       saveButtonProps={saveButtonProps}
     >
-      <EditCreateResources {...{ register, errors, control, action: "edit" }} />
+      <EditCreateResources {...{ register, errors, control, action: "edit", setValue, handleSubmit, onFinish, query }} />
     </Edit>
   );
 };

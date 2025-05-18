@@ -4,7 +4,6 @@ import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import { Checkbox } from "@mui/material";
 import { k } from "../../common/constants";
 import { useNavigation, usePermissions, useResource } from "@refinedev/core";
-import moment from "moment-timezone";
 
 export const RolesList = () => {
   const { dataGridProps } = useDataGrid({
@@ -51,8 +50,7 @@ export const RolesList = () => {
         headerName: "Updated At",
         minWidth: 180,
         renderCell: function render({ value }) {
-          const localTime = moment.utc(value).tz(moment.tz.guess()).toDate();
-          return <DateField value={localTime} format={k.DATE_FM_DEFAULT} />;
+          return <DateField value={value} format={k.DATE_FM_DEFAULT} />;
         },
       },
       {

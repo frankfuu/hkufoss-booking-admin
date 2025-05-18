@@ -19,7 +19,7 @@ export const ResourceAddonsEdit = () => {
 
   return (
     <Edit
-      title={<Typography variant="h5">{t("edit") + " " + t("Resource Addons")}</Typography>}
+      title={<Typography variant="h5">{t("edit") + " " + t("resourceAddons")}</Typography>}
       isLoading={formLoading}
       saveButtonProps={saveButtonProps}
     >

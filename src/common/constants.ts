@@ -4,6 +4,10 @@ const constants = {
   PERMISSIONS_KEY: "permissions",
   PROJECT_NAME: import.meta.env.VITE_PROJECT_NAME,
   DATE_FM_DEFAULT: "YYYY-MM-DD HH:mm",
+  DATE_ONLY_FM_DEFAULT: "YYYY-MM-DD",
+  TIME_ONLY_FM_DEFAULT: "HH:mm",
+  TIME_ONLY_RETAIN_SECS_FM_DEFAULT: "HH:mm:00",
+  DUMMY_DATE_ONLY_PREFIX: "2000-01-01",
   DROPDOWN_PAGE_SIZE_DEFAULT: 200,
   GET_MANY_DEFAULT: 250,
   MEMBER_LIST_MAX_SIZE: 10000,
@@ -43,6 +47,33 @@ const dropdownOptions = {
     },
   },
   RESERVATIONS: {
+    STATUS: {
+      DEFAULT: "PENDING",
+      OPTIONS: [
+        { label: "ATTENDED", value: "ATTENDED", apiAction: "complate" },
+        { label: "CONFIRMED", value: "CONFIRMED", apiAction: "confirm" },
+        { label: "PENDING", value: "PENDING", apiAction: null, notSelectable: true },
+        { label: "CANCELLED", value: "CANCELLED", apiAction: "cancel" },
+      ],
+      LIST: {
+        ATTENDED: "ATTENDED",
+        CONFIRMED: "CONFIRMED",
+        PENDING: "PENDING",
+        CANCELLED: "CANCELLED",
+      },
+    },
+  },
+  BOOKINGS: {
+    DURATION: {
+      DEFAULT: 2,
+      OPTIONS: [
+        { label: "1 hour", value: 1 },
+        { label: "2 hours", value: 2 },
+        { label: "3 hours", value: 3 },
+        { label: "4 hours", value: 4 },
+        { label: "5 hours", value: 5 },
+      ],
+    },
     STATUS: {
       DEFAULT: "PENDING",
       OPTIONS: [

@@ -3,7 +3,6 @@ import { useDataGrid, EditButton, ShowButton, DeleteButton, List, DateField, Clo
 import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import { Checkbox } from "@mui/material";
 import { useNavigation, usePermissions, useResource } from "@refinedev/core";
-import moment from "moment-timezone";
 import { k } from "../../common/constants";
 
 export const ResourceAddonListings = () => {
@@ -58,8 +57,7 @@ export const ResourceAddonListings = () => {
         headerName: "Updated At",
         minWidth: 180,
         renderCell: function render({ value }) {
-          const localTime = moment.utc(value).tz(moment.tz.guess()).toDate();
-          return <DateField value={localTime} format={k.DATE_FM_DEFAULT} />;
+          return <DateField value={value} format={k.DATE_FM_DEFAULT} />;
         },
       },
       {
@@ -73,6 +71,7 @@ export const ResourceAddonListings = () => {
             <>
               <EditButton hideText recordItemId={row.id} />
               <CloneButton hideText recordItemId={row.id} />
+              <DeleteButton hideText recordItemId={row.id} />
             </>
           );
         },

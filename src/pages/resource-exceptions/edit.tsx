@@ -12,16 +12,19 @@ export const ResourceExceptionsEdit = () => {
     refineCore: { formLoading },
     register,
     control,
+    setValue,
+    setError,
+    clearErrors,
     formState: { errors },
   } = useForm();
 
   return (
     <Edit
-      title={<Typography variant="h5">{t("edit") + " " + t("Resource Exceptions")}</Typography>}
+      title={<Typography variant="h5">{t("edit") + " " + t("resource-exceptions")}</Typography>}
       isLoading={formLoading}
       saveButtonProps={saveButtonProps}
     >
-      <EditCreateResourceExceptions {...{ register, errors, control, action: "edit" }} />
+      <EditCreateResourceExceptions {...{ register, errors, control, action: "edit", setValue, setError, clearErrors }} />
     </Edit>
   );
 };

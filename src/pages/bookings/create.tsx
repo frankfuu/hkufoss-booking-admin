@@ -20,12 +20,29 @@ export const BookingCreate = () => {
   const { t } = useTranslation();
 
   const navigate = useNavigate();
+  const go = useGo();
 
   const onSlotSelect = (data: any) => {
     
+    // create new booking
     if (!data.slot.hasBookingConflict && !data.slot.hasException) {
       navigate(`details`, { state: { ...data } });
     }
+
+    // view existing booking
+    if (data.slot.hasBookingConflict && data.slot.bookingId) {
+      go({
+        to: { resource: "bookings", action: "edit", id: data.slot.bookingId },
+      });
+    }
+
+    // view resource exception
+    if (data.slot.hasException && data.slot.exceptionId) {
+      go({
+        to: { resource: "resource-exceptions", action: "edit", id: data.slot.exceptionId },
+      });
+    }
+
   };
 
   const { data: resourceData, isLoading: resourceDataLoading } = useList({ resource: "resources" });
@@ -35,7 +52,7 @@ export const BookingCreate = () => {
   } else {
     return (
       <Create
-        title={<Typography variant="h5">{t("create") + " " + t("Booking")}</Typography>}
+        title={<Typography variant="h5">{t("create") + " " + t("booking")}</Typography>}
         headerButtons={({ defaultButtons }) => (
           <>
             <ListButton />

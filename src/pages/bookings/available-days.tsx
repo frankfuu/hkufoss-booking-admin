@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Card, CardContent, Grid, Typography, CircularProgress, Container, IconButton, Button, Box } from "@mui/material";
-import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
+import { ArrowBackIos, ArrowForwardIos, BorderColor } from "@mui/icons-material";
 import { useCustom } from "@refinedev/core";
 import { addDays, subDays, format } from "date-fns";
 import moment from "moment";
@@ -74,13 +74,22 @@ export const AvailableDaysList = ({ onSlotSelect, resourceId }: any) => {
             resourceName: string;
             hasBookingConflict: boolean;
             hasException: boolean;
+            bookingId: number;
+            bookingStatus: string;
+            exceptionId: string;
           }) => ({
             title: (
-              <Box display="flex" flexDirection="column" justifyContent="space-evenly" alignItems="center">
-                {/* <span>{`${serviceAutocompleteProps?.options?.find((p) => p?.id == slot.serviceId)?.name}`}</span> */}
-                <span>{`${slot.hasException ? "Unavailable" : ""} ${slot.hasBookingConflict ? "Booked" : ""} ${
-                  !slot.hasBookingConflict && !slot.hasException ? "Select" : ""
-                }`}</span>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center", // Vertically center the content
+                  justifyContent: "center", // Horizontally center the content (optional)
+                }}
+              >
+                <Typography variant="body1">{`${slot.hasException ? `Closed (${slot.exceptionId})` : ""} ${
+                  slot.hasBookingConflict ? `${slot?.bookingStatus} (${slot?.bookingId})`  : ""
+                } ${!slot.hasBookingConflict && !slot.hasException ? "Select" : ""}`}</Typography>
+                
               </Box>
             ),
             start: new Date(`${day.date}T${slot.from}`), // Combine date and time for start
@@ -108,10 +117,9 @@ export const AvailableDaysList = ({ onSlotSelect, resourceId }: any) => {
     return {
       style: {
         backgroundColor: bgColor,
-        color: "#FFFFFF", // Set the text color to white for better contrast
-        borderRadius: "5px", // Optional: Add rounded corners
-        border: "none", // Optional: Remove border
-        // padding: "5px", // Optional: Add padding
+        borderColor: bgColor,
+        borderRadius: "0px", // Optional: Add rounded corners
+        padding: "2px", // Optional: Add padding
       },
     };
   };
@@ -144,7 +152,7 @@ export const AvailableDaysList = ({ onSlotSelect, resourceId }: any) => {
         allDayAccessor={(event) => false} // Disable all-day behavior entirely
         startAccessor="start"
         endAccessor="end"
-        min={new Date(0, 0, 0, 8, 0, 0)}
+        min={new Date(0, 0, 0, 6, 0, 0)}
         max={new Date(0, 0, 0, 20, 0, 0)}
         step={60} // 1 slot per hour
         timeslots={1} // No subdivisions, 1 row per hour

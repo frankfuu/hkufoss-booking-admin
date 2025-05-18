@@ -75,6 +75,9 @@
             "404": "Sorry, the page you visited does not exist.",
             "resource404": "Are you sure you have created the {{resource}} resource.",
             "backHome": "Back Home"
+        },
+        "common": {
+            "startBeforeEndTime": "End time must be after start time"
         }
     },
     "nav": {
@@ -348,6 +351,7 @@
     "reserve": "Reserve",
     "addSessions": "Add Sessions",
     "serviceTypes": "Service Types",
+    "resourceAddons": "Resource Addons",
     "numberOfSessions": "Number Of Sessions",
     "description": "Description",
     "Start Date": "Start Date",
@@ -446,5 +450,31 @@
     "Low": "Low",
     "Medium": "Medium",
     "Medium High": "Medium High",
-    "High": "High"
+    "High": "High",
+    "resource": "Resource",
+    "resourceType": "Resource Type",
+    "resourceName": "Resource Name",
+    "activity": {
+        "short": "Activity",
+        "full": "Activity Name"
+    },
+    "seatingCapacity": {
+        "short": "Capacity",
+        "full": "Seating Capacity"
+    },
+    "floor": "Floor",
+    "booking": "Booking",
+    "courses": "Courses",
+    "funders": "Funders",
+    "activity-natures": "Activity Nature",
+    "activity-types": "Activity Type",
+    "resources": "Resources",
+    "resource-addons": "Resource Addons",
+    "resource-schedules": "Resource Schedules",
+    "resource-exceptions": "Resource Exceptions",
+    "noAttendees": "No. Attendees",
+    "contactPerson": "Contact Person",
+    "externalSpeakers": "External Speakers",
+    "specialRequests": "Special Requests",
+    "scheduleName": "Schedule Name"
 }

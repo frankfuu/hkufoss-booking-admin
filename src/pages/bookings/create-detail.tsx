@@ -3,7 +3,7 @@ import { useForm } from "@refinedev/react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Typography } from "@mui/material";
 import { useLocation } from "react-router-dom";
-import EditCreateBookingsDetail from "./edit-create-booking-detail";
+import EditCreateBookings from "./edit-create-booking";
 
 export const BookingsCreateDetail = () => {
   const { t } = useTranslation();
@@ -11,7 +11,7 @@ export const BookingsCreateDetail = () => {
   const location = useLocation();
   const slotData = location.state;
 
-  console.log(`BookingsCreateTemp, data`, slotData);
+  // console.log(`BookingsCreateTemp, data`, slotData);
 
   const {
     saveButtonProps,
@@ -27,17 +27,17 @@ export const BookingsCreateDetail = () => {
   });
 
   const onSubmit = (data: any) => {
-    console.log("Intercepted data:", data);
+    // console.log("Intercepted data:", data);
     onFinish(data);
   };
 
   return (
     <Create
-      title={<Typography variant="h5">{t("create") + " " + t("Booking")}</Typography>}
+      title={<Typography variant="h5">{t("create") + " " + t("booking")}</Typography>}
       isLoading={formLoading}
       saveButtonProps={{ ...saveButtonProps, onClick: handleSubmit(onSubmit) }}
     >
-      <EditCreateBookingsDetail {...{ register, errors, control, action: "create", slotData: slotData }} />
+      <EditCreateBookings {...{ register, errors, control, action: "create", slotData: slotData }} />
     </Create>
   );
 };

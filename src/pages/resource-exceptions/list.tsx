@@ -2,11 +2,13 @@ import React from "react";
 import { useDataGrid, EditButton, ShowButton, DeleteButton, List, DateField, CloneButton } from "@refinedev/mui";
 import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import { Checkbox } from "@mui/material";
-import { useNavigation, usePermissions, useResource } from "@refinedev/core";
-import moment from "moment-timezone";
+import { useList, useNavigation, usePermissions, useResource } from "@refinedev/core";
 import { k } from "../../common/constants";
+import { useTranslation } from "react-i18next";
 
 export const ResourceExceptionListings = () => {
+  const { t } = useTranslation();
+
   const { dataGridProps } = useDataGrid({
     sorters: {
       initial: [
@@ -21,6 +23,14 @@ export const ResourceExceptionListings = () => {
   const { edit } = useNavigation();
   const { resource } = useResource();
 
+  const {
+    data: resourcesData,
+    isLoading: resourcesDataLoading,
+    isError: resourcesDataError,
+  } = useList({
+    resource: "resources",
+  });
+
   const columns = React.useMemo<GridColDef[]>(
     () => [
       {
@@ -32,34 +42,47 @@ export const ResourceExceptionListings = () => {
       },
       {
         field: "resourceId",
-        minWidth: 50,
-        headerName: "Resource ID",
+        minWidth: 230,
+        headerName: t("resource"),
+        renderCell: ({ row }) => {
+          const resource = resourcesData?.data.find((r) => r.id == row.resourceId);
+          return `${resource?.resourceName} ${resource?.resourceType}`;
+        },
       },
-
+      {
+        field: "name",
+        minWidth: 200,
+        headerName: t("name"),
+      },
       {
         field: "startTime",
-        minWidth: 200,
-        headerName: "Start",
+        minWidth: 130,
+        headerName: t("Start Time"),
+        renderCell: function render({ value }) {
+          return <DateField value={value} format={k.DATE_FM_DEFAULT} />;
+        },
       },
       {
         field: "endTime",
-        minWidth: 200,
-        headerName: "End",
+        minWidth: 130,
+        headerName: t("End Time"),
+        renderCell: function render({ value }) {
+          return <DateField value={value} format={k.DATE_FM_DEFAULT} />;
+        },
       },
       {
         field: "updatedAt",
         // flex: 1,
         filterable: false,
-        headerName: "Updated At",
-        minWidth: 180,
+        headerName: t("updatedAt"),
+        minWidth: 130,
         renderCell: function render({ value }) {
-          const localTime = moment.utc(value).tz(moment.tz.guess()).toDate();
-          return <DateField value={localTime} format={k.DATE_FM_DEFAULT} />;
+          return <DateField value={value} format={k.DATE_FM_DEFAULT} />;
         },
       },
       {
         field: "actions",
-        headerName: "Actions",
+        headerName: t("Actions"),
         sortable: false,
         type: "actions",
         minWidth: 200,
@@ -68,6 +91,7 @@ export const ResourceExceptionListings = () => {
             <>
               <EditButton hideText recordItemId={row.id} />
               <CloneButton hideText recordItemId={row.id} />
+              <DeleteButton hideText recordItemId={row.id} />
             </>
           );
         },
@@ -75,7 +99,7 @@ export const ResourceExceptionListings = () => {
         headerAlign: "left",
       },
     ],
-    []
+    [resourcesData, t]
   );
 
   return (
