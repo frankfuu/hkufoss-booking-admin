@@ -116,6 +116,8 @@ export default function EditCreateResourceSchedules({ register, errors, control,
                     placeholder="Choose resource"
                     required
                     InputLabelProps={{ shrink: true }}
+                    error={!!(errors as any)?.resourceId}
+                    helperText={(errors as any)?.resourceId?.message}
                   />
                 )}
               />
