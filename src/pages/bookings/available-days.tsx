@@ -85,9 +85,10 @@ export const AvailableDaysList = ({ onSlotSelect, resourceId }: any) => {
                   justifyContent: "center", // Horizontally center the content (optional)
                 }}
               >
-                <Typography variant="subtitle1">{`${slot.hasException ? "Closed" : ""} ${
-                  slot.hasBookingConflict ? slot?.bookingStatus : ""
+                <Typography variant="body1">{`${slot.hasException ? "Closed" : ""} ${
+                  slot.hasBookingConflict ? `${slot?.bookingStatus} (${slot?.bookingId})`  : ""
                 } ${!slot.hasBookingConflict && !slot.hasException ? "Select" : ""}`}</Typography>
+                
               </Box>
             ),
             start: new Date(`${day.date}T${slot.from}`), // Combine date and time for start
@@ -150,7 +151,7 @@ export const AvailableDaysList = ({ onSlotSelect, resourceId }: any) => {
         allDayAccessor={(event) => false} // Disable all-day behavior entirely
         startAccessor="start"
         endAccessor="end"
-        min={new Date(0, 0, 0, 8, 0, 0)}
+        min={new Date(0, 0, 0, 6, 0, 0)}
         max={new Date(0, 0, 0, 20, 0, 0)}
         step={60} // 1 slot per hour
         timeslots={1} // No subdivisions, 1 row per hour
