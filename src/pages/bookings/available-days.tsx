@@ -76,6 +76,7 @@ export const AvailableDaysList = ({ onSlotSelect, resourceId }: any) => {
             hasException: boolean;
             bookingId: number;
             bookingStatus: string;
+            exceptionId: string;
           }) => ({
             title: (
               <Box
@@ -85,7 +86,7 @@ export const AvailableDaysList = ({ onSlotSelect, resourceId }: any) => {
                   justifyContent: "center", // Horizontally center the content (optional)
                 }}
               >
-                <Typography variant="body1">{`${slot.hasException ? "Closed" : ""} ${
+                <Typography variant="body1">{`${slot.hasException ? `Closed (${slot.exceptionId})` : ""} ${
                   slot.hasBookingConflict ? `${slot?.bookingStatus} (${slot?.bookingId})`  : ""
                 } ${!slot.hasBookingConflict && !slot.hasException ? "Select" : ""}`}</Typography>
                 
