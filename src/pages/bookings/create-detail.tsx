@@ -15,7 +15,7 @@ export const BookingsCreateDetail = () => {
 
   const {
     saveButtonProps,
-    refineCore: { formLoading, onFinish },
+    refineCore: { query, formLoading, onFinish },
     register,
     control,
     handleSubmit,
@@ -38,7 +38,7 @@ export const BookingsCreateDetail = () => {
       isLoading={formLoading}
       saveButtonProps={{ ...saveButtonProps, onClick: handleSubmit(onSubmit) }}
     >
-      <EditCreateBookings {...{ register, errors, control, action: "create", slotData: slotData, setValue }} />
+      <EditCreateBookings {...{ register, errors, control, action: "create", slotData: slotData, setValue, query }} />
     </Create>
   );
 };
