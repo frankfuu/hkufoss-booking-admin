@@ -191,7 +191,7 @@ export const BookingsList = () => {
         renderCell: function render({ row }) {
           return (
             <>
-              {/* <EditButton hideText recordItemId={row.id} /> */}
+              {/* <EditButton recordItemId={row.id} /> */}
 
               {row.status == d.BOOKINGS.STATUS.LIST.PENDING ? (
                 <>

@@ -62,7 +62,7 @@ export const RolesList = () => {
         renderCell: function render({ row }) {
           return (
             <>
-              <EditButton hideText recordItemId={row.id} />
+              <EditButton recordItemId={row.id} />
               <ShowButton hideText recordItemId={row.id} />
             </>
           );
