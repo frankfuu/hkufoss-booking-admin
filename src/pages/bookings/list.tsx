@@ -28,6 +28,9 @@ export const BookingsList = () => {
     isError: resourcesDataError,
   } = useList({
     resource: "resources",
+    pagination: {
+      pageSize: k.GET_MANY_DEFAULT,
+    },
   });
 
   const { edit } = useNavigation();

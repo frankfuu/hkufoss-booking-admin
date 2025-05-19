@@ -9,6 +9,7 @@ import { useGetIdentity, useGo, useList, useNotification, useRefineOptions, useR
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import AvailableDaysList from "./available-days";
+import { k } from "../../common/constants";
 
 type IUser = {
   id: number;
@@ -23,7 +24,6 @@ export const BookingCreate = () => {
   const go = useGo();
 
   const onSlotSelect = (data: any) => {
-    
     // create new booking
     if (!data.slot.hasBookingConflict && !data.slot.hasException) {
       navigate(`details`, { state: { ...data } });
@@ -42,10 +42,14 @@ export const BookingCreate = () => {
         to: { resource: "resource-exceptions", action: "edit", id: data.slot.exceptionId },
       });
     }
-
   };
 
-  const { data: resourceData, isLoading: resourceDataLoading } = useList({ resource: "resources" });
+  const { data: resourceData, isLoading: resourceDataLoading } = useList({
+    resource: "resources",
+    pagination: {
+      pageSize: k.GET_MANY_DEFAULT,
+    },
+  });
 
   if (resourceDataLoading) {
     return <>Loading..</>;

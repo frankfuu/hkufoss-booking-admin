@@ -73,6 +73,9 @@ export default function EditCreateResourceExceptions({
 
   const { autocompleteProps: resourceAutocompleteProps } = useAutocomplete({
     resource: "resources",
+    pagination: {
+      pageSize: k.GET_MANY_DEFAULT,
+    },
   });
 
   const filterOptionsResources = createFilterOptions({

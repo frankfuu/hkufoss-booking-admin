@@ -29,6 +29,9 @@ export const ResourceExceptionListings = () => {
     isError: resourcesDataError,
   } = useList({
     resource: "resources",
+    pagination: {
+      pageSize: k.GET_MANY_DEFAULT,
+    },
   });
 
   const columns = React.useMemo<GridColDef[]>(
