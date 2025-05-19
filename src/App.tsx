@@ -348,8 +348,10 @@ const AppContent = () => {
           <Route path="/bookings">
             <Route index element={<BookingsList />} />
             <Route path="/bookings/create" element={<BookingCreate />} />
+            <Route path="/bookings/create/:id" element={<BookingCreate />} />
             <Route path="/bookings/edit/:id" element={<BookingsEdit />} />
             <Route path="/bookings/create/details" element={<BookingsCreateDetail />} />
+            <Route path="/bookings/create/:id/details" element={<BookingsCreateDetail />} />
           </Route>
           <Route path="/resources">
             <Route index element={<ResourceListings />} />

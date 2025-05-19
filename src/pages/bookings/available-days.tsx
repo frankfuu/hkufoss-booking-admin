@@ -38,7 +38,7 @@ const CustomEvent2 = ({ event }: any) => {
   );
 };
 
-export const AvailableDaysList = ({ onSlotSelect, resourceId }: any) => {
+export const AvailableDaysList = ({ onSlotSelect, resourceId, calendarHeight }: any) => {
   const [weekStartDate, setWeekStartDate] = useState(getFirstSundayOfWeek());
   const [calendarEvents, setCalendarEvents] = useState<any[]>([]); // State for RBC events
   const [from, setFrom] = useState(format(getFirstSundayOfWeek(), "yyyy-MM-dd"));
@@ -150,7 +150,7 @@ export const AvailableDaysList = ({ onSlotSelect, resourceId }: any) => {
         max={new Date(0, 0, 0, 19, 0, 0)}
         step={60} // 1 slot per hour
         timeslots={1} // No subdivisions, 1 row per hour
-        style={{ width: "90%", height: 400 }}
+        style={{ width: "90%", height: calendarHeight || 430 }}
         views={allViews}
         defaultView={Views.WEEK}
         formats={{

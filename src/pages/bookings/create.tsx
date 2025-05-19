@@ -23,6 +23,9 @@ export const BookingCreate = () => {
   const navigate = useNavigate();
   const go = useGo();
 
+  const p = useParams();
+  const rid = p.id;
+
   const onSlotSelect = (data: any) => {
     // create new booking
     if (!data.slot.hasBookingConflict && !data.slot.hasException) {
@@ -51,6 +54,11 @@ export const BookingCreate = () => {
     },
   });
 
+  // view single resource
+  const tgtResource = resourceData?.data.find((r) => r.id == rid);
+
+  console.log(`targetResource`, tgtResource);
+
   if (resourceDataLoading) {
     return <>Loading..</>;
   } else {
@@ -73,14 +81,25 @@ export const BookingCreate = () => {
               gap: 1, // Spacing between items
             }}
           >
-            {resourceData?.data?.map((r) => (
-              <Box sx={{ gridColumn: "span 3" }} key={r.id}>
+            {rid ? (
+              <Box sx={{ gridColumn: "span 3" }} key={tgtResource?.id}>
                 <h3>
-                  {r.resourceName} - {r.resourceType} (Resource ID: {r.id})
+                  {tgtResource?.resourceName} - {tgtResource?.resourceType} (Resource ID: {tgtResource?.id})
                 </h3>
-                <AvailableDaysList onSlotSelect={onSlotSelect} resourceId={r.id} />
+                <AvailableDaysList onSlotSelect={onSlotSelect} resourceId={tgtResource?.id} calendarHeight={500} />
               </Box>
-            ))}
+            ) : (
+              <>
+                {resourceData?.data?.map((r) => (
+                  <Box sx={{ gridColumn: "span 3" }} key={r.id}>
+                    <h3>
+                      {r.resourceName} - {r.resourceType} (Resource ID: {r.id})
+                    </h3>
+                    <AvailableDaysList onSlotSelect={onSlotSelect} resourceId={r.id} />
+                  </Box>
+                ))}
+              </>
+            )}
           </Box>
         </Box>
       </Create>
