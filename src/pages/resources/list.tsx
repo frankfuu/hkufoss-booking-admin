@@ -90,7 +90,7 @@ export const ResourceListings = () => {
         renderCell: function render({ row }) {
           return (
             <>
-              <CustomViewButton paramId={row.resourceId} />
+              <CustomViewButton paramId={row.id} />
               <EditButton hideText recordItemId={row.id} />
               <CloneButton hideText recordItemId={row.id} />
               <DeleteButton hideText recordItemId={row.id} />
