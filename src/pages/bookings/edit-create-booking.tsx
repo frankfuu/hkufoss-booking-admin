@@ -263,7 +263,7 @@ export default function EditCreateBookings({ register, errors, control, action, 
           <Controller
             control={control}
             name="resourceAddonRelations"
-            rules={{ required: "This field is required" }}
+            // rules={{ required: "This field is required" }}
             defaultValue={[]}
             render={({ field }) => (
               <Autocomplete
