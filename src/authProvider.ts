@@ -31,7 +31,7 @@ export const authProvider: AuthProvider = {
 
         return {
           success: true,
-          redirectTo: "/users",
+          redirectTo: "/bookings",
         };
       } else {
         return {

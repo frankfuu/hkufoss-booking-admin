@@ -17,11 +17,11 @@ Versioning:
     - semantic-release
   artifacts:
     paths:
-    - .VERSION
+      - .VERSION
   only:
     - main
     - beta
-    - dev
+    # - dev
 
 Build Admin:
   stage: build
@@ -37,12 +37,11 @@ Build Admin:
     - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile.prod --destination $CI_REGISTRY_IMAGE:$DOCKER_VERSION --cache=false --snapshotMode=redo --use-new-run
   artifacts:
     paths:
-    - .VERSION
+      - .VERSION
   only:
     - main
     - beta
-    - dev
-
+    # - dev
 # Deploy:
 #   stage: deploy
 #   image: ubuntu:latest

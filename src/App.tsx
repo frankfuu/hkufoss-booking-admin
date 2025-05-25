@@ -91,6 +91,8 @@ import { BookingsEdit } from "./pages/bookings/edit";
 
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import { Dashboard } from "./pages/other/dashboard";
 
 const customTitleHandler = ({ resource, action, params }: any) => {
   let title = "HKU FOSS Booking System";
@@ -125,6 +127,14 @@ const AppContent = () => {
       authProvider={authProvider}
       i18nProvider={i18nProvider}
       resources={[
+        {
+          name: "dashboard",
+          list: "/dashboard",
+          meta: {
+            label: t("nav.dashboard"),
+            icon: <DashboardIcon />,
+          },
+        },
         {
           name: "bookingsParent",
           meta: {
@@ -332,6 +342,9 @@ const AppContent = () => {
             <Route index element={<DebugShow />} />
             <Route path="inner" element={<FrankPageInner />} />
           </Route>
+          <Route path="/dashboard">
+            <Route index element={<Dashboard />}></Route>
+          </Route>
 
           <Route path="/roles">
             <Route index element={<RolesList />} />
@@ -412,7 +425,7 @@ const AppContent = () => {
         >
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          {/* <Route path="/forgot-password" element={<ForgotPassword />} /> */}
+          <Route path="/forgot-password" element={<ForgotPassword />} />
         </Route>
       </Routes>
 

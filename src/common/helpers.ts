@@ -26,6 +26,7 @@
 
 import { useGo, useNotification } from "@refinedev/core";
 import { useTranslation } from "react-i18next";
+import { d } from "./constants";
 
 type ResourceClickParams = {
   resource: string;
@@ -72,5 +73,39 @@ export const defaultMutationOptions = () => {
         }
       }
     },
+  };
+};
+
+export const getChipProps = (status: string) => {
+  if (status == d.BOOKINGS.STATUS.LIST.CONFIRMED) {
+    return {
+      color: "success" as "success",
+      variant: "filled" as "filled",
+    };
+  }
+
+  if (status == d.BOOKINGS.STATUS.LIST.PENDING) {
+    return {
+      color: "warning" as "warning",
+      variant: "filled" as "filled",
+    };
+  }
+
+  if (status == d.BOOKINGS.STATUS.LIST.ATTENDED) {
+    return {
+      color: "success" as "success",
+      variant: "filled" as "filled",
+    };
+  }
+
+  if (status == d.BOOKINGS.STATUS.LIST.CANCELLED) {
+    return {
+      color: "error" as "error",
+      variant: "filled" as "filled",
+    };
+  }
+
+  return {
+    color: "default" as "default",
   };
 };
