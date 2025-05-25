@@ -95,6 +95,7 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import { Dashboard } from "./pages/other/dashboard";
 import { k } from "./common/constants";
 import { Home } from "./pages/other/home";
+import SchoolIcon from "@mui/icons-material/School";
 
 const customTitleHandler = ({ resource, action, params }: any) => {
   let title = "HKU FOSS Booking System";
@@ -118,7 +119,7 @@ const AppContent = () => {
     getLocale: () => i18n.language,
   };
 
-  const userDetails = useSelector((state: { userDetails: any }) => state.userDetails);
+  const user = useSelector((state: { userDetails: any }) => state.userDetails);
 
   return (
     <Refine
@@ -137,7 +138,7 @@ const AppContent = () => {
           meta: {
             label: t("nav.dashboard"),
             icon: <DashboardIcon />,
-            hide: userDetails?.roleId != k.ROLES.ADMIN,
+            hide: user?.roleId != k.ROLES.ADMIN,
           },
         },
         {
@@ -145,8 +146,8 @@ const AppContent = () => {
           list: "/home",
           meta: {
             label: t("nav.home"),
-            icon: <DashboardIcon />,
-            hide: userDetails?.roleId == k.ROLES.ADMIN,
+            icon: <SchoolIcon />,
+            hide: user?.roleId == k.ROLES.ADMIN,
           },
         },
         {
@@ -154,7 +155,7 @@ const AppContent = () => {
           meta: {
             label: t("nav.bookings.title"),
             icon: <AccessTimeIcon />,
-            hide: userDetails?.roleId != k.ROLES.ADMIN,
+            hide: user?.roleId != k.ROLES.ADMIN,
           },
         },
         {
@@ -162,7 +163,7 @@ const AppContent = () => {
           meta: {
             label: t("nav.system.title"),
             icon: <SupervisorAccountIcon />,
-            hide: userDetails?.roleId != k.ROLES.ADMIN,
+            hide: user?.roleId != k.ROLES.ADMIN,
           },
         },
         {
@@ -358,81 +359,87 @@ const AppContent = () => {
             <Route index element={<DebugShow />} />
             <Route path="inner" element={<FrankPageInner />} />
           </Route>
-          <Route path="/dashboard">
-            <Route index element={<Dashboard />}></Route>
-          </Route>
-          <Route path="/home">
-            <Route index element={<Home />}></Route>
-          </Route>
 
-          <Route path="/roles">
-            <Route index element={<RolesList />} />
-            <Route path="show/:id" element={<RoleShow />} />
-            <Route path="edit/:id" element={<RoleEdit />} />
-            <Route path="create" element={<RoleCreate />} />
-          </Route>
-          <Route path="/users">
-            <Route index element={<UsersList />} />
-            <Route path="/users/show/:id" element={<UserShow />} />
-            <Route path="/users/edit/:id" element={<UserEdit />} />
-            <Route path="/users/create" element={<UserCreate />} />
-          </Route>
           <Route path="/bookings">
-            <Route index element={<BookingsList />} />
+            {user?.roleId == k.ROLES.ADMIN && <Route index element={<BookingsList />} />}
             <Route path="/bookings/create" element={<BookingCreate />} />
             <Route path="/bookings/create/:id" element={<BookingCreate />} />
             <Route path="/bookings/edit/:id" element={<BookingsEdit />} />
             <Route path="/bookings/create/details" element={<BookingsCreateDetail />} />
             <Route path="/bookings/create/:id/details" element={<BookingsCreateDetail />} />
           </Route>
-          <Route path="/resources">
-            <Route index element={<ResourceListings />} />
-            <Route path="/resources/create" element={<ResourcesCreate />} />
-            <Route path="/resources/edit/:id" element={<ResourcesEdit />} />
-            <Route path="/resources/clone/:id" element={<ResourcesCreate />} />
+          <Route path="/home">
+            <Route index element={<Home />}></Route>
           </Route>
-          <Route path="/resource-schedules">
-            <Route index element={<ResourceScheduleListings />} />
-            <Route path="/resource-schedules/create" element={<ResourceSchedulesCreate />} />
-            <Route path="/resource-schedules/edit/:id" element={<ResourceSchedulesEdit />} />
-            <Route path="/resource-schedules/clone/:id" element={<ResourceSchedulesCreate />} />
-          </Route>
-          <Route path="/resource-exceptions">
-            <Route index element={<ResourceExceptionListings />} />
-            <Route path="/resource-exceptions/create" element={<ResourceExceptionsCreate />} />
-            <Route path="/resource-exceptions/edit/:id" element={<ResourceExceptionsEdit />} />
-            <Route path="/resource-exceptions/clone/:id" element={<ResourceExceptionsCreate />} />
-          </Route>
-          <Route path="/resource-addons">
-            <Route index element={<ResourceAddonListings />} />
-            <Route path="/resource-addons/create" element={<ResourceAddonsCreate />} />
-            <Route path="/resource-addons/edit/:id" element={<ResourceAddonsEdit />} />
-            <Route path="/resource-addons/clone/:id" element={<ResourceAddonsCreate />} />
-          </Route>
-          <Route path="/courses">
-            <Route index element={<CourseListings />} />
-            <Route path="/courses/create" element={<CoursesCreate />} />
-            <Route path="/courses/edit/:id" element={<CoursesEdit />} />
-            <Route path="/courses/clone/:id" element={<CoursesCreate />} />
-          </Route>
-          <Route path="/funders">
-            <Route index element={<FunderListings />} />
-            <Route path="/funders/create" element={<FundersCreate />} />
-            <Route path="/funders/edit/:id" element={<FundersEdit />} />
-            <Route path="/funders/clone/:id" element={<FundersCreate />} />
-          </Route>
-          <Route path="/activity-natures">
-            <Route index element={<ActivityNatureListings />} />
-            <Route path="/activity-natures/create" element={<ActivityNaturesCreate />} />
-            <Route path="/activity-natures/edit/:id" element={<ActivityNaturesEdit />} />
-            <Route path="/activity-natures/clone/:id" element={<ActivityNaturesCreate />} />
-          </Route>
-          <Route path="/activity-types">
-            <Route index element={<ActivityNatureListings />} />
-            <Route path="/activity-types/create" element={<ActivityTypesCreate />} />
-            <Route path="/activity-types/edit/:id" element={<ActivityTypesEdit />} />
-            <Route path="/activity-types/clone/:id" element={<ActivityTypesCreate />} />
-          </Route>
+
+          {user?.roleId == k.ROLES.ADMIN && (
+            <>
+              <Route path="/dashboard">
+                <Route index element={<Dashboard />}></Route>
+              </Route>
+              <Route path="/roles">
+                <Route index element={<RolesList />} />
+                <Route path="show/:id" element={<RoleShow />} />
+                <Route path="edit/:id" element={<RoleEdit />} />
+                <Route path="create" element={<RoleCreate />} />
+              </Route>
+              <Route path="/users">
+                <Route index element={<UsersList />} />
+                <Route path="/users/show/:id" element={<UserShow />} />
+                <Route path="/users/edit/:id" element={<UserEdit />} />
+                <Route path="/users/create" element={<UserCreate />} />
+              </Route>
+              <Route path="/resources">
+                <Route index element={<ResourceListings />} />
+                <Route path="/resources/create" element={<ResourcesCreate />} />
+                <Route path="/resources/edit/:id" element={<ResourcesEdit />} />
+                <Route path="/resources/clone/:id" element={<ResourcesCreate />} />
+              </Route>
+              <Route path="/resource-schedules">
+                <Route index element={<ResourceScheduleListings />} />
+                <Route path="/resource-schedules/create" element={<ResourceSchedulesCreate />} />
+                <Route path="/resource-schedules/edit/:id" element={<ResourceSchedulesEdit />} />
+                <Route path="/resource-schedules/clone/:id" element={<ResourceSchedulesCreate />} />
+              </Route>
+              <Route path="/resource-exceptions">
+                <Route index element={<ResourceExceptionListings />} />
+                <Route path="/resource-exceptions/create" element={<ResourceExceptionsCreate />} />
+                <Route path="/resource-exceptions/edit/:id" element={<ResourceExceptionsEdit />} />
+                <Route path="/resource-exceptions/clone/:id" element={<ResourceExceptionsCreate />} />
+              </Route>
+              <Route path="/resource-addons">
+                <Route index element={<ResourceAddonListings />} />
+                <Route path="/resource-addons/create" element={<ResourceAddonsCreate />} />
+                <Route path="/resource-addons/edit/:id" element={<ResourceAddonsEdit />} />
+                <Route path="/resource-addons/clone/:id" element={<ResourceAddonsCreate />} />
+              </Route>
+              <Route path="/courses">
+                <Route index element={<CourseListings />} />
+                <Route path="/courses/create" element={<CoursesCreate />} />
+                <Route path="/courses/edit/:id" element={<CoursesEdit />} />
+                <Route path="/courses/clone/:id" element={<CoursesCreate />} />
+              </Route>
+              <Route path="/funders">
+                <Route index element={<FunderListings />} />
+                <Route path="/funders/create" element={<FundersCreate />} />
+                <Route path="/funders/edit/:id" element={<FundersEdit />} />
+                <Route path="/funders/clone/:id" element={<FundersCreate />} />
+              </Route>
+              <Route path="/activity-natures">
+                <Route index element={<ActivityNatureListings />} />
+                <Route path="/activity-natures/create" element={<ActivityNaturesCreate />} />
+                <Route path="/activity-natures/edit/:id" element={<ActivityNaturesEdit />} />
+                <Route path="/activity-natures/clone/:id" element={<ActivityNaturesCreate />} />
+              </Route>
+              <Route path="/activity-types">
+                <Route index element={<ActivityNatureListings />} />
+                <Route path="/activity-types/create" element={<ActivityTypesCreate />} />
+                <Route path="/activity-types/edit/:id" element={<ActivityTypesEdit />} />
+                <Route path="/activity-types/clone/:id" element={<ActivityTypesCreate />} />
+              </Route>
+            </>
+          )}
+
           <Route path="*" element={<ErrorComponent />} />
         </Route>
         <Route

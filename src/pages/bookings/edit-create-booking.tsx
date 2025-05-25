@@ -292,9 +292,7 @@ export default function EditCreateBookings({ register, errors, control, action, 
                   return value === undefined || option?.value?.toString() === (value?.value ?? value)?.toString();
                 }}
                 sx={{ mt: 2, mb: 1 }}
-                renderInput={(params) => (
-                  <TextField {...params} label={t("Resource Addons")} InputLabelProps={{ shrink: true }} />
-                )}
+                renderInput={(params) => <TextField {...params} label={t("resourceAddons")} InputLabelProps={{ shrink: true }} />}
               />
             )}
           />

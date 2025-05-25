@@ -202,14 +202,12 @@ const MyBookings = () => {
       {...dataGridProps}
       columns={columns}
       autoHeight
-      // onRowClick={({ id }) => resource?.name && edit(resource.name, id)}
       onRowClick={({ id }) => edit("bookings", id)}
       sx={{
         "& .MuiDataGrid-row": {
           cursor: "pointer",
         },
       }}
-      // slots={{ toolbar: GridToolbar }}
     />
   );
 };
@@ -322,21 +320,38 @@ const BookARoom = () => {
         type: "actions",
         minWidth: 200,
         renderCell: function render({ row }) {
+          const isAvail = row?.schedules.length > 0;
           return (
             <>
-              <Button
-                size="small"
-                sx={{ mr: 2 }}
-                onClick={() =>
-                  go({
-                    to: `/bookings/create/${row.id}`,
-                  })
-                }
-                variant="contained"
-                color="primary"
-              >
-                {t("book")}
-              </Button>
+              {isAvail ? (
+                <Button
+                  size="small"
+                  sx={{ mr: 2, minWidth: 120 }}
+                  onClick={() =>
+                    go({
+                      to: `/bookings/create/${row.id}`,
+                    })
+                  }
+                  variant="contained"
+                  color="primary"
+                >
+                  {t("book")}
+                </Button>
+              ) : (
+                <Button
+                  size="small"
+                  sx={{ mr: 2, minWidth: 120 }}
+                  onClick={() =>
+                    go({
+                      to: `/bookings/create/${row.id}`,
+                    })
+                  }
+                  variant="contained"
+                  color="secondary"
+                >
+                  {t("bookNoOpening")}
+                </Button>
+              )}
             </>
           );
         },
@@ -352,13 +367,16 @@ const BookARoom = () => {
       {...dataGridProps}
       columns={columns}
       autoHeight
-      // onRowClick={({ id }) => edit("resources", id)}
+      onRowClick={({ id }) =>
+        go({
+          to: `/bookings/create/${id}`,
+        })
+      }
       sx={{
         "& .MuiDataGrid-row": {
           cursor: "pointer",
         },
       }}
-      // slots={{ toolbar: GridToolbar }}
     />
   );
 };
