@@ -33,6 +33,7 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import BlockIcon from "@mui/icons-material/Block";
 import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
 import EventSeatIcon from "@mui/icons-material/EventSeat";
+import { startOfDay, endOfDay } from "date-fns";
 
 export const Dashboard = () => {
   const { data: permissions }: { data: any[] | undefined } = usePermissions();
@@ -201,8 +202,27 @@ export const Dashboard = () => {
 
 const TodaysBookings = () => {
   const { t } = useTranslation();
+
+  const beginningOfDay = startOfDay(new Date());
+  const conclusionOfDay = endOfDay(new Date());
   const { dataGridProps } = useDataGrid({
     resource: "bookings",
+    filters: {
+      permanent: [
+        {
+          field: "startTime",
+          operator: "gte",
+          // value: "2025-05-01T03:00:00.000Z",
+          value: beginningOfDay.toISOString(),
+        },
+        {
+          field: "endTime",
+          operator: "lte",
+          // value: "2025-05-22T03:00:00.000Z",
+          value: conclusionOfDay.toISOString(),
+        },
+      ],
+    },
     sorters: {
       initial: [
         {
