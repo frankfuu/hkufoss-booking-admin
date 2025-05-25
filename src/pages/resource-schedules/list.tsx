@@ -6,10 +6,12 @@ import { useGo, useList, useNavigation, usePermissions, useResource } from "@ref
 import { k } from "../../common/constants";
 import { useTranslation } from "react-i18next";
 import dayjs, { Dayjs } from "dayjs";
+import { useSearchParams } from "react-router-dom";
 
 export const ResourceScheduleListings = () => {
   const { t } = useTranslation();
   const { dataGridProps } = useDataGrid({
+    syncWithLocation: true,
     sorters: {
       initial: [
         {
@@ -19,6 +21,9 @@ export const ResourceScheduleListings = () => {
       ],
     },
   });
+
+  const [searchParams] = useSearchParams();
+  const rid = searchParams.get("rid");
 
   const {
     data: resourcesData,
@@ -130,6 +135,7 @@ export const ResourceScheduleListings = () => {
 
   return (
     <List>
+      <p>RID : {rid}</p>
       <DataGrid
         {...dataGridProps}
         columns={columns}

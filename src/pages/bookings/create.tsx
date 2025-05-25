@@ -5,7 +5,16 @@ interface Service {
   id: string;
   name: string;
 }
-import { useGetIdentity, useGo, useList, useNotification, useRefineOptions, useResourceParams, useShow } from "@refinedev/core";
+import {
+  Link,
+  useGetIdentity,
+  useGo,
+  useList,
+  useNotification,
+  useRefineOptions,
+  useResourceParams,
+  useShow,
+} from "@refinedev/core";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import AvailableDaysList from "./available-days";
@@ -83,8 +92,28 @@ export const BookingCreate = () => {
           >
             {rid ? (
               <Box sx={{ gridColumn: "span 3" }} key={tgtResource?.id}>
-                <h3>
-                  {tgtResource?.resourceName} - {tgtResource?.resourceType} (Resource ID: {tgtResource?.id})
+                <h3 style={{ margin: 0 }}>
+                  {tgtResource?.resourceName} - {tgtResource?.resourceType} (Resource ID: {tgtResource?.id}{" "}
+                  <Link
+                    go={{
+                      query: {
+                        filters: [
+                          {
+                            operator: "eq",
+                            value: tgtResource?.id,
+                            field: "resourceId",
+                          },
+                        ],
+                      },
+                      to: {
+                        resource: "resource-schedules",
+                        action: "list",
+                      },
+                    }}
+                  >
+                    View Schedules
+                  </Link>
+                  ){" "}
                 </h3>
                 <AvailableDaysList onSlotSelect={onSlotSelect} resourceId={tgtResource?.id} calendarHeight={500} />
               </Box>
@@ -92,9 +121,31 @@ export const BookingCreate = () => {
               <>
                 {resourceData?.data?.map((r) => (
                   <Box sx={{ gridColumn: "span 3" }} key={r.id}>
-                    <h3>
-                      {r.resourceName} - {r.resourceType} (Resource ID: {r.id})
-                    </h3>
+                    <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                      <h3 style={{ margin: 0 }}>
+                        {r.resourceName} - {r.resourceType} (Resource ID: {r.id}{" "}
+                        <Link
+                          go={{
+                            query: {
+                              filters: [
+                                {
+                                  operator: "eq",
+                                  value: r.id,
+                                  field: "resourceId",
+                                },
+                              ],
+                            },
+                            to: {
+                              resource: "resource-schedules",
+                              action: "list",
+                            },
+                          }}
+                        >
+                          View Schedules
+                        </Link>
+                        ){" "}
+                      </h3>
+                    </Box>
                     <AvailableDaysList onSlotSelect={onSlotSelect} resourceId={r.id} />
                   </Box>
                 ))}
