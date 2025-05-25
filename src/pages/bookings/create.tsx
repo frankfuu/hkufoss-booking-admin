@@ -88,29 +88,52 @@ export const BookingCreate = () => {
             {rid ? (
               <Box sx={{ gridColumn: "span 3" }} key={tgtResource?.id}>
                 <h3 style={{ margin: 0 }}>
-                  {tgtResource?.resourceName} - {tgtResource?.resourceType} (Resource ID: {tgtResource?.id}{" "}
+                  {tgtResource?.resourceName} - {tgtResource?.resourceType} (Resource ID: {tgtResource?.id}){" "}
                   {user?.roleId == k.ROLES.ADMIN && (
-                    <Link
-                      go={{
-                        query: {
-                          filters: [
-                            {
-                              operator: "eq",
-                              value: tgtResource?.id,
-                              field: "resourceId",
-                            },
-                          ],
-                        },
-                        to: {
-                          resource: "resource-schedules",
-                          action: "list",
-                        },
-                      }}
-                    >
-                      View Schedules
-                    </Link>
+                    <>
+                      [View{" "}
+                      <Link
+                        go={{
+                          query: {
+                            filters: [
+                              {
+                                operator: "eq",
+                                value: tgtResource?.id,
+                                field: "resourceId",
+                              },
+                            ],
+                          },
+                          to: {
+                            resource: "resource-schedules",
+                            action: "list",
+                          },
+                        }}
+                      >
+                        Schedules ({tgtResource?.schedules?.length})
+                      </Link>
+                      {" or "}
+                      <Link
+                        go={{
+                          query: {
+                            filters: [
+                              {
+                                operator: "eq",
+                                value: tgtResource?.id,
+                                field: "resourceId",
+                              },
+                            ],
+                          },
+                          to: {
+                            resource: "resource-exceptions",
+                            action: "list",
+                          },
+                        }}
+                      >
+                        Exceptions ({tgtResource?.exceptions?.length})
+                      </Link>
+                      ]
+                    </>
                   )}
-                  ){" "}
                 </h3>
                 <AvailableDaysList onSlotSelect={onSlotSelect} resourceId={tgtResource?.id} calendarHeight={500} />
               </Box>
@@ -120,29 +143,52 @@ export const BookingCreate = () => {
                   <Box sx={{ gridColumn: "span 3" }} key={r.id}>
                     <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                       <h3 style={{ margin: 0 }}>
-                        {r.resourceName} - {r.resourceType} (Resource ID: {r.id}{" "}
+                        {r?.resourceName} - {r?.resourceType} (Resource ID: {r?.id}){" "}
                         {user?.roleId == k.ROLES.ADMIN && (
-                          <Link
-                            go={{
-                              query: {
-                                filters: [
-                                  {
-                                    operator: "eq",
-                                    value: r.id,
-                                    field: "resourceId",
-                                  },
-                                ],
-                              },
-                              to: {
-                                resource: "resource-schedules",
-                                action: "list",
-                              },
-                            }}
-                          >
-                            View Schedules
-                          </Link>
+                          <>
+                            [View{" "}
+                            <Link
+                              go={{
+                                query: {
+                                  filters: [
+                                    {
+                                      operator: "eq",
+                                      value: r?.id,
+                                      field: "resourceId",
+                                    },
+                                  ],
+                                },
+                                to: {
+                                  resource: "resource-schedules",
+                                  action: "list",
+                                },
+                              }}
+                            >
+                              Schedules ({r?.schedules?.length})
+                            </Link>
+                            {" or "}
+                            <Link
+                              go={{
+                                query: {
+                                  filters: [
+                                    {
+                                      operator: "eq",
+                                      value: r?.id,
+                                      field: "resourceId",
+                                    },
+                                  ],
+                                },
+                                to: {
+                                  resource: "resource-exceptions",
+                                  action: "list",
+                                },
+                              }}
+                            >
+                              Exceptions ({r?.exceptions?.length})
+                            </Link>
+                            ]
+                          </>
                         )}
-                        ){" "}
                       </h3>
                     </Box>
                     <AvailableDaysList onSlotSelect={onSlotSelect} resourceId={r.id} />

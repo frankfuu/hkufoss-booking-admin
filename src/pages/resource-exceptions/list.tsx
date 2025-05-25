@@ -10,6 +10,7 @@ export const ResourceExceptionListings = () => {
   const { t } = useTranslation();
 
   const { dataGridProps } = useDataGrid({
+    syncWithLocation: true,
     sorters: {
       initial: [
         {
