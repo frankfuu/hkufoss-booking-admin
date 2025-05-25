@@ -1,4 +1,4 @@
-import { Authenticated, I18nProvider, Refine, useNotification, usePermissions } from "@refinedev/core";
+import { Authenticated, I18nProvider, Refine, useNotification } from "@refinedev/core";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
 
 import {
@@ -93,6 +93,8 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import { Dashboard } from "./pages/other/dashboard";
+import { k } from "./common/constants";
+import { Home } from "./pages/other/home";
 
 const customTitleHandler = ({ resource, action, params }: any) => {
   let title = "HKU FOSS Booking System";
@@ -116,6 +118,8 @@ const AppContent = () => {
     getLocale: () => i18n.language,
   };
 
+  const userDetails = useSelector((state: { userDetails: any }) => state.userDetails);
+
   return (
     <Refine
       dataProvider={{
@@ -136,10 +140,19 @@ const AppContent = () => {
           },
         },
         {
+          name: "home",
+          list: "/home",
+          meta: {
+            label: t("nav.home"),
+            icon: <DashboardIcon />,
+          },
+        },
+        {
           name: "bookingsParent",
           meta: {
             label: t("nav.bookings.title"),
             icon: <AccessTimeIcon />,
+            hide: userDetails?.roleId != k.ROLES.ADMIN,
           },
         },
         {
@@ -147,6 +160,7 @@ const AppContent = () => {
           meta: {
             label: t("nav.system.title"),
             icon: <SupervisorAccountIcon />,
+            hide: userDetails?.roleId != k.ROLES.ADMIN,
           },
         },
         {
@@ -344,6 +358,9 @@ const AppContent = () => {
           </Route>
           <Route path="/dashboard">
             <Route index element={<Dashboard />}></Route>
+          </Route>
+          <Route path="/home">
+            <Route index element={<Home />}></Route>
           </Route>
 
           <Route path="/roles">

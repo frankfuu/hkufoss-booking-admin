@@ -1,7 +1,7 @@
 import type { AuthProvider, CheckResponse, HttpError, OnErrorResponse } from "@refinedev/core";
 import { k } from "./common/constants";
 import { fetchWithRefresh } from "./common/fetch-with-refresh";
-import { setPermissions } from "./store/store";
+import { setUserDetails } from "./store/store";
 import { store } from "./store/store";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -10,7 +10,8 @@ export const authProvider: AuthProvider = {
   login: async ({ username, email, password }) => {
     if ((username || email) && password) {
       let resp = await authenticateUser(email, password);
-      const { accessToken, refreshToken, error, message } = await resp?.json();
+      const respJson = await resp?.json();
+      const { accessToken, refreshToken, error, message } = respJson;
 
       if (resp?.ok) {
         localStorage.setItem(k.API_TOKEN_KEY, accessToken);
@@ -19,6 +20,8 @@ export const authProvider: AuthProvider = {
         try {
           let resp = await fetchWithRefresh(`${API_URL}/auth/me`);
           const data = await resp?.json();
+          console.log(`data`, data);
+          store.dispatch(setUserDetails(data));
         } catch (error) {
           return {
             success: false,
@@ -31,7 +34,7 @@ export const authProvider: AuthProvider = {
 
         return {
           success: true,
-          redirectTo: "/bookings",
+          redirectTo: "/dashboard",
         };
       } else {
         return {

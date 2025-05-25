@@ -23,7 +23,7 @@ type IUser = {
   id: number;
   username: string;
   avatar: string;
-  centreId: number;
+  roleId: number;
 };
 
 export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({ sticky = true }) => {
@@ -42,24 +42,7 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({ sticky = tru
 
   const { centreGlobal, setCentreGlobal } = useUserOptionsContext();
 
-  // const { autocompleteProps } = useAutocomplete({
-  //   resource: "centres",
-  //   pagination: { pageSize: k.DROPDOWN_PAGE_SIZE_DEFAULT },
-  // });
-
-  // useEffect(() => {
-  //   if (user?.centreId) {
-  //     const centre = autocompleteProps?.options?.find((item: any) => item?.id === user?.centreId);
-  //     setCentreGlobal(centre);
-  //   }
-  // }, [user, autocompleteProps?.options]);
-
   const handleResourceNavigation = useResourceNavigation();
-  const onMemberSelected = (member: any) => {
-    if (member && member.id) {
-      handleResourceNavigation({ resource: "members", action: "show", id: member.id });
-    }
-  };
 
   return (
     <AppBar position={sticky ? "sticky" : "relative"} sx={{ backgroundColor: "white" }}>
@@ -78,24 +61,6 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({ sticky = tru
           ></Box>
 
           <Stack direction="row" width="100%" justifyContent="flex-end" alignItems="center">
-            {/* <Typography color="coral" sx={{ mr: 2 }}>
-              {centreGlobal?.nameTc}
-            </Typography> */}
-            {/* <MemberSearchAsync onOptionSelected={onMemberSelected} sx={{ width: "100%" }} /> */}
-            {/* <Autocomplete
-              {...autocompleteProps}
-              disabled={user?.centreId !== undefined}
-              defaultValue={centreGlobal}
-              value={centreGlobal}
-              getOptionLabel={(item) => `${item?.nameTc}`}
-              isOptionEqualToValue={(option, value) => value === undefined || option?.id?.toString() === value?.id?.toString()}
-              onInputChange={(event, value) => { }} // this disabled auto server side fetching
-              filterOptions={createFilterOptions({ stringify: (o) => `${o.nameEn} ${o.nameTc}` })}
-              onChange={(event, value) => setCentreGlobal(value)}
-              sx={{ minWidth: 278, mx: 2 }}
-              renderInput={(params) => <TextField {...params} label={t("location")} margin="normal" variant="outlined" size="small" disabled={user?.centreId !== undefined} />}
-            /> */}
-
             <Button
               sx={{ mx: 2 }}
               onClick={() => {
@@ -104,15 +69,6 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({ sticky = tru
             >
               {currentLocale == "en" ? "繁" : "Eng"}
             </Button>
-            {/* <IconButton
-              color="primary"
-              onClick={() => {
-                setMode();
-              }}
-              sx={{ mr: 1, mt: 0 }}
-            >
-              {mode === "dark" ? <LightModeOutlined /> : <DarkModeOutlined />}
-            </IconButton> */}
 
             {(user?.avatar || user?.username) && (
               <Stack direction="row" gap="16px" alignItems="center" justifyContent="center">
@@ -128,11 +84,13 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({ sticky = tru
                       mt: 0,
                     }}
                     variant="subtitle2"
+                    onClick={() => {
+                      console.log(user);
+                    }}
                   >
-                    {user?.username}
+                    {user?.username} ({user?.roleId})
                   </Typography>
                 )}
-                {/* <Avatar src={user?.avatar} alt={user?.username} /> */}
               </Stack>
             )}
           </Stack>

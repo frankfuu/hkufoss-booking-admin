@@ -82,6 +82,7 @@
     },
     "nav": {
         "dashboard": "總覽",
+        "home": "主頁",
         "checkIn": "簽到",
         "members": "會員",
         "formSubmissions": {
