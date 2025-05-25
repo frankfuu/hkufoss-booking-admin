@@ -5,6 +5,7 @@ import { Button, Checkbox, Chip } from "@mui/material";
 import { useCustomMutation, useList, useNavigation, usePermissions, useResource } from "@refinedev/core";
 import { d, k } from "../../common/constants";
 import { useTranslation } from "react-i18next";
+import { getChipProps } from "../../common/helpers";
 
 export const BookingsList = () => {
   const { t } = useTranslation();
@@ -35,40 +36,6 @@ export const BookingsList = () => {
 
   const { edit } = useNavigation();
   const { resource } = useResource();
-
-  const getChipProps = (status: string) => {
-    if (status == d.BOOKINGS.STATUS.LIST.CONFIRMED) {
-      return {
-        color: "success" as "success",
-        variant: "filled" as "filled",
-      };
-    }
-
-    if (status == d.BOOKINGS.STATUS.LIST.PENDING) {
-      return {
-        color: "warning" as "warning",
-        variant: "filled" as "filled",
-      };
-    }
-
-    if (status == d.BOOKINGS.STATUS.LIST.ATTENDED) {
-      return {
-        color: "success" as "success",
-        variant: "filled" as "filled",
-      };
-    }
-
-    if (status == d.BOOKINGS.STATUS.LIST.CANCELLED) {
-      return {
-        color: "error" as "error",
-        variant: "filled" as "filled",
-      };
-    }
-
-    return {
-      color: "default" as "default",
-    };
-  };
 
   const { mutate } = useCustomMutation({});
 
