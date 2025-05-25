@@ -82,6 +82,7 @@
     },
     "nav": {
         "dashboard": "Dashboard",
+        "home": "Home",
         "checkIn": "Check-In",
         "members": "Members",
         "formSubmissions": {
@@ -463,7 +464,12 @@
         "full": "Seating Capacity"
     },
     "floor": "Floor",
+    "mybookings": "My Bookings",
+    "bookaroom": "Book A Room",
     "booking": "Booking",
+    "book": "Book",
+    "bookedBy": "Booked By",
+    "bookNoOpening": "No Openings",
     "courses": "Courses",
     "funders": "Funders",
     "activity-natures": "Activity Nature",

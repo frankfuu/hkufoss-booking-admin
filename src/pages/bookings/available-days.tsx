@@ -38,7 +38,7 @@ const CustomEvent2 = ({ event }: any) => {
   );
 };
 
-export const AvailableDaysList = ({ onSlotSelect, resourceId }: any) => {
+export const AvailableDaysList = ({ onSlotSelect, resourceId, calendarHeight }: any) => {
   const [weekStartDate, setWeekStartDate] = useState(getFirstSundayOfWeek());
   const [calendarEvents, setCalendarEvents] = useState<any[]>([]); // State for RBC events
   const [from, setFrom] = useState(format(getFirstSundayOfWeek(), "yyyy-MM-dd"));
@@ -52,15 +52,10 @@ export const AvailableDaysList = ({ onSlotSelect, resourceId }: any) => {
     },
   });
 
-  // const {
-  //   autocompleteProps: serviceAutocompleteProps,
-  //   query: { isLoading: servicesIsLoading },
-  // } = useAutocomplete({
-  //   resource: "services",
-  //   pagination: {
-  //     pageSize: k.DROPDOWN_PAGE_SIZE_DEFAULT,
-  //   },
-  // });
+  const capitalizeFirstLetter = (string: string) => {
+    if (!string) return "";
+    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+  };
 
   // Transform API data into RBC event structure
   useEffect(() => {
@@ -87,9 +82,8 @@ export const AvailableDaysList = ({ onSlotSelect, resourceId }: any) => {
                 }}
               >
                 <Typography variant="body1">{`${slot.hasException ? `Closed (${slot.exceptionId})` : ""} ${
-                  slot.hasBookingConflict ? `${slot?.bookingStatus} (${slot?.bookingId})`  : ""
+                  slot.hasBookingConflict ? `${capitalizeFirstLetter(slot?.bookingStatus)} (${slot?.bookingId})` : ""
                 } ${!slot.hasBookingConflict && !slot.hasException ? "Select" : ""}`}</Typography>
-                
               </Box>
             ),
             start: new Date(`${day.date}T${slot.from}`), // Combine date and time for start
@@ -152,11 +146,11 @@ export const AvailableDaysList = ({ onSlotSelect, resourceId }: any) => {
         allDayAccessor={(event) => false} // Disable all-day behavior entirely
         startAccessor="start"
         endAccessor="end"
-        min={new Date(0, 0, 0, 6, 0, 0)}
-        max={new Date(0, 0, 0, 20, 0, 0)}
+        min={new Date(0, 0, 0, 7, 0, 0)}
+        max={new Date(0, 0, 0, 19, 0, 0)}
         step={60} // 1 slot per hour
         timeslots={1} // No subdivisions, 1 row per hour
-        style={{ width: "90%", height: 400 }}
+        style={{ width: "90%", height: calendarHeight || 430 }}
         views={allViews}
         defaultView={Views.WEEK}
         formats={{

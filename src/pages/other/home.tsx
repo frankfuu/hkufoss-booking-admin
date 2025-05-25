@@ -8,6 +8,7 @@ import {
   usePermissions,
   useCustomMutation,
   useResource,
+  useGetIdentity,
 } from "@refinedev/core";
 
 import { Show, NumberField, DateField, useAutocomplete, Create, useDataGrid, ListButton, RefreshButton } from "@refinedev/mui";
@@ -35,7 +36,7 @@ import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
 import EventSeatIcon from "@mui/icons-material/EventSeat";
 import { startOfDay, endOfDay } from "date-fns";
 
-export const Dashboard = () => {
+export const Home = () => {
   const { data: permissions }: { data: any[] | undefined } = usePermissions();
 
   const { t } = useTranslation();
@@ -44,7 +45,7 @@ export const Dashboard = () => {
 
   return (
     <Show
-      title={t("nav.dashboard")}
+      title={t("nav.home")}
       headerButtons={({ defaultButtons }) => (
         <>
           <ListButton />
@@ -57,112 +58,14 @@ export const Dashboard = () => {
           <Box
             sx={{
               display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
+              flexDirection: "column",
               height: "100%",
-              minHeight: "200px",
               border: "2px dotted grey",
-              // p: 2,
+              p: 2,
             }}
           >
-            <Button
-              sx={{
-                backgroundColor: "#88b08e",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                margin: 2,
-                padding: 2,
-                width: 250,
-              }}
-              variant="contained"
-              color="success"
-              onClick={() => {
-                go({
-                  to: {
-                    resource: "bookings",
-                    action: "list",
-                  },
-                });
-              }}
-            >
-              <EventSeatIcon fontSize="large" sx={{ marginBottom: 1 }} />
-              <Typography>Manage bookings</Typography>
-            </Button>
-            <Button
-              sx={{
-                backgroundColor: "#ff9987",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                margin: 2,
-                padding: 2,
-                width: 250,
-              }}
-              variant="contained"
-              color="success"
-              onClick={() => {
-                go({
-                  to: {
-                    resource: "resources",
-                    action: "list",
-                  },
-                });
-              }}
-            >
-              <MeetingRoomIcon fontSize="large" sx={{ marginBottom: 1 }} />
-              <Typography>Manage Rooms</Typography>
-            </Button>
-
-            <Button
-              sx={{
-                backgroundColor: "#fece92",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                margin: 2,
-                padding: 2,
-                width: 250,
-              }}
-              variant="contained"
-              color="success"
-              onClick={() => {
-                go({
-                  to: {
-                    resource: "resource-schedules",
-                    action: "list",
-                  },
-                });
-              }}
-            >
-              <CalendarMonthIcon fontSize="large" sx={{ marginBottom: 1 }} />
-              <Typography>Manage Schedules</Typography>
-            </Button>
-
-            <Button
-              sx={{
-                backgroundColor: "#1b789f",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                margin: 2,
-                padding: 2,
-                width: 250,
-              }}
-              variant="contained"
-              color="success"
-              onClick={() => {
-                go({
-                  to: {
-                    resource: "bookings",
-                    action: "create",
-                  },
-                });
-              }}
-            >
-              <Assignment fontSize="large" sx={{ marginBottom: 1 }} />
-              <Typography>View Schedules</Typography>
-            </Button>
+            <Typography sx={{ fontWeight: "bold", fontSize: 20, marginBottom: 2, marginTop: 2 }}>{t("mybookings")}</Typography>
+            <MyBookings />
           </Box>
         </Grid>
         <Grid item xs={12} lg={12}>
@@ -175,24 +78,8 @@ export const Dashboard = () => {
               p: 2,
             }}
           >
-            <Typography sx={{ fontWeight: "bold", fontSize: 20, marginBottom: 2, marginTop: 2 }}>Today's Bookings</Typography>
-            <TodaysBookings />
-          </Box>
-        </Grid>
-        <Grid item xs={12} lg={12}>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              height: "100%",
-              border: "2px dotted grey",
-              p: 2,
-            }}
-          >
-            <Typography sx={{ fontWeight: "bold", fontSize: 20, marginBottom: 2, marginTop: 2 }}>
-              Outstanding Approvals
-            </Typography>
-            <OutstandingApprovals />
+            <Typography sx={{ fontWeight: "bold", fontSize: 20, marginBottom: 2, marginTop: 2 }}>{t("bookaroom")}</Typography>
+            <BookARoom />
           </Box>
         </Grid>
       </Grid>
@@ -200,8 +87,9 @@ export const Dashboard = () => {
   );
 };
 
-const TodaysBookings = () => {
+const MyBookings = () => {
   const { t } = useTranslation();
+  const { data: user } = useGetIdentity<IUser>();
 
   const beginningOfDay = startOfDay(new Date());
   const conclusionOfDay = endOfDay(new Date());
@@ -212,14 +100,12 @@ const TodaysBookings = () => {
         {
           field: "startTime",
           operator: "gte",
-          // value: "2025-05-01T03:00:00.000Z",
           value: beginningOfDay.toISOString(),
         },
         {
-          field: "endTime",
-          operator: "lte",
-          // value: "2025-05-22T03:00:00.000Z",
-          value: conclusionOfDay.toISOString(),
+          field: "userId",
+          operator: "eq",
+          value: user?.id,
         },
       ],
     },
@@ -295,7 +181,7 @@ const TodaysBookings = () => {
       {
         field: "status",
         headerName: t("status"),
-        minWidth: 120,
+        minWidth: 100,
         type: "singleSelect",
         valueOptions: d.BOOKINGS.STATUS.OPTIONS,
         getOptionValue: (value: any) => value?.value,
@@ -316,33 +202,31 @@ const TodaysBookings = () => {
       {...dataGridProps}
       columns={columns}
       autoHeight
-      // onRowClick={({ id }) => resource?.name && edit(resource.name, id)}
       onRowClick={({ id }) => edit("bookings", id)}
       sx={{
         "& .MuiDataGrid-row": {
           cursor: "pointer",
         },
       }}
-      // slots={{ toolbar: GridToolbar }}
     />
   );
 };
 
-const OutstandingApprovals = () => {
+const BookARoom = () => {
   const { t } = useTranslation();
   const {
     dataGridProps,
     tableQuery: { refetch },
   } = useDataGrid({
-    resource: "bookings",
+    resource: "resources",
     filters: {
-      permanent: [
-        {
-          field: "status",
-          operator: "eq",
-          value: "PENDING",
-        },
-      ],
+      // permanent: [
+      //   {
+      //     field: "status",
+      //     operator: "eq",
+      //     value: "PENDING",
+      //   },
+      // ],
     },
     sorters: {
       initial: [
@@ -396,6 +280,7 @@ const OutstandingApprovals = () => {
     },
   });
   const { edit } = useNavigation();
+  const go = useGo();
 
   const columns = React.useMemo<GridColDef[]>(
     () => [
@@ -407,42 +292,27 @@ const OutstandingApprovals = () => {
         filterable: false,
       },
       {
-        field: "activityName",
-        minWidth: 180,
-        headerName: t("activity.short"),
+        field: "resourceName",
+        minWidth: 150,
+        headerName: t("resourceName"),
       },
       {
-        field: "resourceId",
-        minWidth: 100,
-        headerName: t("resource"),
-        renderCell: ({ row }) => {
-          const resource = resourcesData?.data.find((r) => r.id == row.resourceId);
-          return `${resource?.resourceName} `;
-        },
+        field: "resourceType",
+        minWidth: 150,
+        headerName: t("resourceType"),
       },
       {
-        field: "startTime",
-        minWidth: 130,
-        headerName: t("Start Time"),
-        renderCell: function render({ value }) {
-          return <DateField value={value} format={k.DATE_FM_DEFAULT} />;
-        },
+        field: "seatingCapacity",
+        minWidth: 50,
+        headerName: t("seatingCapacity.short"),
       },
+
       {
-        field: "duration",
-        minWidth: 10,
-        headerName: t("Duration"),
-        align: "center",
-        headerAlign: "center",
+        field: "floor",
+        minWidth: 50,
+        headerName: t("floor"),
       },
-      {
-        field: "user.username",
-        minWidth: 210,
-        headerName: t("bookedBy"),
-        renderCell: ({ row }) => {
-          return row?.user?.username;
-        },
-      },
+
       {
         field: "actions",
         headerName: t("Actions"),
@@ -450,44 +320,38 @@ const OutstandingApprovals = () => {
         type: "actions",
         minWidth: 200,
         renderCell: function render({ row }) {
+          const isAvail = row?.schedules.length > 0;
           return (
             <>
-              {/* <EditButton recordItemId={row.id} /> */}
-
-              {row.status == d.BOOKINGS.STATUS.LIST.PENDING ? (
-                <>
-                  <Button
-                    size="small"
-                    sx={{ mr: 2 }}
-                    onClick={() => handleStatusUpdate(row, d.BOOKINGS.STATUS.LIST.CONFIRMED)}
-                    variant="outlined"
-                    color="success"
-                  >
-                    Confirm
-                  </Button>
-                  <Button
-                    size="small"
-                    sx={{ mr: 2 }}
-                    onClick={() => handleStatusUpdate(row, d.BOOKINGS.STATUS.LIST.CANCELLED)}
-                    variant="outlined"
-                    color="error"
-                  >
-                    Cancel
-                  </Button>
-                </>
-              ) : null}
-
-              {row.status == d.BOOKINGS.STATUS.LIST.CONFIRMED || row.status == d.BOOKINGS.STATUS.LIST.CANCELLED ? (
+              {isAvail ? (
                 <Button
                   size="small"
-                  sx={{ mr: 2 }}
-                  onClick={() => handleStatusUpdate(row, d.BOOKINGS.STATUS.LIST.PENDING)}
-                  variant="outlined"
-                  color="warning"
+                  sx={{ mr: 2, minWidth: 120 }}
+                  onClick={() =>
+                    go({
+                      to: `/bookings/create/${row.id}`,
+                    })
+                  }
+                  variant="contained"
+                  color="primary"
                 >
-                  Change to pending
+                  {t("book")}
                 </Button>
-              ) : null}
+              ) : (
+                <Button
+                  size="small"
+                  sx={{ mr: 2, minWidth: 120 }}
+                  onClick={() =>
+                    go({
+                      to: `/bookings/create/${row.id}`,
+                    })
+                  }
+                  variant="contained"
+                  color="secondary"
+                >
+                  {t("bookNoOpening")}
+                </Button>
+              )}
             </>
           );
         },
@@ -503,13 +367,16 @@ const OutstandingApprovals = () => {
       {...dataGridProps}
       columns={columns}
       autoHeight
-      onRowClick={({ id }) => edit("bookings", id)}
+      onRowClick={({ id }) =>
+        go({
+          to: `/bookings/create/${id}`,
+        })
+      }
       sx={{
         "& .MuiDataGrid-row": {
           cursor: "pointer",
         },
       }}
-      // slots={{ toolbar: GridToolbar }}
     />
   );
 };

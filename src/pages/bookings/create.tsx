@@ -5,16 +5,20 @@ interface Service {
   id: string;
   name: string;
 }
-import { useGetIdentity, useGo, useList, useNotification, useRefineOptions, useResourceParams, useShow } from "@refinedev/core";
+import {
+  Link,
+  useGetIdentity,
+  useGo,
+  useList,
+  useNotification,
+  useRefineOptions,
+  useResourceParams,
+  useShow,
+} from "@refinedev/core";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import AvailableDaysList from "./available-days";
-
-type IUser = {
-  id: number;
-  username: string;
-  centreId: number;
-};
+import { k } from "../../common/constants";
 
 export const BookingCreate = () => {
   const { t } = useTranslation();
@@ -22,8 +26,12 @@ export const BookingCreate = () => {
   const navigate = useNavigate();
   const go = useGo();
 
+  const p = useParams();
+  const rid = p.id;
+
+  const { data: user } = useGetIdentity<IUser>();
+
   const onSlotSelect = (data: any) => {
-    
     // create new booking
     if (!data.slot.hasBookingConflict && !data.slot.hasException) {
       navigate(`details`, { state: { ...data } });
@@ -31,21 +39,34 @@ export const BookingCreate = () => {
 
     // view existing booking
     if (data.slot.hasBookingConflict && data.slot.bookingId) {
-      go({
-        to: { resource: "bookings", action: "edit", id: data.slot.bookingId },
-      });
+      if (user?.roleId == k.ROLES.ADMIN) {
+        go({
+          to: { resource: "bookings", action: "edit", id: data.slot.bookingId },
+        });
+      }
     }
 
     // view resource exception
     if (data.slot.hasException && data.slot.exceptionId) {
-      go({
-        to: { resource: "resource-exceptions", action: "edit", id: data.slot.exceptionId },
-      });
+      if (user?.roleId == k.ROLES.ADMIN) {
+        go({
+          to: { resource: "resource-exceptions", action: "edit", id: data.slot.exceptionId },
+        });
+      }
     }
-
   };
 
-  const { data: resourceData, isLoading: resourceDataLoading } = useList({ resource: "resources" });
+  const { data: resourceData, isLoading: resourceDataLoading } = useList({
+    resource: "resources",
+    pagination: {
+      pageSize: k.GET_MANY_DEFAULT,
+    },
+  });
+
+  // view single resource
+  const tgtResource = resourceData?.data.find((r) => r.id == rid);
+
+  console.log(`targetResource`, tgtResource);
 
   if (resourceDataLoading) {
     return <>Loading..</>;
@@ -69,14 +90,117 @@ export const BookingCreate = () => {
               gap: 1, // Spacing between items
             }}
           >
-            {resourceData?.data?.map((r) => (
-              <Box sx={{ gridColumn: "span 3" }} key={r.id}>
-                <h3>
-                  {r.resourceName} - {r.resourceType} (Resource ID: {r.id})
+            {rid ? (
+              <Box sx={{ gridColumn: "span 3" }} key={tgtResource?.id}>
+                <h3 style={{ margin: 0 }}>
+                  {tgtResource?.resourceName} - {tgtResource?.resourceType} (Resource ID: {tgtResource?.id}){" "}
+                  {user?.roleId == k.ROLES.ADMIN && (
+                    <>
+                      [View{" "}
+                      <Link
+                        go={{
+                          query: {
+                            filters: [
+                              {
+                                operator: "eq",
+                                value: tgtResource?.id,
+                                field: "resourceId",
+                              },
+                            ],
+                          },
+                          to: {
+                            resource: "resource-schedules",
+                            action: "list",
+                          },
+                        }}
+                      >
+                        Schedules ({tgtResource?.schedules?.length})
+                      </Link>
+                      {" or "}
+                      <Link
+                        go={{
+                          query: {
+                            filters: [
+                              {
+                                operator: "eq",
+                                value: tgtResource?.id,
+                                field: "resourceId",
+                              },
+                            ],
+                          },
+                          to: {
+                            resource: "resource-exceptions",
+                            action: "list",
+                          },
+                        }}
+                      >
+                        Exceptions ({tgtResource?.exceptions?.length})
+                      </Link>
+                      ]
+                    </>
+                  )}
                 </h3>
-                <AvailableDaysList onSlotSelect={onSlotSelect} resourceId={r.id} />
+                <AvailableDaysList onSlotSelect={onSlotSelect} resourceId={tgtResource?.id} calendarHeight={500} />
               </Box>
-            ))}
+            ) : (
+              <>
+                {resourceData?.data?.map((r) => (
+                  <Box sx={{ gridColumn: "span 3" }} key={r.id}>
+                    <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                      <h3 style={{ margin: 0 }}>
+                        {r?.resourceName} - {r?.resourceType} (Resource ID: {r?.id}){" "}
+                        {user?.roleId == k.ROLES.ADMIN && (
+                          <>
+                            [View{" "}
+                            <Link
+                              go={{
+                                query: {
+                                  filters: [
+                                    {
+                                      operator: "eq",
+                                      value: r?.id,
+                                      field: "resourceId",
+                                    },
+                                  ],
+                                },
+                                to: {
+                                  resource: "resource-schedules",
+                                  action: "list",
+                                },
+                              }}
+                            >
+                              Schedules ({r?.schedules?.length})
+                            </Link>
+                            {" or "}
+                            <Link
+                              go={{
+                                query: {
+                                  filters: [
+                                    {
+                                      operator: "eq",
+                                      value: r?.id,
+                                      field: "resourceId",
+                                    },
+                                  ],
+                                },
+                                to: {
+                                  resource: "resource-exceptions",
+                                  action: "list",
+                                },
+                              }}
+                            >
+                              Exceptions ({r?.exceptions?.length})
+                            </Link>
+                            ]
+                          </>
+                        )}
+                      </h3>
+                    </Box>
+                    <AvailableDaysList onSlotSelect={onSlotSelect} resourceId={r.id} />
+                  </Box>
+                ))}
+              </>
+            )}
           </Box>
         </Box>
       </Create>

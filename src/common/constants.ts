@@ -11,6 +11,10 @@ const constants = {
   DROPDOWN_PAGE_SIZE_DEFAULT: 200,
   GET_MANY_DEFAULT: 250,
   MEMBER_LIST_MAX_SIZE: 10000,
+  ROLES: {
+    ADMIN: 1,
+    STANDARD: 2,
+  },
   TABS: {
     MEMBERS: {
       PROFILE: 0,

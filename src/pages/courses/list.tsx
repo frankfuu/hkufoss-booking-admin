@@ -58,8 +58,8 @@ export const CourseListings = () => {
         renderCell: function render({ row }) {
           return (
             <>
-              <EditButton hideText recordItemId={row.id} />
-              <CloneButton hideText recordItemId={row.id} />
+              <EditButton recordItemId={row.id} />
+              <CloneButton recordItemId={row.id} />
               <DeleteButton hideText recordItemId={row.id} />
             </>
           );

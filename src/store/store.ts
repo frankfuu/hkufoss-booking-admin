@@ -1,13 +1,22 @@
-import { configureStore, createSlice } from '@reduxjs/toolkit';
-import storage from 'redux-persist/lib/storage';
-import { persistReducer, persistStore } from 'redux-persist';
+import { configureStore, createSlice } from "@reduxjs/toolkit";
+import storage from "redux-persist/lib/storage";
+import { persistReducer, persistStore } from "redux-persist";
 
-// Define a default value for permissions
-const defaultPermissions: string[] = []; // Start with an empty array
+const defaultPermissions: string[] = [];
+
+interface UserDetails {
+  username: string | null;
+  roleId: number | null;
+}
+
+const defaultUserDetails: UserDetails = {
+  username: null,
+  roleId: null,
+};
 
 const permissionsSlice = createSlice({
-  name: 'permissions',
-  initialState: defaultPermissions, // Ensure this is an array
+  name: "permissions",
+  initialState: defaultPermissions,
   reducers: {
     setPermissions: (state, action) => {
       return action.payload; // Ensure payload is a plain array
@@ -15,32 +24,54 @@ const permissionsSlice = createSlice({
   },
 });
 
-// Export actions
+// create the user details slice
+const userDetailsSlice = createSlice({
+  name: "userDetails",
+  initialState: defaultUserDetails,
+  reducers: {
+    setUserDetails: (state, action) => {
+      return { ...state, ...action.payload };
+    },
+    clearUserDetails: () => {
+      return defaultUserDetails;
+    },
+    updateUserDetail: (state, action) => {
+      const { field, value } = action.payload;
+      return { ...state, [field]: value };
+    },
+  },
+});
+
 export const { setPermissions } = permissionsSlice.actions;
+export const { setUserDetails, clearUserDetails, updateUserDetail } = userDetailsSlice.actions;
 
 const persistConfig = {
-  key: 'root',
+  key: "root",
   storage,
 };
 
-const persistedReducer = persistReducer(persistConfig, permissionsSlice.reducer);
+// persist both reducers
+const persistedPermissionsReducer = persistReducer({ ...persistConfig, key: "permissions" }, permissionsSlice.reducer);
+const persistedUserDetailsReducer = persistReducer({ ...persistConfig, key: "userDetails" }, userDetailsSlice.reducer);
 
-// Create the Redux store
+// create the Redux store
 const store = configureStore({
   reducer: {
-    permissions: persistedReducer,
+    permissions: persistedPermissionsReducer,
+    userDetails: persistedUserDetailsReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: ['persist/PERSIST'],
-        ignoredPaths: ['persist'],
+        ignoredActions: ["persist/PERSIST"],
+        ignoredPaths: ["persist"],
       },
     }),
 });
 
 const persistor = persistStore(store);
 
-// Export the store
 export { store, persistor };
 
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;

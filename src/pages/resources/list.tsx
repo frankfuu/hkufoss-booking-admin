@@ -1,8 +1,8 @@
 import React from "react";
 import { useDataGrid, EditButton, ShowButton, DeleteButton, List, DateField, CloneButton } from "@refinedev/mui";
 import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
-import { Checkbox } from "@mui/material";
-import { useNavigation, usePermissions, useResource } from "@refinedev/core";
+import { Button, Checkbox } from "@mui/material";
+import { useGo, useNavigation, usePermissions, useResource } from "@refinedev/core";
 import { useTranslation } from "react-i18next";
 import { k } from "../../common/constants";
 
@@ -21,6 +21,21 @@ export const ResourceListings = () => {
 
   const { edit } = useNavigation();
   const { resource } = useResource();
+  const go = useGo();
+
+  const CustomViewButton = ({ paramId }: { paramId: string }) => {
+    const handleClick = () => {
+      go({
+        to: `/bookings/create/${paramId}`,
+      });
+    };
+
+    return (
+      <Button sx={{ my: 1 }} onClick={handleClick}>
+        {t("view")}
+      </Button>
+    );
+  };
 
   const columns = React.useMemo<GridColDef[]>(
     () => [
@@ -75,6 +90,7 @@ export const ResourceListings = () => {
         renderCell: function render({ row }) {
           return (
             <>
+              <CustomViewButton paramId={row.id} />
               <EditButton hideText recordItemId={row.id} />
               <CloneButton hideText recordItemId={row.id} />
               <DeleteButton hideText recordItemId={row.id} />

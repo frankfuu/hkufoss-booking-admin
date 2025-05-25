@@ -47,7 +47,7 @@ export default function EditCreateResources({ register, errors, control, action,
     }
   }, [resourcesData, resourceAddonsIsLoading]);
 
-  if ((!resourcesData && !isCreate) || resourceAddonsIsLoading) {
+  if ((!isCreate && (query.isLoading || !resourcesData)) || resourceAddonsIsLoading) {
     return t("loading");
   } else {
     return (

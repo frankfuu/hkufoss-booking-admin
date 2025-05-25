@@ -5,6 +5,7 @@ import { Button, Checkbox, Chip } from "@mui/material";
 import { useCustomMutation, useList, useNavigation, usePermissions, useResource } from "@refinedev/core";
 import { d, k } from "../../common/constants";
 import { useTranslation } from "react-i18next";
+import { getChipProps } from "../../common/helpers";
 
 export const BookingsList = () => {
   const { t } = useTranslation();
@@ -28,44 +29,13 @@ export const BookingsList = () => {
     isError: resourcesDataError,
   } = useList({
     resource: "resources",
+    pagination: {
+      pageSize: k.GET_MANY_DEFAULT,
+    },
   });
 
   const { edit } = useNavigation();
   const { resource } = useResource();
-
-  const getChipProps = (status: string) => {
-    if (status == d.BOOKINGS.STATUS.LIST.CONFIRMED) {
-      return {
-        color: "success" as "success",
-        variant: "filled" as "filled",
-      };
-    }
-
-    if (status == d.BOOKINGS.STATUS.LIST.PENDING) {
-      return {
-        color: "warning" as "warning",
-        variant: "filled" as "filled",
-      };
-    }
-
-    if (status == d.BOOKINGS.STATUS.LIST.ATTENDED) {
-      return {
-        color: "success" as "success",
-        variant: "filled" as "filled",
-      };
-    }
-
-    if (status == d.BOOKINGS.STATUS.LIST.CANCELLED) {
-      return {
-        color: "error" as "error",
-        variant: "filled" as "filled",
-      };
-    }
-
-    return {
-      color: "default" as "default",
-    };
-  };
 
   const { mutate } = useCustomMutation({});
 
@@ -161,6 +131,14 @@ export const BookingsList = () => {
         align: "center",
         headerAlign: "center",
       },
+      {
+        field: "user.username",
+        minWidth: 230,
+        headerName: t("bookedBy"),
+        renderCell: ({ row }) => {
+          return row?.user?.username;
+        },
+      },
       // {
       //   field: "endTime",
       //   minWidth: 130,
@@ -169,16 +147,7 @@ export const BookingsList = () => {
       //     return <DateField value={value} format={k.DATE_FM_DEFAULT} />;
       //   },
       // },
-      {
-        field: "updatedAt",
-        // flex: 1,
-        filterable: false,
-        headerName: t("updatedAt"),
-        minWidth: 130,
-        renderCell: function render({ value }) {
-          return <DateField value={value} format={k.DATE_FM_DEFAULT} />;
-        },
-      },
+
       {
         field: "actions",
         headerName: t("Actions"),
@@ -188,7 +157,7 @@ export const BookingsList = () => {
         renderCell: function render({ row }) {
           return (
             <>
-              {/* <EditButton hideText recordItemId={row.id} /> */}
+              {/* <EditButton recordItemId={row.id} /> */}
 
               {row.status == d.BOOKINGS.STATUS.LIST.PENDING ? (
                 <>
@@ -229,6 +198,16 @@ export const BookingsList = () => {
         },
         align: "left",
         headerAlign: "left",
+      },
+      {
+        field: "updatedAt",
+        // flex: 1,
+        filterable: false,
+        headerName: t("updatedAt"),
+        minWidth: 130,
+        renderCell: function render({ value }) {
+          return <DateField value={value} format={k.DATE_FM_DEFAULT} />;
+        },
       },
     ],
     [resourcesData, t]

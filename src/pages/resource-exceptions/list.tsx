@@ -1,8 +1,8 @@
 import React from "react";
 import { useDataGrid, EditButton, ShowButton, DeleteButton, List, DateField, CloneButton } from "@refinedev/mui";
 import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
-import { Checkbox } from "@mui/material";
-import { useList, useNavigation, usePermissions, useResource } from "@refinedev/core";
+import { Button, Checkbox } from "@mui/material";
+import { useGo, useList, useNavigation, usePermissions, useResource } from "@refinedev/core";
 import { k } from "../../common/constants";
 import { useTranslation } from "react-i18next";
 
@@ -10,6 +10,7 @@ export const ResourceExceptionListings = () => {
   const { t } = useTranslation();
 
   const { dataGridProps } = useDataGrid({
+    syncWithLocation: true,
     sorters: {
       initial: [
         {
@@ -22,6 +23,21 @@ export const ResourceExceptionListings = () => {
 
   const { edit } = useNavigation();
   const { resource } = useResource();
+  const go = useGo();
+
+  const CustomViewButton = ({ paramId }: { paramId: string }) => {
+    const handleClick = () => {
+      go({
+        to: `/bookings/create/${paramId}`,
+      });
+    };
+
+    return (
+      <Button sx={{ my: 1 }} onClick={handleClick}>
+        {t("view")}
+      </Button>
+    );
+  };
 
   const {
     data: resourcesData,
@@ -29,6 +45,9 @@ export const ResourceExceptionListings = () => {
     isError: resourcesDataError,
   } = useList({
     resource: "resources",
+    pagination: {
+      pageSize: k.GET_MANY_DEFAULT,
+    },
   });
 
   const columns = React.useMemo<GridColDef[]>(
@@ -89,6 +108,7 @@ export const ResourceExceptionListings = () => {
         renderCell: function render({ row }) {
           return (
             <>
+              <CustomViewButton paramId={row.resourceId} />
               <EditButton hideText recordItemId={row.id} />
               <CloneButton hideText recordItemId={row.id} />
               <DeleteButton hideText recordItemId={row.id} />
