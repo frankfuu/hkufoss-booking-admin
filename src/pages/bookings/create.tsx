@@ -29,6 +29,8 @@ export const BookingCreate = () => {
   const p = useParams();
   const rid = p.id;
 
+  const { data: user } = useGetIdentity<IUser>();
+
   const onSlotSelect = (data: any) => {
     // create new booking
     if (!data.slot.hasBookingConflict && !data.slot.hasException) {
@@ -37,16 +39,20 @@ export const BookingCreate = () => {
 
     // view existing booking
     if (data.slot.hasBookingConflict && data.slot.bookingId) {
-      go({
-        to: { resource: "bookings", action: "edit", id: data.slot.bookingId },
-      });
+      if (user?.roleId == k.ROLES.ADMIN) {
+        go({
+          to: { resource: "bookings", action: "edit", id: data.slot.bookingId },
+        });
+      }
     }
 
     // view resource exception
     if (data.slot.hasException && data.slot.exceptionId) {
-      go({
-        to: { resource: "resource-exceptions", action: "edit", id: data.slot.exceptionId },
-      });
+      if (user?.roleId == k.ROLES.ADMIN) {
+        go({
+          to: { resource: "resource-exceptions", action: "edit", id: data.slot.exceptionId },
+        });
+      }
     }
   };
 
@@ -61,7 +67,6 @@ export const BookingCreate = () => {
   const tgtResource = resourceData?.data.find((r) => r.id == rid);
 
   console.log(`targetResource`, tgtResource);
-  const { data: user } = useGetIdentity<IUser>();
 
   if (resourceDataLoading) {
     return <>Loading..</>;

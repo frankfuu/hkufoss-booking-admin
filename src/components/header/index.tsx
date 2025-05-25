@@ -88,7 +88,7 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({ sticky = tru
                       console.log(user);
                     }}
                   >
-                    {user?.username} ({user?.roleId})
+                    {user?.username}
                   </Typography>
                 )}
               </Stack>
