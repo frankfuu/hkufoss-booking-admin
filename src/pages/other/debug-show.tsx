@@ -8,6 +8,7 @@ import { k } from "../../common/constants";
 import { useState } from "react";
 import DynamicModal from "../../components/dynamic-modal";
 import QRCode from "react-qr-code";
+import { useSelector } from "react-redux";
 
 export const DebugShow = () => {
   const go = useGo();
@@ -18,6 +19,9 @@ export const DebugShow = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const uDeets = useSelector((state: { userDetails: any }) => state.userDetails);
+  console.log(`uDeets`, uDeets);
 
   return (
     <Show>

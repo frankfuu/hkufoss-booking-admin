@@ -131,6 +131,14 @@ export const BookingsList = () => {
         align: "center",
         headerAlign: "center",
       },
+      {
+        field: "user.username",
+        minWidth: 230,
+        headerName: t("bookedBy"),
+        renderCell: ({ row }) => {
+          return row?.user?.username;
+        },
+      },
       // {
       //   field: "endTime",
       //   minWidth: 130,
@@ -139,16 +147,7 @@ export const BookingsList = () => {
       //     return <DateField value={value} format={k.DATE_FM_DEFAULT} />;
       //   },
       // },
-      {
-        field: "updatedAt",
-        // flex: 1,
-        filterable: false,
-        headerName: t("updatedAt"),
-        minWidth: 130,
-        renderCell: function render({ value }) {
-          return <DateField value={value} format={k.DATE_FM_DEFAULT} />;
-        },
-      },
+
       {
         field: "actions",
         headerName: t("Actions"),
@@ -199,6 +198,16 @@ export const BookingsList = () => {
         },
         align: "left",
         headerAlign: "left",
+      },
+      {
+        field: "updatedAt",
+        // flex: 1,
+        filterable: false,
+        headerName: t("updatedAt"),
+        minWidth: 130,
+        renderCell: function render({ value }) {
+          return <DateField value={value} format={k.DATE_FM_DEFAULT} />;
+        },
       },
     ],
     [resourcesData, t]

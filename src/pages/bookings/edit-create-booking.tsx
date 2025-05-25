@@ -18,7 +18,7 @@ import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
 import { useState } from "react";
-import { useGetIdentity, useOne } from "@refinedev/core";
+import { useGetIdentity, useOne, useResource } from "@refinedev/core";
 import { d, k } from "../../common/constants";
 
 import { DatePicker, DateTimePicker } from "@mui/x-date-pickers";
@@ -128,6 +128,19 @@ export default function EditCreateBookings({ register, errors, control, action, 
               type="number"
               label={t("id")}
               name="id"
+              disabled
+            />
+          )}
+          {!isCreate && (
+            <TextField
+              error={!!(errors as any)?.id}
+              helperText={(errors as any)?.id?.message}
+              margin="normal"
+              fullWidth
+              InputLabelProps={{ shrink: true }}
+              label={t("bookedBy")}
+              name="id"
+              value={query.data?.data?.user?.username}
               disabled
             />
           )}

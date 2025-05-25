@@ -285,6 +285,14 @@ const TodaysBookings = () => {
         headerAlign: "center",
       },
       {
+        field: "user.username",
+        minWidth: 210,
+        headerName: t("bookedBy"),
+        renderCell: ({ row }) => {
+          return row?.user?.username;
+        },
+      },
+      {
         field: "status",
         headerName: t("status"),
         minWidth: 120,
@@ -426,6 +434,14 @@ const OutstandingApprovals = () => {
         headerName: t("Duration"),
         align: "center",
         headerAlign: "center",
+      },
+      {
+        field: "user.username",
+        minWidth: 210,
+        headerName: t("bookedBy"),
+        renderCell: ({ row }) => {
+          return row?.user?.username;
+        },
       },
       {
         field: "actions",

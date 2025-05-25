@@ -20,12 +20,6 @@ import { useTranslation } from "react-i18next";
 import AvailableDaysList from "./available-days";
 import { k } from "../../common/constants";
 
-type IUser = {
-  id: number;
-  username: string;
-  centreId: number;
-};
-
 export const BookingCreate = () => {
   const { t } = useTranslation();
 
@@ -67,6 +61,7 @@ export const BookingCreate = () => {
   const tgtResource = resourceData?.data.find((r) => r.id == rid);
 
   console.log(`targetResource`, tgtResource);
+  const { data: user } = useGetIdentity<IUser>();
 
   if (resourceDataLoading) {
     return <>Loading..</>;
@@ -94,25 +89,27 @@ export const BookingCreate = () => {
               <Box sx={{ gridColumn: "span 3" }} key={tgtResource?.id}>
                 <h3 style={{ margin: 0 }}>
                   {tgtResource?.resourceName} - {tgtResource?.resourceType} (Resource ID: {tgtResource?.id}{" "}
-                  <Link
-                    go={{
-                      query: {
-                        filters: [
-                          {
-                            operator: "eq",
-                            value: tgtResource?.id,
-                            field: "resourceId",
-                          },
-                        ],
-                      },
-                      to: {
-                        resource: "resource-schedules",
-                        action: "list",
-                      },
-                    }}
-                  >
-                    View Schedules
-                  </Link>
+                  {user?.roleId == k.ROLES.ADMIN && (
+                    <Link
+                      go={{
+                        query: {
+                          filters: [
+                            {
+                              operator: "eq",
+                              value: tgtResource?.id,
+                              field: "resourceId",
+                            },
+                          ],
+                        },
+                        to: {
+                          resource: "resource-schedules",
+                          action: "list",
+                        },
+                      }}
+                    >
+                      View Schedules
+                    </Link>
+                  )}
                   ){" "}
                 </h3>
                 <AvailableDaysList onSlotSelect={onSlotSelect} resourceId={tgtResource?.id} calendarHeight={500} />
@@ -124,25 +121,27 @@ export const BookingCreate = () => {
                     <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                       <h3 style={{ margin: 0 }}>
                         {r.resourceName} - {r.resourceType} (Resource ID: {r.id}{" "}
-                        <Link
-                          go={{
-                            query: {
-                              filters: [
-                                {
-                                  operator: "eq",
-                                  value: r.id,
-                                  field: "resourceId",
-                                },
-                              ],
-                            },
-                            to: {
-                              resource: "resource-schedules",
-                              action: "list",
-                            },
-                          }}
-                        >
-                          View Schedules
-                        </Link>
+                        {user?.roleId == k.ROLES.ADMIN && (
+                          <Link
+                            go={{
+                              query: {
+                                filters: [
+                                  {
+                                    operator: "eq",
+                                    value: r.id,
+                                    field: "resourceId",
+                                  },
+                                ],
+                              },
+                              to: {
+                                resource: "resource-schedules",
+                                action: "list",
+                              },
+                            }}
+                          >
+                            View Schedules
+                          </Link>
+                        )}
                         ){" "}
                       </h3>
                     </Box>

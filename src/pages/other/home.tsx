@@ -171,9 +171,17 @@ const MyBookings = () => {
         headerAlign: "center",
       },
       {
+        field: "user.username",
+        minWidth: 210,
+        headerName: t("bookedBy"),
+        renderCell: ({ row }) => {
+          return row?.user?.username;
+        },
+      },
+      {
         field: "status",
         headerName: t("status"),
-        minWidth: 120,
+        minWidth: 100,
         type: "singleSelect",
         valueOptions: d.BOOKINGS.STATUS.OPTIONS,
         getOptionValue: (value: any) => value?.value,
