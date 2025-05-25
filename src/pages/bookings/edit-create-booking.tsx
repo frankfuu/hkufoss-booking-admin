@@ -24,12 +24,6 @@ import { d, k } from "../../common/constants";
 import { DatePicker, DateTimePicker } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from "dayjs";
 
-type IUser = {
-  id: number;
-  username: string;
-  centreId: number;
-};
-
 export default function EditCreateBookings({ register, errors, control, action, slotData, setValue, query }: any) {
   const { t } = useTranslation();
 
@@ -335,7 +329,7 @@ export default function EditCreateBookings({ register, errors, control, action, 
               <Autocomplete
                 {...field}
                 options={d.BOOKINGS.STATUS.OPTIONS}
-                disabled={isCreate}
+                disabled={isCreate || user?.roleId != k.ROLES.ADMIN}
                 getOptionLabel={(option) => t(option.label)}
                 value={d.BOOKINGS.STATUS.OPTIONS.find((option) => option.value === field.value) || null}
                 onChange={(_, newValue) => {

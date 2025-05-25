@@ -464,7 +464,10 @@
         "full": "Seating Capacity"
     },
     "floor": "Floor",
+    "mybookings": "My Bookings",
+    "bookaroom": "Book A Room",
     "booking": "Booking",
+    "book": "Book",
     "courses": "Courses",
     "funders": "Funders",
     "activity-natures": "Activity Nature",

@@ -16,12 +16,15 @@ export const authProvider: AuthProvider = {
       if (resp?.ok) {
         localStorage.setItem(k.API_TOKEN_KEY, accessToken);
         localStorage.setItem(k.API_REFRESH_KEY, refreshToken);
+        let redirectTo = "/home";
 
         try {
           let resp = await fetchWithRefresh(`${API_URL}/auth/me`);
           const data = await resp?.json();
-          console.log(`data`, data);
           store.dispatch(setUserDetails(data));
+          if (data.roleId == k.ROLES.ADMIN) {
+            redirectTo = "/dashboard";
+          }
         } catch (error) {
           return {
             success: false,
@@ -34,7 +37,7 @@ export const authProvider: AuthProvider = {
 
         return {
           success: true,
-          redirectTo: "/dashboard",
+          redirectTo: redirectTo,
         };
       } else {
         return {

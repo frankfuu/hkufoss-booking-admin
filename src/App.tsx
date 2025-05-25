@@ -137,6 +137,7 @@ const AppContent = () => {
           meta: {
             label: t("nav.dashboard"),
             icon: <DashboardIcon />,
+            hide: userDetails?.roleId != k.ROLES.ADMIN,
           },
         },
         {
@@ -145,6 +146,7 @@ const AppContent = () => {
           meta: {
             label: t("nav.home"),
             icon: <DashboardIcon />,
+            hide: userDetails?.roleId == k.ROLES.ADMIN,
           },
         },
         {

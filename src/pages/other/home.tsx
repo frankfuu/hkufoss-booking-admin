@@ -8,6 +8,7 @@ import {
   usePermissions,
   useCustomMutation,
   useResource,
+  useGetIdentity,
 } from "@refinedev/core";
 
 import { Show, NumberField, DateField, useAutocomplete, Create, useDataGrid, ListButton, RefreshButton } from "@refinedev/mui";
@@ -63,8 +64,8 @@ export const Home = () => {
               p: 2,
             }}
           >
-            <Typography sx={{ fontWeight: "bold", fontSize: 20, marginBottom: 2, marginTop: 2 }}>My Bookings</Typography>
-            <TodaysBookings />
+            <Typography sx={{ fontWeight: "bold", fontSize: 20, marginBottom: 2, marginTop: 2 }}>{t("mybookings")}</Typography>
+            <MyBookings />
           </Box>
         </Grid>
         <Grid item xs={12} lg={12}>
@@ -77,8 +78,8 @@ export const Home = () => {
               p: 2,
             }}
           >
-            <Typography sx={{ fontWeight: "bold", fontSize: 20, marginBottom: 2, marginTop: 2 }}>Book a room</Typography>
-            <OutstandingApprovals />
+            <Typography sx={{ fontWeight: "bold", fontSize: 20, marginBottom: 2, marginTop: 2 }}>{t("bookaroom")}</Typography>
+            <BookARoom />
           </Box>
         </Grid>
       </Grid>
@@ -86,8 +87,9 @@ export const Home = () => {
   );
 };
 
-const TodaysBookings = () => {
+const MyBookings = () => {
   const { t } = useTranslation();
+  const { data: user } = useGetIdentity<IUser>();
 
   const beginningOfDay = startOfDay(new Date());
   const conclusionOfDay = endOfDay(new Date());
@@ -98,14 +100,12 @@ const TodaysBookings = () => {
         {
           field: "startTime",
           operator: "gte",
-          // value: "2025-05-01T03:00:00.000Z",
           value: beginningOfDay.toISOString(),
         },
         {
-          field: "endTime",
-          operator: "lte",
-          // value: "2025-05-22T03:00:00.000Z",
-          value: conclusionOfDay.toISOString(),
+          field: "userId",
+          operator: "eq",
+          value: user?.id,
         },
       ],
     },
@@ -206,21 +206,21 @@ const TodaysBookings = () => {
   );
 };
 
-const OutstandingApprovals = () => {
+const BookARoom = () => {
   const { t } = useTranslation();
   const {
     dataGridProps,
     tableQuery: { refetch },
   } = useDataGrid({
-    resource: "bookings",
+    resource: "resources",
     filters: {
-      permanent: [
-        {
-          field: "status",
-          operator: "eq",
-          value: "PENDING",
-        },
-      ],
+      // permanent: [
+      //   {
+      //     field: "status",
+      //     operator: "eq",
+      //     value: "PENDING",
+      //   },
+      // ],
     },
     sorters: {
       initial: [
@@ -274,6 +274,7 @@ const OutstandingApprovals = () => {
     },
   });
   const { edit } = useNavigation();
+  const go = useGo();
 
   const columns = React.useMemo<GridColDef[]>(
     () => [
@@ -285,34 +286,27 @@ const OutstandingApprovals = () => {
         filterable: false,
       },
       {
-        field: "activityName",
-        minWidth: 180,
-        headerName: t("activity.short"),
+        field: "resourceName",
+        minWidth: 150,
+        headerName: t("resourceName"),
       },
       {
-        field: "resourceId",
-        minWidth: 100,
-        headerName: t("resource"),
-        renderCell: ({ row }) => {
-          const resource = resourcesData?.data.find((r) => r.id == row.resourceId);
-          return `${resource?.resourceName} `;
-        },
+        field: "resourceType",
+        minWidth: 150,
+        headerName: t("resourceType"),
       },
       {
-        field: "startTime",
-        minWidth: 130,
-        headerName: t("Start Time"),
-        renderCell: function render({ value }) {
-          return <DateField value={value} format={k.DATE_FM_DEFAULT} />;
-        },
+        field: "seatingCapacity",
+        minWidth: 50,
+        headerName: t("seatingCapacity.short"),
       },
+
       {
-        field: "duration",
-        minWidth: 10,
-        headerName: t("Duration"),
-        align: "center",
-        headerAlign: "center",
+        field: "floor",
+        minWidth: 50,
+        headerName: t("floor"),
       },
+
       {
         field: "actions",
         headerName: t("Actions"),
@@ -322,42 +316,19 @@ const OutstandingApprovals = () => {
         renderCell: function render({ row }) {
           return (
             <>
-              {/* <EditButton recordItemId={row.id} /> */}
-
-              {row.status == d.BOOKINGS.STATUS.LIST.PENDING ? (
-                <>
-                  <Button
-                    size="small"
-                    sx={{ mr: 2 }}
-                    onClick={() => handleStatusUpdate(row, d.BOOKINGS.STATUS.LIST.CONFIRMED)}
-                    variant="outlined"
-                    color="success"
-                  >
-                    Confirm
-                  </Button>
-                  <Button
-                    size="small"
-                    sx={{ mr: 2 }}
-                    onClick={() => handleStatusUpdate(row, d.BOOKINGS.STATUS.LIST.CANCELLED)}
-                    variant="outlined"
-                    color="error"
-                  >
-                    Cancel
-                  </Button>
-                </>
-              ) : null}
-
-              {row.status == d.BOOKINGS.STATUS.LIST.CONFIRMED || row.status == d.BOOKINGS.STATUS.LIST.CANCELLED ? (
-                <Button
-                  size="small"
-                  sx={{ mr: 2 }}
-                  onClick={() => handleStatusUpdate(row, d.BOOKINGS.STATUS.LIST.PENDING)}
-                  variant="outlined"
-                  color="warning"
-                >
-                  Change to pending
-                </Button>
-              ) : null}
+              <Button
+                size="small"
+                sx={{ mr: 2 }}
+                onClick={() =>
+                  go({
+                    to: `/bookings/create/${row.id}`,
+                  })
+                }
+                variant="contained"
+                color="primary"
+              >
+                {t("book")}
+              </Button>
             </>
           );
         },
@@ -373,7 +344,7 @@ const OutstandingApprovals = () => {
       {...dataGridProps}
       columns={columns}
       autoHeight
-      onRowClick={({ id }) => edit("bookings", id)}
+      // onRowClick={({ id }) => edit("resources", id)}
       sx={{
         "& .MuiDataGrid-row": {
           cursor: "pointer",
