@@ -154,6 +154,7 @@ export default function EditCreateResourceExceptions({
                   fullWidth: true,
                   margin: "normal",
                   label: t("Start Time"),
+                  required: true,
                 },
               }}
             />
@@ -196,6 +197,7 @@ export default function EditCreateResourceExceptions({
           label={t("name")}
           placeholder="e.g. Monthly Maintenance, Christmas Shutdown, Chinese New Year etc"
           name="name"
+          required
         />
         <Controller
           // disabled
@@ -220,6 +222,7 @@ export default function EditCreateResourceExceptions({
                     label: t("End Time"),
                     InputLabelProps: { shrink: true },
                     error: !!timeError,
+                    required: true,
                   },
                 }}
               />

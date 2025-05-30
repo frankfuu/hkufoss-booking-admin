@@ -53,6 +53,7 @@ export default function EditCreateCourses({ register, errors, control, action }:
         InputLabelProps={{ shrink: true }}
         label={t("Code")}
         name="code"
+        required
       />
       <TextField
         {...register("name", {
@@ -65,6 +66,7 @@ export default function EditCreateCourses({ register, errors, control, action }:
         InputLabelProps={{ shrink: true }}
         label={t("Name")}
         name="name"
+        required
       />
 
       {!isCreate && (

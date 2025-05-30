@@ -61,6 +61,7 @@ export const RoleEdit = () => {
             type="text"
             label="Name"
             name="name"
+            required
           />
         </Box>
       </Edit>

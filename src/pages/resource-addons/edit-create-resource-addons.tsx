@@ -50,6 +50,7 @@ export default function EditCreateResourceAddons({ register, errors, control, ac
         InputLabelProps={{ shrink: true }}
         label={t("resourceName")}
         name="resourceName"
+        required
       />
 
       <TextField
@@ -63,6 +64,7 @@ export default function EditCreateResourceAddons({ register, errors, control, ac
         InputLabelProps={{ shrink: true }}
         label={t("resourceType")}
         name="resourceType"
+        required
       />
 
       <TextField
@@ -76,6 +78,7 @@ export default function EditCreateResourceAddons({ register, errors, control, ac
         InputLabelProps={{ shrink: true }}
         label={t("location")}
         name="location"
+        required
       />
 
       <TextField
@@ -89,6 +92,7 @@ export default function EditCreateResourceAddons({ register, errors, control, ac
         InputLabelProps={{ shrink: true }}
         label={t("floor")}
         name="floor"
+        required
       />
 
       <TextField

@@ -53,6 +53,7 @@ export default function EditCreateFunders({ register, errors, control, action }:
         InputLabelProps={{ shrink: true }}
         label={t("Account Code")}
         name="accountCode"
+        required
       />
       <TextField
         {...register("name", {
@@ -65,6 +66,7 @@ export default function EditCreateFunders({ register, errors, control, action }:
         InputLabelProps={{ shrink: true }}
         label={t("Name")}
         name="name"
+        required
       />
 
       {!isCreate && (

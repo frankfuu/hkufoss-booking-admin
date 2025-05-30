@@ -349,7 +349,7 @@ const AppContent = () => {
             </Authenticated>
           }
         >
-          <Route index element={<NavigateToResource resource="bookings" />} />
+          <Route index element={<NavigateToResource resource="home" />} />
 
           {/* <Route path="/forms/builder">
           <Route index element={<FormBuilderPage />} />

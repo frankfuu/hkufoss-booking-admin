@@ -80,6 +80,7 @@ export default function EditCreateResources({ register, errors, control, action,
           InputLabelProps={{ shrink: true }}
           label={t("resourceName")}
           name="resourceName"
+          required
         />
 
         <TextField
@@ -93,6 +94,7 @@ export default function EditCreateResources({ register, errors, control, action,
           InputLabelProps={{ shrink: true }}
           label={t("resourceType")}
           name="resourceType"
+          required
         />
 
         <TextField
@@ -106,6 +108,7 @@ export default function EditCreateResources({ register, errors, control, action,
           InputLabelProps={{ shrink: true }}
           label={t("seatingCapacity.full")}
           name="seatingCapacity"
+          required
         />
 
         <TextField
@@ -119,6 +122,7 @@ export default function EditCreateResources({ register, errors, control, action,
           InputLabelProps={{ shrink: true }}
           label={t("location")}
           name="location"
+          required
         />
 
         <TextField
@@ -132,6 +136,7 @@ export default function EditCreateResources({ register, errors, control, action,
           InputLabelProps={{ shrink: true }}
           label={t("floor")}
           name="floor"
+          required
         />
 
         <Controller

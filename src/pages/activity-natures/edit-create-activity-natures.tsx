@@ -53,6 +53,7 @@ export default function EditCreateActivityNatures({ register, errors, control, a
         InputLabelProps={{ shrink: true }}
         label={t("Name")}
         name="name"
+        required
       />
 
       {!isCreate && (

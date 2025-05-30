@@ -148,6 +148,7 @@ export default function EditCreateResourceSchedules({ register, errors, control,
                     margin: "normal",
                     label: t("Start Date"),
                     InputLabelProps: { shrink: true },
+                    required: true,
                   },
                 }}
               />
@@ -180,6 +181,7 @@ export default function EditCreateResourceSchedules({ register, errors, control,
                     helperText: fieldState.error?.message,
                     InputLabelProps: { shrink: true },
                     placeholder: "e.g. 13:00",
+                    required: true,
                   },
                 }}
               />
@@ -343,6 +345,7 @@ export default function EditCreateResourceSchedules({ register, errors, control,
                       label: t("End Date"),
                       InputLabelProps: { shrink: true },
                       error: !!timeError,
+                      required: true,
                     },
                   }}
                 />
@@ -376,6 +379,7 @@ export default function EditCreateResourceSchedules({ register, errors, control,
                     helperText: fieldState.error?.message,
                     InputLabelProps: { shrink: true },
                     placeholder: "e.g. 18:00",
+                    required: true,
                   },
                 }}
               />
