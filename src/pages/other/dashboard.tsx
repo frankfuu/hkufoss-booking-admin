@@ -87,7 +87,7 @@ export const Dashboard = () => {
               }}
             >
               <EventSeatIcon fontSize="large" sx={{ marginBottom: 1 }} />
-              <Typography>Manage bookings</Typography>
+              <Typography>Manage Bookings</Typography>
             </Button>
             <Button
               sx={{
@@ -111,7 +111,7 @@ export const Dashboard = () => {
               }}
             >
               <MeetingRoomIcon fontSize="large" sx={{ marginBottom: 1 }} />
-              <Typography>Manage Rooms</Typography>
+              <Typography>Manage Resources</Typography>
             </Button>
 
             <Button
