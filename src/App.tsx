@@ -18,7 +18,7 @@ import routerBindings, {
   UnsavedChangesNotifier,
 } from "@refinedev/react-router-v6";
 import dataProvider from "@refinedev/simple-rest";
-import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Outlet, Route, Routes, useLocation } from "react-router-dom";
 import { authProvider } from "./authProvider";
 import { Header } from "./components/header";
 import { ColorModeContextProvider } from "./contexts/color-mode";
@@ -462,6 +462,17 @@ const AppContent = () => {
   );
 };
 
+const CustomScrollRestoration = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    // scroll to top when location changes
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
+  return null;
+};
+
 function App() {
   const basePath = import.meta.env.VITE_BASE_PATH || "/";
 
@@ -470,6 +481,7 @@ function App() {
   return (
     <Provider store={store}>
       <BrowserRouter basename={basePath}>
+        <CustomScrollRestoration />
         <RefineKbarProvider>
           <ColorModeContextProvider>
             <UserOptionsProvider>
