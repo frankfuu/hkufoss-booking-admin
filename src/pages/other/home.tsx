@@ -9,6 +9,7 @@ import {
   useCustomMutation,
   useResource,
   useGetIdentity,
+  Link,
 } from "@refinedev/core";
 
 import { Show, NumberField, DateField, useAutocomplete, Create, useDataGrid, ListButton, RefreshButton } from "@refinedev/mui";
@@ -78,7 +79,22 @@ export const Home = () => {
               p: 2,
             }}
           >
-            <Typography sx={{ fontWeight: "bold", fontSize: 20, marginBottom: 2, marginTop: 2 }}>{t("bookaroom")}</Typography>
+            <Typography sx={{ fontWeight: "bold", fontSize: 20, marginBottom: 2, marginTop: 2 }}>
+              {t("bookaroom")} ({" "}
+              <Link
+                style={{ fontWeight: "bold", color: "green" }}
+                go={{
+                  to: {
+                    resource: "bookings",
+                    action: "create",
+                  },
+                }}
+              >
+                {t(" or Calendar View")}
+              </Link>{" "}
+              )
+            </Typography>
+
             <BookARoom />
           </Box>
         </Grid>
