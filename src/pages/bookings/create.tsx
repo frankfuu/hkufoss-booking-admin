@@ -92,7 +92,7 @@ export const BookingCreate = () => {
           >
             {rid ? (
               <Box sx={{ gridColumn: "span 3" }} key={tgtResource?.id}>
-                <h3 style={{ margin: 0 }}>
+                <h3 style={{ marginBottom: 5 }}>
                   {tgtResource?.resourceName} - {tgtResource?.resourceType} (Resource ID: {tgtResource?.id}){" "}
                   {user?.roleId == k.ROLES.ADMIN && (
                     <>
@@ -140,14 +140,14 @@ export const BookingCreate = () => {
                     </>
                   )}
                 </h3>
-                <AvailableDaysList onSlotSelect={onSlotSelect} resourceId={tgtResource?.id} calendarHeight={500} />
+                <AvailableDaysList onSlotSelect={onSlotSelect} resourceId={tgtResource?.id} calendarHeight={550} />
               </Box>
             ) : (
               <>
                 {resourceData?.data?.map((r) => (
                   <Box sx={{ gridColumn: "span 3" }} key={r.id}>
                     <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                      <h3 style={{ margin: 0 }}>
+                      <h3 style={{ marginBottom: 5 }}>
                         {r?.resourceName} - {r?.resourceType} (Resource ID: {r?.id}){" "}
                         {user?.roleId == k.ROLES.ADMIN && (
                           <>
@@ -196,7 +196,7 @@ export const BookingCreate = () => {
                         )}
                       </h3>
                     </Box>
-                    <AvailableDaysList onSlotSelect={onSlotSelect} resourceId={r.id} />
+                    <AvailableDaysList onSlotSelect={onSlotSelect} resourceId={r.id} calendarHeight={550} />
                   </Box>
                 ))}
               </>
