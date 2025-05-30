@@ -200,6 +200,7 @@ export default function EditCreateBookings({ register, errors, control, action, 
             InputLabelProps={{ shrink: true }}
             label={t("noAttendees")}
             name="noAttendees"
+            type="number"
             required
           />
           <TextField
@@ -214,6 +215,7 @@ export default function EditCreateBookings({ register, errors, control, action, 
             InputLabelProps={{ shrink: true }}
             label={t("contactPerson")}
             name="contactPerson"
+            required
           />
           <Controller
             control={control}
