@@ -8,7 +8,8 @@ i18n
   .use(detector)
   .use(initReactI18next)
   .init({
-    supportedLngs: ["en", "zh_HK"],
+    // supportedLngs: ["en", "zh_HK"],
+    supportedLngs: ["en"],
     backend: {
       loadPath: "/admin/locales/{{lng}}/{{ns}}.json",
     },

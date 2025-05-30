@@ -61,14 +61,14 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({ sticky = tru
           ></Box>
 
           <Stack direction="row" width="100%" justifyContent="flex-end" alignItems="center">
-            <Button
+            {/* <Button
               sx={{ mx: 2 }}
               onClick={() => {
                 changeLocale(currentLocale == "en" ? "zh_HK" : "en");
               }}
             >
               {currentLocale == "en" ? "繁" : "Eng"}
-            </Button>
+            </Button> */}
 
             {(user?.avatar || user?.username) && (
               <Stack direction="row" gap="16px" alignItems="center" justifyContent="center">
