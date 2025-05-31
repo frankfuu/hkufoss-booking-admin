@@ -35,7 +35,7 @@ export default function EditCreateResources({ register, errors, control, action,
 
   const filterOptions = createFilterOptions({
     matchFrom: "any",
-    stringify: (option: any) => `${option?.resourceName} ${option?.resourceType}`,
+    stringify: (option: any) => `${option?.resourceName}`,
   });
 
   const resourcesData = query?.data?.data;
@@ -155,7 +155,7 @@ export default function EditCreateResources({ register, errors, control, action,
               }}
               getOptionLabel={(item) => {
                 const option = resourceAddonAutocompleteProps.options.find((p) => p.id == (item?.id ?? item));
-                return `${option?.resourceName} (${option?.resourceType})`;
+                return `${option?.resourceName}`;
               }}
               isOptionEqualToValue={(option, value) =>
                 value === undefined || option?.id?.toString() === (value?.id ?? value)?.toString()
