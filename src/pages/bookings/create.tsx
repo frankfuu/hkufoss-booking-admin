@@ -73,7 +73,8 @@ export const BookingCreate = () => {
   } else {
     return (
       <Create
-        title={<Typography variant="h5">{t("create") + " " + t("booking")}</Typography>}
+        // title={<Typography variant="h5">{t("create") + " " + t("booking")}</Typography>}
+        title={<Typography variant="h5">{t("Booking Calendar")}</Typography>}
         headerButtons={({ defaultButtons }) => (
           <>
             <ListButton />
