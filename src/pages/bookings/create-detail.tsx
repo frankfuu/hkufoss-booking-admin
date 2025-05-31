@@ -46,7 +46,9 @@ export const BookingsCreateDetail = () => {
       isLoading={formLoading}
       saveButtonProps={{ ...saveButtonProps, onClick: handleSubmit(onSubmit) }}
     >
-      <EditCreateBookings {...{ register, errors, control, action: "create", slotData: slotData, setValue, query }} />
+      <EditCreateBookings
+        {...{ register, errors, control, action: "create", slotData: slotData, setValue, query, isEditable: true }}
+      />
     </Create>
   );
 };

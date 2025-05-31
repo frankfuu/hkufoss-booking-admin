@@ -198,7 +198,7 @@ const MyBookings = () => {
       {
         field: "status",
         headerName: t("status"),
-        minWidth: 100,
+        minWidth: 120,
         type: "singleSelect",
         valueOptions: d.BOOKINGS.STATUS.OPTIONS,
         getOptionValue: (value: any) => value?.value,

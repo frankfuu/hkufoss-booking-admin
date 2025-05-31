@@ -81,7 +81,7 @@ const dropdownOptions = {
     STATUS: {
       DEFAULT: "PENDING",
       OPTIONS: [
-        { label: "ATTENDED", value: "ATTENDED", apiAction: "complate" },
+        // { label: "ATTENDED", value: "ATTENDED", apiAction: "complate" },
         { label: "CONFIRMED", value: "CONFIRMED", apiAction: "confirm" },
         { label: "PENDING", value: "PENDING", apiAction: null, notSelectable: true },
         { label: "CANCELLED", value: "CANCELLED", apiAction: "cancel" },
