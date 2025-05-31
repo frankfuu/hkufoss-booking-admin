@@ -105,10 +105,17 @@ export const authProvider: AuthProvider = {
   onError: async (error: HttpError | Error | undefined) => {
     console.log(`authProvider.onError() called... the error is`);
     console.log(error);
-    if ((error as HttpError)?.statusCode === 401 || (error as HttpError)?.statusCode === 403) {
+    if ((error as HttpError)?.statusCode === 401) {
       return {
         logout: true,
         redirectTo: "/login",
+        error,
+      };
+    }
+    if ((error as HttpError)?.statusCode === 403) {
+      return {
+        logout: false,
+        redirectTo: "/",
         error,
       };
     }
