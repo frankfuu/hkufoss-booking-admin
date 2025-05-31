@@ -140,61 +140,63 @@ export const BookingCreate = () => {
               </Box>
             ) : (
               <>
-                {resourceData?.data?.map((r) => (
-                  <Box sx={{ gridColumn: "span 3" }} key={r.id}>
-                    <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                      <h3 style={{ marginBottom: 5 }}>
-                        {r?.resourceName} - {r?.resourceType} (Resource ID: {r?.id}){" "}
-                        {user?.roleId == k.ROLES.ADMIN && (
-                          <>
-                            [View{" "}
-                            <Link
-                              go={{
-                                query: {
-                                  filters: [
-                                    {
-                                      operator: "eq",
-                                      value: r?.id,
-                                      field: "resourceId",
-                                    },
-                                  ],
-                                },
-                                to: {
-                                  resource: "resource-schedules",
-                                  action: "list",
-                                },
-                              }}
-                            >
-                              Schedules ({r?.schedules?.length})
-                            </Link>
-                            {" or "}
-                            <Link
-                              go={{
-                                query: {
-                                  filters: [
-                                    {
-                                      operator: "eq",
-                                      value: r?.id,
-                                      field: "resourceId",
-                                    },
-                                  ],
-                                },
-                                to: {
-                                  resource: "resource-exceptions",
-                                  action: "list",
-                                },
-                              }}
-                            >
-                              Exceptions ({r?.exceptions?.length})
-                            </Link>
-                            ]
-                          </>
-                        )}
-                      </h3>
+                {resourceData?.data
+                  ?.filter((x) => x.parentId == null)
+                  .map((r) => (
+                    <Box sx={{ gridColumn: "span 3" }} key={r.id}>
+                      <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                        <h3 style={{ marginBottom: 5 }}>
+                          {r?.resourceName} - {r?.resourceType} (Resource ID: {r?.id}){" "}
+                          {user?.roleId == k.ROLES.ADMIN && (
+                            <>
+                              [View{" "}
+                              <Link
+                                go={{
+                                  query: {
+                                    filters: [
+                                      {
+                                        operator: "eq",
+                                        value: r?.id,
+                                        field: "resourceId",
+                                      },
+                                    ],
+                                  },
+                                  to: {
+                                    resource: "resource-schedules",
+                                    action: "list",
+                                  },
+                                }}
+                              >
+                                Schedules ({r?.schedules?.length})
+                              </Link>
+                              {" or "}
+                              <Link
+                                go={{
+                                  query: {
+                                    filters: [
+                                      {
+                                        operator: "eq",
+                                        value: r?.id,
+                                        field: "resourceId",
+                                      },
+                                    ],
+                                  },
+                                  to: {
+                                    resource: "resource-exceptions",
+                                    action: "list",
+                                  },
+                                }}
+                              >
+                                Exceptions ({r?.exceptions?.length})
+                              </Link>
+                              ]
+                            </>
+                          )}
+                        </h3>
+                      </Box>
+                      <AvailableDaysList onSlotSelect={onSlotSelect} resourceId={r.id} calendarHeight={550} />
                     </Box>
-                    <AvailableDaysList onSlotSelect={onSlotSelect} resourceId={r.id} calendarHeight={550} />
-                  </Box>
-                ))}
+                  ))}
               </>
             )}
           </Box>
