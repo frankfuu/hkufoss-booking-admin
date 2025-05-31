@@ -82,7 +82,9 @@ export const BookingsEdit = () => {
               variant="contained"
               color="error"
               onClick={() => {
-                handleStatusUpdate(d.BOOKINGS.STATUS.LIST.CANCELLED);
+                if (window.confirm("Are you sure you want to cancel this booking?")) {
+                  handleStatusUpdate(d.BOOKINGS.STATUS.LIST.CANCELLED);
+                }
               }}
             >
               Cancel Booking
