@@ -325,7 +325,13 @@ const AppContent = () => {
           clientConfig: {
             defaultOptions: {
               queries: {
-                retry: 3,
+                retry: (failureCount, error) => {
+                  console.log(`retrying.... ${failureCount}, error `, error);
+                  if (error && typeof error === "object" && "statusCode" in error && (error as any).statusCode === 403) {
+                    return false; // Do not retry on 403
+                  }
+                  return failureCount < 3; // Retry up to 3 times for other errors
+                },
               },
             },
           },
@@ -351,23 +357,26 @@ const AppContent = () => {
         >
           <Route index element={<NavigateToResource resource="home" />} />
 
-          {/* <Route path="/forms/builder">
-          <Route index element={<FormBuilderPage />} />
-          <Route path="inner" element={<FrankPageInner />} />
-        </Route> */}
           <Route path="/debug">
             <Route index element={<DebugShow />} />
             <Route path="inner" element={<FrankPageInner />} />
           </Route>
 
-          <Route path="/bookings">
+          {/* <Route path="/bookings">
             {user?.roleId == k.ROLES.ADMIN && <Route index element={<BookingsList />} />}
             <Route path="/bookings/create" element={<BookingCreate />} />
             <Route path="/bookings/create/:id" element={<BookingCreate />} />
             <Route path="/bookings/edit/:id" element={<BookingsEdit />} />
             <Route path="/bookings/create/details" element={<BookingsCreateDetail />} />
             <Route path="/bookings/create/:id/details" element={<BookingsCreateDetail />} />
-          </Route>
+          </Route> */}
+
+          {user?.roleId == k.ROLES.ADMIN && <Route path="/bookings" element={<BookingsList />} />}
+          <Route path="/bookings/create" element={<BookingCreate />} />
+          <Route path="/bookings/create/:id" element={<BookingCreate />} />
+          <Route path="/bookings/edit/:id" element={<BookingsEdit />} />
+          <Route path="/bookings/create/details" element={<BookingsCreateDetail />} />
+          <Route path="/bookings/create/:id/details" element={<BookingsCreateDetail />} />
           <Route path="/home">
             <Route index element={<Home />}></Route>
           </Route>
