@@ -59,7 +59,12 @@ export const myDataProvider: DataProvider = {
       });
     }
 
-    const url = `${API_URL}/${resource}?${params.toString()}`;
+    let resourceName = resource;
+    if (meta?.resourceOverride) {
+      resourceName = meta.resourceOverride;
+    }
+
+    const url = `${API_URL}/${resourceName}?${params.toString()}`;
 
     try {
       const response = await fetchWithRefresh(url);

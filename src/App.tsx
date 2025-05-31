@@ -362,15 +362,6 @@ const AppContent = () => {
             <Route path="inner" element={<FrankPageInner />} />
           </Route>
 
-          {/* <Route path="/bookings">
-            {user?.roleId == k.ROLES.ADMIN && <Route index element={<BookingsList />} />}
-            <Route path="/bookings/create" element={<BookingCreate />} />
-            <Route path="/bookings/create/:id" element={<BookingCreate />} />
-            <Route path="/bookings/edit/:id" element={<BookingsEdit />} />
-            <Route path="/bookings/create/details" element={<BookingsCreateDetail />} />
-            <Route path="/bookings/create/:id/details" element={<BookingsCreateDetail />} />
-          </Route> */}
-
           {user?.roleId == k.ROLES.ADMIN && <Route path="/bookings" element={<BookingsList />} />}
           <Route path="/bookings/create" element={<BookingCreate />} />
           <Route path="/bookings/create/:id" element={<BookingCreate />} />

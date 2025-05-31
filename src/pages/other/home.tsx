@@ -110,18 +110,19 @@ const MyBookings = () => {
   const beginningOfDay = startOfDay(new Date());
   const conclusionOfDay = endOfDay(new Date());
   const { dataGridProps } = useDataGrid({
+    queryOptions: {
+      enabled: !!user,
+    },
     resource: "bookings",
+    meta: {
+      resourceOverride: `bookings/user/${user?.id}`,
+    },
     filters: {
       permanent: [
         {
           field: "startTime",
           operator: "gte",
           value: beginningOfDay.toISOString(),
-        },
-        {
-          field: "userId",
-          operator: "eq",
-          value: user?.id,
         },
       ],
     },
