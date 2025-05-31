@@ -173,7 +173,11 @@ export const BookingsList = () => {
                   <Button
                     size="small"
                     sx={{ mr: 2 }}
-                    onClick={() => handleStatusUpdate(row, d.BOOKINGS.STATUS.LIST.CANCELLED)}
+                    onClick={() => {
+                      if (window.confirm(t("bookingCancelPrompt"))) {
+                        handleStatusUpdate(row, d.BOOKINGS.STATUS.LIST.CANCELLED);
+                      }
+                    }}
                     variant="outlined"
                     color="error"
                   >

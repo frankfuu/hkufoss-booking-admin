@@ -82,7 +82,7 @@ export const BookingsEdit = () => {
               variant="contained"
               color="error"
               onClick={() => {
-                if (window.confirm("Are you sure you want to cancel this booking?")) {
+                if (window.confirm(t("bookingCancelPrompt"))) {
                   handleStatusUpdate(d.BOOKINGS.STATUS.LIST.CANCELLED);
                 }
               }}

@@ -470,6 +470,7 @@
     "book": "Book",
     "bookedBy": "Booked By",
     "bookNoOpening": "No Openings",
+    "bookingCancelPrompt": "Are you sure you want to cancel this booking?",
     "courses": "Courses",
     "funders": "Funders",
     "activity-natures": "Activity Nature",
