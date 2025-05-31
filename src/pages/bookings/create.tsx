@@ -33,7 +33,7 @@ export const BookingCreate = () => {
 
   const onSlotSelect = (data: any) => {
     // create new booking
-    if (!data.slot.hasBookingConflict && !data.slot.hasException) {
+    if (!data.slot.hasBookingConflict && !data.slot.hasException && !data.slot.inPast) {
       navigate(`details`, { state: { ...data } });
     }
 

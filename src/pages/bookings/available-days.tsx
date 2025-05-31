@@ -72,6 +72,7 @@ export const AvailableDaysList = ({ onSlotSelect, resourceId, calendarHeight }: 
             bookingId: number;
             bookingStatus: string;
             exceptionId: string;
+            inPast: boolean;
           }) => ({
             title: (
               <Box
@@ -83,7 +84,7 @@ export const AvailableDaysList = ({ onSlotSelect, resourceId, calendarHeight }: 
               >
                 <Typography variant="body1">{`${slot.hasException ? `Closed (${slot.exceptionId})` : ""} ${
                   slot.hasBookingConflict ? `${capitalizeFirstLetter(slot?.bookingStatus)} (${slot?.bookingId})` : ""
-                } ${!slot.hasBookingConflict && !slot.hasException ? "Select" : ""}`}</Typography>
+                } ${!slot.hasBookingConflict && !slot.hasException && !slot.inPast ? "Select" : ""}`}</Typography>
               </Box>
             ),
             start: new Date(`${day.date}T${slot.from}`), // Combine date and time for start
@@ -114,6 +115,7 @@ export const AvailableDaysList = ({ onSlotSelect, resourceId, calendarHeight }: 
         borderColor: bgColor,
         borderRadius: "0px", // Optional: Add rounded corners
         padding: "2px", // Optional: Add padding
+        opacity: event.meta.slot.inPast ? 0.3 : 1,
       },
     };
   };
