@@ -1,7 +1,7 @@
 import React from "react";
 import { useDataGrid, EditButton, ShowButton, DeleteButton, List, DateField, CloneButton } from "@refinedev/mui";
 import { DataGrid, GridColDef, GridToolbar, getGridSingleSelectOperators } from "@mui/x-data-grid";
-import { Box, Button, ButtonGroup, Checkbox, Chip } from "@mui/material";
+import { Box, Button, ButtonGroup, Checkbox, Chip, Grid, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import { useCustomMutation, useList, useNavigation, usePermissions, useResource } from "@refinedev/core";
 import { d, k } from "../../common/constants";
 import { useTranslation } from "react-i18next";
@@ -11,6 +11,7 @@ export const BookingsList = () => {
   const { t } = useTranslation();
   const [selectedStatus, setSelectedStatus] = React.useState<string | null>("ALL");
   const [selectedTimeRange, setSelectedTimeRange] = React.useState<string | null>("ALL");
+  const [selectedResource, setSelectedResource] = React.useState<string | null>("ALL");
   const {
     dataGridProps,
     setFilters,
@@ -220,117 +221,183 @@ export const BookingsList = () => {
     [resourcesData, t]
   );
 
+  const handleResourceChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    const resourceId = event.target.value as string;
+    setSelectedResource(resourceId);
+
+    if (resourceId === "ALL") {
+      setFilters((prevFilters) => [
+        // remove any existing 'resourceId' filter
+        ...prevFilters.filter((f) => "field" in f && f.field !== "resourceId"),
+      ]);
+    } else {
+      setFilters((prevFilters) => [
+        // remove any existing 'resourceId' filter
+        ...prevFilters.filter((f) => "field" in f && f.field !== "resourceId"),
+        {
+          field: "resourceId",
+          operator: "eq",
+          value: resourceId,
+        },
+      ]);
+    }
+  };
+
   return (
     <List headerButtons={({ defaultButtons }) => <>{defaultButtons}</>}>
-      <Box sx={{ mb: 2 }}>
-        <Box sx={{ mb: 1 }}>
-          <Box component="span" sx={{ fontWeight: "bold", display: "block", mb: 1 }}>
-            Filter by Status:
+      <Grid container spacing={1} sx={{ mb: 2 }}>
+        {/* Resource filter  */}
+        <Grid item xs={12} md={4}>
+          <Box sx={{ mb: 0.5 }}>
+            <Box component="span" sx={{ fontWeight: "bold", display: "block", mb: 0.5 }}>
+              Filter by Resource:
+            </Box>
+            <FormControl size="small">
+              <Select
+                size="small"
+                value={selectedResource}
+                onChange={handleResourceChange as any}
+                displayEmpty
+                sx={{
+                  minWidth: "200px",
+                  height: "32px",
+                  "& .MuiSelect-select": {
+                    padding: "4px 14px",
+                  },
+                }}
+              >
+                <MenuItem value="ALL">All Resources</MenuItem>
+                {resourcesData?.data?.map((resource) => (
+                  <MenuItem key={resource.id} value={resource.id.toString()}>
+                    {resource.resourceName}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </Box>
-          <ButtonGroup aria-label="Basic button group">
-            <Button
-              variant={selectedStatus === "ALL" ? "contained" : "outlined"}
-              onClick={() => {
-                setSelectedStatus("ALL");
-                setFilters([]);
-              }}
-            >
-              ALL
-            </Button>
-            <Button
-              variant={selectedStatus === d.BOOKINGS.STATUS.LIST.PENDING ? "contained" : "outlined"}
-              onClick={() => {
-                setSelectedStatus(d.BOOKINGS.STATUS.LIST.PENDING);
-                setFilters([
-                  {
-                    field: "status",
-                    operator: "eq",
-                    value: d.BOOKINGS.STATUS.LIST.PENDING,
-                  },
-                ]);
-              }}
-            >
-              {d.BOOKINGS.STATUS.LIST.PENDING}
-            </Button>
-            <Button
-              variant={selectedStatus === d.BOOKINGS.STATUS.LIST.CANCELLED ? "contained" : "outlined"}
-              onClick={() => {
-                setSelectedStatus(d.BOOKINGS.STATUS.LIST.CANCELLED);
-                setFilters([
-                  {
-                    field: "status",
-                    operator: "eq",
-                    value: d.BOOKINGS.STATUS.LIST.CANCELLED,
-                  },
-                ]);
-              }}
-            >
-              {d.BOOKINGS.STATUS.LIST.CANCELLED}
-            </Button>
-            <Button
-              variant={selectedStatus === d.BOOKINGS.STATUS.LIST.CONFIRMED ? "contained" : "outlined"}
-              onClick={() => {
-                setSelectedStatus(d.BOOKINGS.STATUS.LIST.CONFIRMED);
-                setFilters([
-                  {
-                    field: "status",
-                    operator: "eq",
-                    value: d.BOOKINGS.STATUS.LIST.CONFIRMED,
-                  },
-                ]);
-              }}
-            >
-              {d.BOOKINGS.STATUS.LIST.CONFIRMED}
-            </Button>
-          </ButtonGroup>
-        </Box>
-        <Box sx={{ mb: 1 }}>
-          <Box component="span" sx={{ fontWeight: "bold", display: "block", mb: 1 }}>
-            Filter by time range:
+        </Grid>
+        {/* Status filter  */}
+        <Grid item xs={12} md={4}>
+          <Box sx={{ mb: 0.5 }}>
+            <Box component="span" sx={{ fontWeight: "bold", display: "block", mb: 0.5 }}>
+              Filter by Status:
+            </Box>
+            <ButtonGroup aria-label="Status filter button group" size="small" sx={{ flexWrap: "wrap" }}>
+              <Button
+                variant={selectedStatus === "ALL" ? "contained" : "outlined"}
+                onClick={() => {
+                  setSelectedStatus("ALL");
+                  setFilters((prevFilters) => [...prevFilters.filter((f) => "field" in f && f.field !== "status")]);
+                }}
+              >
+                ALL
+              </Button>
+              <Button
+                variant={selectedStatus === d.BOOKINGS.STATUS.LIST.PENDING ? "contained" : "outlined"}
+                onClick={() => {
+                  setSelectedStatus(d.BOOKINGS.STATUS.LIST.PENDING);
+                  setFilters((prevFilters) => [
+                    ...prevFilters.filter((f) => "field" in f && f.field !== "status"),
+                    {
+                      field: "status",
+                      operator: "eq",
+                      value: d.BOOKINGS.STATUS.LIST.PENDING,
+                    },
+                  ]);
+                }}
+              >
+                {d.BOOKINGS.STATUS.LIST.PENDING}
+              </Button>
+              <Button
+                variant={selectedStatus === d.BOOKINGS.STATUS.LIST.CANCELLED ? "contained" : "outlined"}
+                onClick={() => {
+                  setSelectedStatus(d.BOOKINGS.STATUS.LIST.CANCELLED);
+                  setFilters((prevFilters) => [
+                    ...prevFilters.filter((f) => "field" in f && f.field !== "status"),
+                    {
+                      field: "status",
+                      operator: "eq",
+                      value: d.BOOKINGS.STATUS.LIST.CANCELLED,
+                    },
+                  ]);
+                }}
+              >
+                {d.BOOKINGS.STATUS.LIST.CANCELLED}
+              </Button>
+              <Button
+                variant={selectedStatus === d.BOOKINGS.STATUS.LIST.CONFIRMED ? "contained" : "outlined"}
+                onClick={() => {
+                  setSelectedStatus(d.BOOKINGS.STATUS.LIST.CONFIRMED);
+                  setFilters((prevFilters) => [
+                    // Remove any existing 'status' filter
+                    ...prevFilters.filter((f) => "field" in f && f.field !== "status"),
+                    {
+                      field: "status",
+                      operator: "eq",
+                      value: d.BOOKINGS.STATUS.LIST.CONFIRMED,
+                    },
+                  ]);
+                }}
+              >
+                {d.BOOKINGS.STATUS.LIST.CONFIRMED}
+              </Button>
+            </ButtonGroup>
           </Box>
-          <ButtonGroup aria-label="Basic button group">
-            <Button
-              variant={selectedTimeRange === "ALL" ? "contained" : "outlined"}
-              onClick={() => {
-                setSelectedTimeRange("ALL");
-                setFilters([]);
-              }}
-            >
-              ALL
-            </Button>
-            <Button
-              variant={selectedTimeRange === "PAST" ? "contained" : "outlined"}
-              onClick={() => {
-                setSelectedTimeRange("PAST");
-                setFilters([
-                  {
-                    field: "startTime",
-                    operator: "lte",
-                    value: new Date().toISOString(),
-                  },
-                ]);
-              }}
-            >
-              {"PAST"}
-            </Button>
-            <Button
-              variant={selectedTimeRange === "FUTURE" ? "contained" : "outlined"}
-              onClick={() => {
-                setSelectedTimeRange("FUTURE");
-                setFilters([
-                  {
-                    field: "startTime",
-                    operator: "gte",
-                    value: new Date().toISOString(),
-                  },
-                ]);
-              }}
-            >
-              {"FUTURE"}
-            </Button>
-          </ButtonGroup>
-        </Box>
-      </Box>
+        </Grid>
+
+        {/* Time range filter */}
+        <Grid item xs={12} md={4}>
+          <Box sx={{ mb: 0.5 }}>
+            <Box component="span" sx={{ fontWeight: "bold", display: "block", mb: 0.5 }}>
+              Filter by Time Range:
+            </Box>
+            <ButtonGroup aria-label="Time range filter button group" size="small">
+              <Button
+                variant={selectedTimeRange === "ALL" ? "contained" : "outlined"}
+                onClick={() => {
+                  setSelectedTimeRange("ALL");
+                  setFilters((prevFilters) => [...prevFilters.filter((f) => "field" in f && f.field !== "startTime")]);
+                }}
+              >
+                ALL
+              </Button>
+              <Button
+                variant={selectedTimeRange === "PAST" ? "contained" : "outlined"}
+                onClick={() => {
+                  setSelectedTimeRange("PAST");
+                  setFilters((prevFilters) => [
+                    ...prevFilters.filter((f) => "field" in f && f.field !== "startTime"),
+                    {
+                      field: "startTime",
+                      operator: "lte",
+                      value: new Date().toISOString(),
+                    },
+                  ]);
+                }}
+              >
+                {"PAST"}
+              </Button>
+              <Button
+                variant={selectedTimeRange === "FUTURE" ? "contained" : "outlined"}
+                onClick={() => {
+                  setSelectedTimeRange("FUTURE");
+                  setFilters((prevFilters) => [
+                    ...prevFilters.filter((f) => "field" in f && f.field !== "startTime"),
+                    {
+                      field: "startTime",
+                      operator: "gte",
+                      value: new Date().toISOString(),
+                    },
+                  ]);
+                }}
+              >
+                {"FUTURE"}
+              </Button>
+            </ButtonGroup>
+          </Box>
+        </Grid>
+      </Grid>
+
       <DataGrid
         {...dataGridProps}
         columns={columns}

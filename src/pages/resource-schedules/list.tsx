@@ -135,7 +135,6 @@ export const ResourceScheduleListings = () => {
 
   return (
     <List>
-      <p>RID : {rid}</p>
       <DataGrid
         {...dataGridProps}
         columns={columns}
