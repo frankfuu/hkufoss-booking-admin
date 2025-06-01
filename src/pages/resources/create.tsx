@@ -43,7 +43,7 @@ export const ResourcesCreate = () => {
 
   return (
     <Create
-      title={<Typography variant="h5">{t("create") + " " + t("Resources")}</Typography>}
+      title={<Typography variant="h5">{t("create") + " " + (isChildPage ? t("Sub Resource") : t("Resource"))}</Typography>}
       isLoading={formLoading}
       saveButtonProps={{ ...saveButtonProps, onClick: handleSubmit(onSubmit) }}
     >
