@@ -107,19 +107,34 @@ export default function EditCreateResources({ register, errors, control, action,
           size="small"
         />
 
-        <TextField
-          {...register("resourceType", {
-            required: "This field is required",
-          })}
-          error={!!(errors as any)?.resourceType}
-          helperText={(errors as any)?.resourceType?.message}
-          margin="normal"
-          fullWidth
-          InputLabelProps={{ shrink: true }}
-          label={t("resourceType")}
+        <Controller
+          control={control}
           name="resourceType"
-          required
-          size="small"
+          rules={{ required: "This field is required" }}
+          defaultValue={isChildPage ? d.RESOURCES.TYPES.SUB_RESOURCE_DEFAULT : d.RESOURCES.TYPES.DEFAULT}
+          render={({ field }) => (
+            <Autocomplete
+              {...field}
+              options={d.RESOURCES.TYPES.OPTIONS}
+              getOptionLabel={(option) => t(option.label)}
+              value={d.RESOURCES.TYPES.OPTIONS.find((option) => option.value === field.value) || null}
+              onChange={(_, newValue) => {
+                field.onChange(newValue?.value);
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  size="small"
+                  label={t("resourceType")}
+                  margin="normal"
+                  variant="outlined"
+                  error={!!(errors as any)?.status}
+                  helperText={(errors as any)?.status?.message}
+                  required
+                />
+              )}
+            />
+          )}
         />
 
         {!isChildPage && (

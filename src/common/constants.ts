@@ -94,42 +94,18 @@ const dropdownOptions = {
       },
     },
   },
-  CENTRE: {
-    CENTRE_TYPE: {
-      DEFAULT: "CARER_SPACE",
+  RESOURCES: {
+    TYPES: {
+      DEFAULT: "Meeting Room",
+      SUB_RESOURCE_DEFAULT: "Seat",
       OPTIONS: [
-        { label: "CARER_SPACE", value: "CARER_SPACE" },
-        { label: "SERVICE_POINT", value: "SERVICE_POINT" },
-        { label: "SHARED_VENUE", value: "SHARED_VENUE" },
-      ],
-    },
-  },
-  CHECKIN: {
-    CHECKIN_METHOD: {
-      DEFAULT: "MEMBER_CARD",
-      OPTIONS: [
-        { label: "MEMBER_CARD", value: "MEMBER_CARD" },
-        { label: "NAME_CHINESE", value: "NAME_CHINESE" },
-        { label: "NAME_ENGLISH", value: "NAME_ENGLISH" },
-        { label: "PHONE", value: "PHONE" },
-        { label: "MANUAL", value: "MANUAL" },
-      ],
-    },
-    CHECKIN_TYPE: {
-      DEFAULT: "ENTRY",
-      OPTIONS: [
-        { label: "ENTRY", value: "ENTRY" },
-        { label: "EXIT", value: "EXIT" },
-      ],
-    },
-  },
-  SERVICE: {
-    MEMBER_TYPE: {
-      DEFAULT: "ALL",
-      OPTIONS: [
-        { label: "ALL", value: "ALL" },
-        { label: "CARE_RECEIVER", value: "CARE_RECEIVER" },
-        { label: "CARE_GIVER", value: "CARE_GIVER" },
+        { label: "Meeting Room", value: "Meeting Room" },
+        { label: "Conference Room", value: "Conference Room" },
+        { label: "Seat", value: "Seat" },
+        { label: "Function Room", value: "Function Room" },
+        { label: "Chamber", value: "Chamber" },
+        { label: "Seminar Room", value: "Seminar Room" },
+        { label: "Meeting Room", value: "Meeting Room" },
       ],
     },
   },
