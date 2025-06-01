@@ -36,6 +36,7 @@ export const BookingsList = () => {
     pagination: {
       pageSize: k.GET_MANY_DEFAULT,
     },
+    filters: [{ field: "parentId", operator: "eq", value: "null" }],
   });
 
   const { edit } = useNavigation();
