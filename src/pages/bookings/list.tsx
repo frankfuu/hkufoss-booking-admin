@@ -268,7 +268,7 @@ export const BookingsList = () => {
               >
                 <MenuItem value="ALL">All Resources</MenuItem>
                 {resourcesData?.data?.map((resource) => (
-                  <MenuItem key={resource.id} value={resource.id.toString()}>
+                  <MenuItem key={resource.id ?? ""} value={resource.id?.toString() ?? ""}>
                     {resource.resourceName}
                   </MenuItem>
                 ))}
