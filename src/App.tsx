@@ -392,6 +392,7 @@ const AppContent = () => {
               <Route path="/resources">
                 <Route index element={<ResourceListings />} />
                 <Route path="/resources/create" element={<ResourcesCreate />} />
+                <Route path="/resources/create/:parentId/child" element={<ResourcesCreate />} />
                 <Route path="/resources/edit/:id" element={<ResourcesEdit />} />
                 <Route path="/resources/clone/:id" element={<ResourcesCreate />} />
               </Route>

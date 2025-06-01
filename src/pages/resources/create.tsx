@@ -7,30 +7,45 @@ import EditCreateActivityNatures from "./edit-create-resources";
 import EditCreateActivityTypes from "./edit-create-resources";
 import EditCreateResourceAddons from "./edit-create-resources";
 import EditCreateResources from "./edit-create-resources";
+import { useNavigate, useParams } from "react-router-dom";
+import { useGetIdentity } from "@refinedev/core";
+import { k } from "../../common/constants";
 
 export const ResourcesCreate = () => {
   const { t } = useTranslation();
 
   const {
     saveButtonProps,
-    refineCore: { formLoading },
+    refineCore: { formLoading, onFinish },
     register,
     control,
+    handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    refineCoreProps: {
+      resource: "resources",
+      redirect: false,
+    },
+  });
+
+  const p = useParams();
+
+  const isChildPage = p.parentId !== undefined && p.parentId !== null;
+
+  const navigate = useNavigate();
+
+  const onSubmit = (data: any) => {
+    // console.log("Intercepted data:", data);
+    onFinish(data).then((x) => {
+      navigate(isChildPage ? `/resources/edit/${p.parentId}` : "/resources");
+    });
+  };
 
   return (
     <Create
       title={<Typography variant="h5">{t("create") + " " + t("Resources")}</Typography>}
       isLoading={formLoading}
-      saveButtonProps={saveButtonProps}
-      footerButtons={({ defaultButtons }) => (
-        <>
-          <SaveButton variant="contained" {...saveButtonProps}>
-            {t("save")}
-          </SaveButton>
-        </>
-      )}
+      saveButtonProps={{ ...saveButtonProps, onClick: handleSubmit(onSubmit) }}
     >
       <EditCreateResources {...{ register, errors, control, action: "create" }} />
     </Create>
