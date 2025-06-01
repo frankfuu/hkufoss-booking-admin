@@ -75,27 +75,30 @@ export default function EditCreateResources({ register, errors, control, action,
           />
         )}
 
-        <TextField
-          {...register("parentId", {
-            valueAsNumber: true,
-          })}
-          defaultValue={p.parentId}
-          error={!!(errors as any)?.parentId}
-          helperText={(errors as any)?.parentId?.message}
-          margin="normal"
-          fullWidth
-          InputLabelProps={{ shrink: true }}
-          type="number"
-          label={t("Parent ID")}
-          name="parentId"
-          disabled
-          size="small"
-        />
+        {isChildPage && (
+          <TextField
+            {...register("parentId", {
+              valueAsNumber: true,
+            })}
+            defaultValue={p.parentId}
+            error={!!(errors as any)?.parentId}
+            helperText={(errors as any)?.parentId?.message}
+            margin="normal"
+            fullWidth
+            InputLabelProps={{ shrink: true }}
+            type="number"
+            label={t("Parent ID")}
+            name="parentId"
+            disabled
+            size="small"
+          />
+        )}
 
         <TextField
           {...register("resourceName", {
             required: "This field is required",
           })}
+          autoFocus={isCreate}
           error={!!(errors as any)?.resourceName}
           helperText={(errors as any)?.resourceName?.message}
           margin="normal"
