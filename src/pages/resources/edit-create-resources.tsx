@@ -66,6 +66,7 @@ export default function EditCreateResources({ register, errors, control, action,
             label={t("id")}
             name="id"
             disabled
+            size="small"
           />
         )}
 
@@ -81,6 +82,7 @@ export default function EditCreateResources({ register, errors, control, action,
           label={t("resourceName")}
           name="resourceName"
           required
+          size="small"
         />
 
         <TextField
@@ -95,12 +97,14 @@ export default function EditCreateResources({ register, errors, control, action,
           label={t("resourceType")}
           name="resourceType"
           required
+          size="small"
         />
 
         <TextField
           {...register("seatingCapacity", {
             required: "This field is required",
           })}
+          size="small"
           error={!!(errors as any)?.seatingCapacity}
           helperText={(errors as any)?.seatingCapacity?.message}
           margin="normal"
@@ -122,6 +126,7 @@ export default function EditCreateResources({ register, errors, control, action,
           InputLabelProps={{ shrink: true }}
           label={t("location")}
           name="location"
+          size="small"
           required
         />
 
@@ -136,6 +141,7 @@ export default function EditCreateResources({ register, errors, control, action,
           InputLabelProps={{ shrink: true }}
           label={t("floor")}
           name="floor"
+          size="small"
           required
         />
 
@@ -163,6 +169,7 @@ export default function EditCreateResources({ register, errors, control, action,
               renderInput={(params) => (
                 <TextField
                   {...params}
+                  size="small"
                   label={t("resourceAddons")}
                   margin="normal"
                   variant="outlined"
@@ -184,6 +191,7 @@ export default function EditCreateResources({ register, errors, control, action,
           InputLabelProps={{ shrink: true }}
           label={t("Photo 1")}
           name="photo1"
+          size="small"
         />
 
         <TextField
@@ -195,6 +203,7 @@ export default function EditCreateResources({ register, errors, control, action,
           InputLabelProps={{ shrink: true }}
           label={t("Photo 2")}
           name="photo2"
+          size="small"
         />
 
         <TextField
@@ -206,6 +215,7 @@ export default function EditCreateResources({ register, errors, control, action,
           InputLabelProps={{ shrink: true }}
           label={t("Photo 3")}
           name="photo3"
+          size="small"
         />
 
         {!isCreate && (
@@ -223,6 +233,7 @@ export default function EditCreateResources({ register, errors, control, action,
                   textField: {
                     fullWidth: true,
                     margin: "normal",
+                    size: "small",
                     label: t("updatedAt"),
                     InputLabelProps: { shrink: true },
                   },
