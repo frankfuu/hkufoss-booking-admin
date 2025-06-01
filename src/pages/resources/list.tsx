@@ -9,6 +9,9 @@ import { k } from "../../common/constants";
 export const ResourceListings = () => {
   const { t } = useTranslation();
   const { dataGridProps } = useDataGrid({
+    filters: {
+      permanent: [{ field: "parentId", operator: "eq", value: "null" }],
+    },
     sorters: {
       initial: [
         {
@@ -48,12 +51,12 @@ export const ResourceListings = () => {
       },
       {
         field: "resourceName",
-        minWidth: 200,
+        minWidth: 150,
         headerName: t("resourceName"),
       },
       {
         field: "resourceType",
-        minWidth: 130,
+        minWidth: 150,
         headerName: t("resourceType"),
       },
       {
@@ -67,9 +70,13 @@ export const ResourceListings = () => {
         headerName: t("location"),
       },
       {
-        field: "floor",
+        sortable: false,
+        field: "Seats",
+        headerName: t("Seats"),
         minWidth: 50,
-        headerName: t("floor"),
+        renderCell: function render({ row }) {
+          return row.subResources.length > 0 ? row.subResources.length : "-";
+        },
       },
 
       {
