@@ -206,7 +206,7 @@ export default function EditCreateBookings({
             />
             <TextField
               {...register("noAttendees", {
-                required: "This field is required",
+                // required: "This field is required",
               })}
               error={!!(errors as any)?.noAttendees}
               helperText={(errors as any)?.noAttendees?.message}
@@ -217,12 +217,12 @@ export default function EditCreateBookings({
               label={t("noAttendees")}
               name="noAttendees"
               type="number"
-              required
+              // required
               disabled={!isEditable}
             />
             <TextField
               {...register("contactPerson", {
-                required: "This field is required",
+                // required: "This field is required",
               })}
               error={!!(errors as any)?.contactPerson}
               helperText={(errors as any)?.contactPerson?.message}
@@ -232,7 +232,7 @@ export default function EditCreateBookings({
               InputLabelProps={{ shrink: true }}
               label={t("contactPerson")}
               name="contactPerson"
-              required
+              // required
               disabled={!isEditable}
             />
             <Controller
@@ -422,7 +422,7 @@ export default function EditCreateBookings({
             />
             <TextField
               {...register("activityName", {
-                required: "This field is required",
+                // required: "This field is required",
               })}
               error={!!(errors as any)?.activityName}
               helperText={(errors as any)?.activityName?.message}
@@ -433,7 +433,7 @@ export default function EditCreateBookings({
               InputLabelProps={{ shrink: true }}
               label={t("activity.full")}
               name="activityName"
-              required
+              // required
             />
             <Controller
               control={control}
