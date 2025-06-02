@@ -202,7 +202,7 @@ export default function EditCreateBookings({
                   value={resourceAutocompleteProps?.options?.find((option) => option.id === field.value) || null}
                   getOptionLabel={(option) => `(ID: ${option?.id}) ${option?.resourceName} - ${option?.resourceType}`}
                   renderInput={(params) => (
-                    <TextField {...params} label={t("Parent Resource")} margin="normal" variant="outlined" required />
+                    <TextField {...params} label={t("Parent Resource")} margin="normal" variant="outlined" />
                   )}
                 />
               )}
