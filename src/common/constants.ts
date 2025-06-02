@@ -106,6 +106,7 @@ const dropdownOptions = {
         { label: "Chamber", value: "Chamber" },
         { label: "Seminar Room", value: "Seminar Room" },
         { label: "Meeting Room", value: "Meeting Room" },
+        { label: "Computer Lab", value: "Computer Lab" },
       ],
     },
   },
