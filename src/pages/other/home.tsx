@@ -237,13 +237,13 @@ const BookARoom = () => {
   } = useDataGrid({
     resource: "resources",
     filters: {
-      // permanent: [
-      //   {
-      //     field: "status",
-      //     operator: "eq",
-      //     value: "PENDING",
-      //   },
-      // ],
+      permanent: [
+        {
+          field: "parentId",
+          operator: "eq",
+          value: "null",
+        },
+      ],
     },
     sorters: {
       initial: [
