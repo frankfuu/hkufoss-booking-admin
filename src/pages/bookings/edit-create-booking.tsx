@@ -40,6 +40,8 @@ export default function EditCreateBookings({
   const isCreate = action === "create";
   const booking = query.data?.data;
 
+  const isSubResource = booking && !!booking.parentResourceId;
+
   const { autocompleteProps: activityTypeAutocompleteProps } = useAutocomplete({
     resource: "activity-types",
     pagination: {
@@ -182,6 +184,29 @@ export default function EditCreateBookings({
                 />
               )}
             />
+
+            <Controller
+              control={control}
+              name="parentResourceId"
+              // rules={{ required: "This field is required" }}
+              // defaultValue={null as any}
+              defaultValue={slotData ? slotData.slot.parentResourceId : null}
+              render={({ field }) => (
+                <Autocomplete
+                  {...resourceAutocompleteProps}
+                  {...field}
+                  disabled
+                  onChange={(_, value) => field.onChange(value?.id ?? value)}
+                  filterOptions={filterOptionsResources}
+                  onInputChange={(event, value) => {}}
+                  value={resourceAutocompleteProps?.options?.find((option) => option.id === field.value) || null}
+                  getOptionLabel={(option) => `(ID: ${option?.id}) ${option?.resourceName} - ${option?.resourceType}`}
+                  renderInput={(params) => (
+                    <TextField {...params} label={t("Parent Resource")} margin="normal" variant="outlined" required />
+                  )}
+                />
+              )}
+            />
             <Controller
               control={control}
               name="startTime"
@@ -204,134 +229,122 @@ export default function EditCreateBookings({
                 />
               )}
             />
-            <TextField
-              {...register("noAttendees", {
-                // required: "This field is required",
-              })}
-              error={!!(errors as any)?.noAttendees}
-              helperText={(errors as any)?.noAttendees?.message}
-              margin="normal"
-              fullWidth
-              defaultValue={10}
-              InputLabelProps={{ shrink: true }}
-              label={t("noAttendees")}
-              name="noAttendees"
-              type="number"
-              // required
-              disabled={!isEditable}
-            />
-            <TextField
-              {...register("contactPerson", {
-                // required: "This field is required",
-              })}
-              error={!!(errors as any)?.contactPerson}
-              helperText={(errors as any)?.contactPerson?.message}
-              margin="normal"
-              fullWidth
-              defaultValue={"Contact Person Name"}
-              InputLabelProps={{ shrink: true }}
-              label={t("contactPerson")}
-              name="contactPerson"
-              // required
-              disabled={!isEditable}
-            />
-            <Controller
-              control={control}
-              name="activityTypeId"
-              // rules={{ required: "This field is required" }}
-              defaultValue={null as any}
-              disabled={!isEditable}
-              render={({ field }) => (
-                <Autocomplete
-                  {...activityTypeAutocompleteProps}
-                  {...field}
-                  filterOptions={filterOptionsActivityTypes}
-                  onChange={(_, value) => field.onChange(value?.id ?? value)}
-                  onInputChange={(event, value) => {}}
-                  value={activityTypeAutocompleteProps?.options?.find((option) => option.id === field.value) || null}
-                  getOptionLabel={(option) => `(ID: ${option?.id}) ${option?.name}`}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label={t("activity-types")}
-                      margin="normal"
-                      variant="outlined"
-                      InputLabelProps={{ shrink: true }}
+            {!isSubResource && (
+              <>
+                <TextField
+                  {...register("contactPerson", {
+                    // required: "This field is required",
+                  })}
+                  error={!!(errors as any)?.contactPerson}
+                  helperText={(errors as any)?.contactPerson?.message}
+                  margin="normal"
+                  fullWidth
+                  defaultValue={"Contact Person Name"}
+                  InputLabelProps={{ shrink: true }}
+                  label={t("contactPerson")}
+                  name="contactPerson"
+                  // required
+                  disabled={!isEditable}
+                />
+                <Controller
+                  control={control}
+                  name="activityTypeId"
+                  // rules={{ required: "This field is required" }}
+                  defaultValue={null as any}
+                  disabled={!isEditable}
+                  render={({ field }) => (
+                    <Autocomplete
+                      {...activityTypeAutocompleteProps}
+                      {...field}
+                      filterOptions={filterOptionsActivityTypes}
+                      onChange={(_, value) => field.onChange(value?.id ?? value)}
+                      onInputChange={(event, value) => {}}
+                      value={activityTypeAutocompleteProps?.options?.find((option) => option.id === field.value) || null}
+                      getOptionLabel={(option) => `(ID: ${option?.id}) ${option?.name}`}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label={t("activity-types")}
+                          margin="normal"
+                          variant="outlined"
+                          InputLabelProps={{ shrink: true }}
+                        />
+                      )}
                     />
                   )}
                 />
-              )}
-            />
-            <Controller
-              control={control}
-              name="funderId"
-              // rules={{ required: "This field is required" }}
-              defaultValue={null as any}
-              disabled={!isEditable}
-              render={({ field }) => (
-                <Autocomplete
-                  {...funderAutocompleteProps}
-                  {...field}
-                  filterOptions={filterOptionsFunders}
-                  onChange={(_, value) => field.onChange(value?.id ?? value)}
-                  onInputChange={(event, value) => {}}
-                  value={funderAutocompleteProps?.options?.find((option) => option.id === field.value) || null}
-                  getOptionLabel={(option) => `(ID: ${option?.id}) ${option?.name} (Acc. ${option?.accountCode})`}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label={t("funders")}
-                      margin="normal"
-                      variant="outlined"
-                      InputLabelProps={{ shrink: true }}
+                <Controller
+                  control={control}
+                  name="funderId"
+                  // rules={{ required: "This field is required" }}
+                  defaultValue={null as any}
+                  disabled={!isEditable}
+                  render={({ field }) => (
+                    <Autocomplete
+                      {...funderAutocompleteProps}
+                      {...field}
+                      filterOptions={filterOptionsFunders}
+                      onChange={(_, value) => field.onChange(value?.id ?? value)}
+                      onInputChange={(event, value) => {}}
+                      value={funderAutocompleteProps?.options?.find((option) => option.id === field.value) || null}
+                      getOptionLabel={(option) => `(ID: ${option?.id}) ${option?.name} (Acc. ${option?.accountCode})`}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label={t("funders")}
+                          margin="normal"
+                          variant="outlined"
+                          InputLabelProps={{ shrink: true }}
+                        />
+                      )}
                     />
                   )}
                 />
-              )}
-            />
-            <Controller
-              control={control}
-              name="resourceAddonRelations"
-              // rules={{ required: "This field is required" }}
-              defaultValue={[]}
-              disabled={!isEditable}
-              render={({ field }) => (
-                <Autocomplete
-                  multiple
-                  {...field}
-                  options={possibleAddonOptions || []}
-                  getOptionLabel={(item) => {
-                    if (!possibleAddonOptions) return "";
-                    const option = possibleAddonOptions.find((p: any) => p.value == (item?.value ?? item));
-                    return `${option?.label}`;
-                  }}
-                  onChange={(_, value) => {
-                    const addonIds = value.map((item) => item?.value ?? item);
-                    console.log(`onChange addOnIds`, addonIds);
-                    field.onChange(addonIds);
-                  }}
-                  onInputChange={(event, value) => {}}
-                  isOptionEqualToValue={(option, value) => {
-                    return value === undefined || option?.value?.toString() === (value?.value ?? value)?.toString();
-                  }}
-                  sx={{ mt: 2, mb: 1 }}
-                  renderInput={(params) => (
-                    <TextField {...params} label={t("resourceAddons")} InputLabelProps={{ shrink: true }} />
+                <Controller
+                  control={control}
+                  name="resourceAddonRelations"
+                  // rules={{ required: "This field is required" }}
+                  defaultValue={[]}
+                  disabled={!isEditable}
+                  render={({ field }) => (
+                    <Autocomplete
+                      multiple
+                      {...field}
+                      options={possibleAddonOptions || []}
+                      getOptionLabel={(item) => {
+                        if (!possibleAddonOptions) return "";
+                        const option = possibleAddonOptions.find((p: any) => p.value == (item?.value ?? item));
+                        return `${option?.label}`;
+                      }}
+                      onChange={(_, value) => {
+                        const addonIds = value.map((item) => item?.value ?? item);
+                        console.log(`onChange addOnIds`, addonIds);
+                        field.onChange(addonIds);
+                      }}
+                      onInputChange={(event, value) => {}}
+                      isOptionEqualToValue={(option, value) => {
+                        return value === undefined || option?.value?.toString() === (value?.value ?? value)?.toString();
+                      }}
+                      sx={{ mt: 2, mb: 1 }}
+                      renderInput={(params) => (
+                        <TextField {...params} label={t("resourceAddons")} InputLabelProps={{ shrink: true }} />
+                      )}
+                    />
                   )}
                 />
-              )}
-            />
-            <TextField
-              {...register("specialRequests", {})}
-              error={!!(errors as any)?.specialRequests}
-              helperText={(errors as any)?.specialRequests?.message}
-              margin="normal"
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-              label={t("specialRequests")}
-              name="specialRequests"
-              disabled={!isEditable}
-            />
+                <TextField
+                  {...register("specialRequests", {})}
+                  error={!!(errors as any)?.specialRequests}
+                  helperText={(errors as any)?.specialRequests?.message}
+                  margin="normal"
+                  fullWidth
+                  InputLabelProps={{ shrink: true }}
+                  label={t("specialRequests")}
+                  name="specialRequests"
+                  disabled={!isEditable}
+                />
+              </>
+            )}
           </Box>
           <Box sx={{ flex: 1, display: "flex", flexDirection: "column", padding: 2 }}>
             {!isCreate && (
@@ -435,71 +448,75 @@ export default function EditCreateBookings({
               name="activityName"
               // required
             />
-            <Controller
-              control={control}
-              name="activityNatureId"
-              // rules={{ required: "This field is required" }}
-              defaultValue={null as any}
-              disabled={!isEditable}
-              render={({ field }) => (
-                <Autocomplete
-                  {...activityNatureAutocompleteProps}
-                  {...field}
-                  filterOptions={filterOptionsactivityNatures}
-                  onChange={(_, value) => field.onChange(value?.id ?? value)}
-                  onInputChange={(event, value) => {}}
-                  value={activityNatureAutocompleteProps?.options?.find((option) => option.id === field.value) || null}
-                  getOptionLabel={(option) => `(ID: ${option?.id}) ${option?.name}`}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label={t("activity-natures")}
-                      margin="normal"
-                      variant="outlined"
-                      InputLabelProps={{ shrink: true }}
+            {!isSubResource && (
+              <>
+                <Controller
+                  control={control}
+                  name="activityNatureId"
+                  // rules={{ required: "This field is required" }}
+                  defaultValue={null as any}
+                  disabled={!isEditable}
+                  render={({ field }) => (
+                    <Autocomplete
+                      {...activityNatureAutocompleteProps}
+                      {...field}
+                      filterOptions={filterOptionsactivityNatures}
+                      onChange={(_, value) => field.onChange(value?.id ?? value)}
+                      onInputChange={(event, value) => {}}
+                      value={activityNatureAutocompleteProps?.options?.find((option) => option.id === field.value) || null}
+                      getOptionLabel={(option) => `(ID: ${option?.id}) ${option?.name}`}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label={t("activity-natures")}
+                          margin="normal"
+                          variant="outlined"
+                          InputLabelProps={{ shrink: true }}
+                        />
+                      )}
                     />
                   )}
                 />
-              )}
-            />
-            <Controller
-              control={control}
-              name="courseId"
-              // rules={{ required: "This field is required" }}
-              defaultValue={null as any}
-              disabled={!isEditable}
-              render={({ field }) => (
-                <Autocomplete
-                  {...courseAutocompleteProps}
-                  {...field}
-                  filterOptions={filterOptionsCourses}
-                  onChange={(_, value) => field.onChange(value?.id ?? value)}
-                  onInputChange={(event, value) => {}}
-                  value={courseAutocompleteProps?.options?.find((option) => option.id === field.value) || null}
-                  getOptionLabel={(option) => `(ID: ${option?.id}) ${option?.name} ${option?.code}`}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label={t("courses")}
-                      margin="normal"
-                      variant="outlined"
-                      InputLabelProps={{ shrink: true }}
+                <Controller
+                  control={control}
+                  name="courseId"
+                  // rules={{ required: "This field is required" }}
+                  defaultValue={null as any}
+                  disabled={!isEditable}
+                  render={({ field }) => (
+                    <Autocomplete
+                      {...courseAutocompleteProps}
+                      {...field}
+                      filterOptions={filterOptionsCourses}
+                      onChange={(_, value) => field.onChange(value?.id ?? value)}
+                      onInputChange={(event, value) => {}}
+                      value={courseAutocompleteProps?.options?.find((option) => option.id === field.value) || null}
+                      getOptionLabel={(option) => `(ID: ${option?.id}) ${option?.name} ${option?.code}`}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label={t("courses")}
+                          margin="normal"
+                          variant="outlined"
+                          InputLabelProps={{ shrink: true }}
+                        />
+                      )}
                     />
                   )}
                 />
-              )}
-            />
-            <TextField
-              {...register("externalSpeakers", {})}
-              error={!!(errors as any)?.externalSpeakers}
-              helperText={(errors as any)?.externalSpeakers?.message}
-              disabled={!isEditable}
-              margin="normal"
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-              label={t("externalSpeakers")}
-              name="externalSpeakers"
-            />
+                <TextField
+                  {...register("externalSpeakers", {})}
+                  error={!!(errors as any)?.externalSpeakers}
+                  helperText={(errors as any)?.externalSpeakers?.message}
+                  disabled={!isEditable}
+                  margin="normal"
+                  fullWidth
+                  InputLabelProps={{ shrink: true }}
+                  label={t("externalSpeakers")}
+                  name="externalSpeakers"
+                />
+              </>
+            )}
           </Box>
         </Box>
       </>
