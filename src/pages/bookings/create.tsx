@@ -77,8 +77,7 @@ export const BookingCreate = () => {
         headerButtons={({ defaultButtons }) => <>{/* <ListButton /> */}</>}
         footerButtons={({ defaultButtons }) => <>{/* <CreateButton /> */}</>}
       >
-        <Box component="form" sx={{ display: "grid", my: 3, px: 2 }} autoComplete="off">
-          <Button onClick={() => {}}></Button>
+        <Box component="form" sx={{ display: "grid", my: 0, px: 2 }} autoComplete="off">
           <Box
             sx={{
               display: "grid",
@@ -89,11 +88,10 @@ export const BookingCreate = () => {
             {rid ? (
               <Box sx={{ gridColumn: "span 3" }} key={tgtResource?.id}>
                 <h3 style={{ marginBottom: 5 }}>
-                  {tgtResource?.resourceName} - {tgtResource?.resourceType} (
-                  <Link to={`/resources/edit/${tgtResource?.id}`}>Resource ID {tgtResource?.id}</Link>){" "}
+                  {tgtResource?.resourceName} - {tgtResource?.resourceType}
                   {user?.roleId == k.ROLES.ADMIN && (
                     <>
-                      [View{" "}
+                      ( <Link to={`/resources/edit/${tgtResource?.id}`}>Resource ID {tgtResource?.id}</Link>) [View{" "}
                       <Link
                         go={{
                           query: {
@@ -144,13 +142,13 @@ export const BookingCreate = () => {
                 {resourceData?.data
                   ?.filter((x) => x.parentId == null)
                   .map((r) => (
-                    <Box sx={{ gridColumn: "span 3" }} key={r.id}>
+                    <Box sx={{ gridColumn: "span 3", mb: 2 }} key={r.id}>
                       <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                         <h3 style={{ marginBottom: 5 }}>
-                          {r?.resourceName} - {r?.resourceType} (<Link to={`/resources/edit/${r?.id}`}>Resource ID {r?.id}</Link>){" "}
+                          {r?.resourceName} - {r?.resourceType}
                           {user?.roleId == k.ROLES.ADMIN && (
                             <>
-                              [View{" "}
+                              (<Link to={`/resources/edit/${r?.id}`}>Resource ID {r?.id}</Link>) [View{" "}
                               <Link
                                 go={{
                                   query: {
