@@ -88,7 +88,7 @@ export const BookingCreate = () => {
             {rid ? (
               <Box sx={{ gridColumn: "span 3" }} key={tgtResource?.id}>
                 <h3 style={{ marginBottom: 5 }}>
-                  {tgtResource?.resourceName} - {tgtResource?.resourceType}
+                  {tgtResource?.resourceName} - {tgtResource?.resourceType}{" "}
                   {user?.roleId == k.ROLES.ADMIN && (
                     <>
                       ( <Link to={`/resources/edit/${tgtResource?.id}`}>Resource ID {tgtResource?.id}</Link>) [View{" "}
@@ -145,7 +145,7 @@ export const BookingCreate = () => {
                     <Box sx={{ gridColumn: "span 3", mb: 2 }} key={r.id}>
                       <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                         <h3 style={{ marginBottom: 5 }}>
-                          {r?.resourceName} - {r?.resourceType}
+                          {r?.resourceName} - {r?.resourceType}{" "}
                           {user?.roleId == k.ROLES.ADMIN && (
                             <>
                               (<Link to={`/resources/edit/${r?.id}`}>Resource ID {r?.id}</Link>) [View{" "}
