@@ -36,15 +36,19 @@ export const BookingsCreateDetail = () => {
 
   const onSubmit = (data: any) => {
     // console.log("Intercepted data:", data);
+    const sameParentAndChild = data.resourceId && data.parentResourceId && data.resourceId === data.parentResourceId;
+    if (overrideForSubResource && sameParentAndChild) {
+      alert("Please choose a seat");
+    } else {
+      // remove parentResourceId if it is same as resourceId
+      if (sameParentAndChild) {
+        delete data.parentResourceId;
+      }
 
-    // remove parentResourceId if it is same as resourceId
-    if (data.resourceId && data.parentResourceId && data.resourceId === data.parentResourceId) {
-      delete data.parentResourceId;
+      onFinish(data).then((x) => {
+        navigate(user?.roleId == k.ROLES.ADMIN ? "/bookings" : "/home");
+      });
     }
-
-    onFinish(data).then((x) => {
-      navigate(user?.roleId == k.ROLES.ADMIN ? "/bookings" : "/home");
-    });
   };
 
   const getAvailableBookingTypes = (slotData: any, user: IUser | undefined) => {
@@ -100,8 +104,6 @@ export const BookingsCreateDetail = () => {
       isLoading={formLoading}
       saveButtonProps={{ ...saveButtonProps, onClick: handleSubmit(onSubmit) }}
     >
-      {/* <h2>{getBookingTypeDefault()}</h2> */}
-      {/* <h2>Allowed Booking Types: {availBookingTypes.join(", ").toString()}</h2> */}
       {canOverride && BookingTypeSwitch}
       {overrideForSubResource ? (
         <>

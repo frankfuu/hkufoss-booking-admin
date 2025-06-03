@@ -339,7 +339,7 @@ const SubResources = ({
   });
 
   const availTimeslots = availabilityData?.data[0]?.timeSlots;
-  console.log(`availTimeslots`, availTimeslots);
+  // console.log(`availTimeslots`, availTimeslots);
 
   const columns = React.useMemo<GridColDef[]>(
     () => [
