@@ -3,3 +3,9 @@
 .MuiDataGrid-cell:focus-within {
   outline: none !important;
 }
+
+/* remove right margin for slot in react-big-calendar  */
+.rbc-day-slot .rbc-events-container {
+  margin-right: 0px;
+  /* margin-right: 10px; */
+}

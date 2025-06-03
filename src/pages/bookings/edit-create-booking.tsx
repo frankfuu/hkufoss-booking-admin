@@ -41,6 +41,8 @@ export default function EditCreateBookings({
   const booking = query.data?.data;
 
   const isSubResource = booking && !!booking.parentResourceId;
+  const shouldBookAsSubResource = true;
+  const p = useParams();
 
   const { autocompleteProps: activityTypeAutocompleteProps } = useAutocomplete({
     resource: "activity-types",
@@ -91,6 +93,13 @@ export default function EditCreateBookings({
   });
 
   const { autocompleteProps: resourceAutocompleteProps } = useAutocomplete({
+    resource: "resources",
+    pagination: {
+      pageSize: k.DROPDOWN_PAGE_SIZE_DEFAULT,
+    },
+  });
+
+  const { autocompleteProps: parentResourceAutocompleteProps } = useAutocomplete({
     resource: "resources",
     pagination: {
       pageSize: k.DROPDOWN_PAGE_SIZE_DEFAULT,
@@ -184,29 +193,28 @@ export default function EditCreateBookings({
                 />
               )}
             />
-
-            <Controller
-              control={control}
-              name="parentResourceId"
-              // rules={{ required: "This field is required" }}
-              // defaultValue={null as any}
-              defaultValue={slotData ? slotData.slot.parentResourceId : null}
-              render={({ field }) => (
-                <Autocomplete
-                  {...resourceAutocompleteProps}
-                  {...field}
-                  disabled
-                  onChange={(_, value) => field.onChange(value?.id ?? value)}
-                  filterOptions={filterOptionsResources}
-                  onInputChange={(event, value) => {}}
-                  value={resourceAutocompleteProps?.options?.find((option) => option.id === field.value) || null}
-                  getOptionLabel={(option) => `(ID: ${option?.id}) ${option?.resourceName} - ${option?.resourceType}`}
-                  renderInput={(params) => (
-                    <TextField {...params} label={t("Parent Resource")} margin="normal" variant="outlined" />
-                  )}
-                />
-              )}
-            />
+            {isSubResource && (
+              <Controller
+                control={control}
+                name="parentResourceId"
+                defaultValue={slotData ? slotData.slot.parentResourceId : null}
+                render={({ field }) => (
+                  <Autocomplete
+                    {...parentResourceAutocompleteProps}
+                    {...field}
+                    disabled
+                    onChange={(_, value) => field.onChange(value?.id ?? value)}
+                    filterOptions={filterOptionsResources}
+                    onInputChange={(event, value) => {}}
+                    value={parentResourceAutocompleteProps?.options?.find((option) => option.id === field.value) || null}
+                    getOptionLabel={(option) => `(ID: ${option?.id}) ${option?.resourceName} - ${option?.resourceType}`}
+                    renderInput={(params) => (
+                      <TextField {...params} label={t("Parent Resource")} margin="normal" variant="outlined" />
+                    )}
+                  />
+                )}
+              />
+            )}
             <Controller
               control={control}
               name="startTime"
@@ -231,22 +239,7 @@ export default function EditCreateBookings({
             />
             {!isSubResource && (
               <>
-                <TextField
-                  {...register("contactPerson", {
-                    // required: "This field is required",
-                  })}
-                  error={!!(errors as any)?.contactPerson}
-                  helperText={(errors as any)?.contactPerson?.message}
-                  margin="normal"
-                  fullWidth
-                  defaultValue={"Contact Person Name"}
-                  InputLabelProps={{ shrink: true }}
-                  label={t("contactPerson")}
-                  name="contactPerson"
-                  // required
-                  disabled={!isEditable}
-                />
-                <Controller
+                {/* <Controller
                   control={control}
                   name="activityTypeId"
                   // rules={{ required: "This field is required" }}
@@ -272,8 +265,8 @@ export default function EditCreateBookings({
                       )}
                     />
                   )}
-                />
-                <Controller
+                /> */}
+                {/* <Controller
                   control={control}
                   name="funderId"
                   // rules={{ required: "This field is required" }}
@@ -299,7 +292,19 @@ export default function EditCreateBookings({
                       )}
                     />
                   )}
-                />
+                /> */}
+                {/* <TextField
+                  {...register("specialRequests", {})}
+                  error={!!(errors as any)?.specialRequests}
+                  helperText={(errors as any)?.specialRequests?.message}
+                  margin="normal"
+                  fullWidth
+                  InputLabelProps={{ shrink: true }}
+                  label={t("specialRequests")}
+                  name="specialRequests"
+                  disabled={!isEditable}
+                /> */}
+
                 <Controller
                   control={control}
                   name="resourceAddonRelations"
@@ -332,74 +337,66 @@ export default function EditCreateBookings({
                     />
                   )}
                 />
-                <TextField
-                  {...register("specialRequests", {})}
-                  error={!!(errors as any)?.specialRequests}
-                  helperText={(errors as any)?.specialRequests?.message}
-                  margin="normal"
-                  fullWidth
-                  InputLabelProps={{ shrink: true }}
-                  label={t("specialRequests")}
-                  name="specialRequests"
-                  disabled={!isEditable}
-                />
               </>
             )}
           </Box>
           <Box sx={{ flex: 1, display: "flex", flexDirection: "column", padding: 2 }}>
             {!isCreate && (
-              <Controller
-                disabled
-                control={control}
-                name="updatedAt"
-                render={({ field }) => (
-                  <DateTimePicker
-                    {...field}
-                    format={k.DATE_FM_DEFAULT}
-                    value={field.value ? dayjs(field.value) : null}
-                    onChange={(date) => field.onChange(date)}
-                    slotProps={{
-                      textField: {
-                        fullWidth: true,
-                        margin: "normal",
-                        label: t("updatedAt"),
-                        InputLabelProps: { shrink: true },
-                      },
-                    }}
-                  />
-                )}
-              />
-            )}
-            <Controller
-              control={control}
-              name="status"
-              rules={{ required: "This field is required" }}
-              defaultValue={d.BOOKINGS.STATUS.DEFAULT}
-              render={({ field }) => (
-                <Autocomplete
-                  {...field}
-                  options={d.BOOKINGS.STATUS.OPTIONS}
-                  disabled={isCreate || user?.roleId != k.ROLES.ADMIN}
-                  getOptionLabel={(option) => t(option.label)}
-                  value={d.BOOKINGS.STATUS.OPTIONS.find((option) => option.value === field.value) || null}
-                  onChange={(_, newValue) => {
-                    field.onChange(newValue?.value);
-                  }}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label={t("status")}
-                      margin="normal"
-                      variant="outlined"
-                      error={!!(errors as any)?.status}
-                      helperText={(errors as any)?.status?.message}
-                      required
+              <>
+                <Controller
+                  disabled
+                  control={control}
+                  name="updatedAt"
+                  render={({ field }) => (
+                    <DateTimePicker
+                      {...field}
+                      format={k.DATE_FM_DEFAULT}
+                      value={field.value ? dayjs(field.value) : null}
+                      onChange={(date) => field.onChange(date)}
+                      slotProps={{
+                        textField: {
+                          fullWidth: true,
+                          margin: "normal",
+                          label: t("updatedAt"),
+                          InputLabelProps: { shrink: true },
+                        },
+                      }}
                     />
                   )}
                 />
-              )}
-            />
-            <TextField
+                <Controller
+                  control={control}
+                  name="status"
+                  rules={{ required: "This field is required" }}
+                  defaultValue={d.BOOKINGS.STATUS.DEFAULT}
+                  render={({ field }) => (
+                    <Autocomplete
+                      {...field}
+                      options={d.BOOKINGS.STATUS.OPTIONS}
+                      disabled={isCreate || user?.roleId != k.ROLES.ADMIN}
+                      getOptionLabel={(option) => t(option.label)}
+                      value={d.BOOKINGS.STATUS.OPTIONS.find((option) => option.value === field.value) || null}
+                      onChange={(_, newValue) => {
+                        field.onChange(newValue?.value);
+                      }}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label={t("status")}
+                          margin="normal"
+                          variant="outlined"
+                          error={!!(errors as any)?.status}
+                          helperText={(errors as any)?.status?.message}
+                          required
+                        />
+                      )}
+                    />
+                  )}
+                />
+              </>
+            )}
+
+            {/* <TextField
               {...register("scheduleId", {
                 required: "This field is required",
               })}
@@ -413,7 +410,7 @@ export default function EditCreateBookings({
               defaultValue={slotData ? slotData.slot?.scheduleId : null}
               name="scheduleId"
               disabled
-            />
+            /> */}
             <Controller
               control={control}
               name="duration"
@@ -450,7 +447,22 @@ export default function EditCreateBookings({
             />
             {!isSubResource && (
               <>
-                <Controller
+                <TextField
+                  {...register("contactPerson", {
+                    // required: "This field is required",
+                  })}
+                  error={!!(errors as any)?.contactPerson}
+                  helperText={(errors as any)?.contactPerson?.message}
+                  margin="normal"
+                  fullWidth
+                  defaultValue={"Contact Person Name"}
+                  InputLabelProps={{ shrink: true }}
+                  label={t("contactPerson")}
+                  name="contactPerson"
+                  // required
+                  disabled={!isEditable}
+                />
+                {/* <Controller
                   control={control}
                   name="activityNatureId"
                   // rules={{ required: "This field is required" }}
@@ -476,8 +488,8 @@ export default function EditCreateBookings({
                       )}
                     />
                   )}
-                />
-                <Controller
+                /> */}
+                {/* <Controller
                   control={control}
                   name="courseId"
                   // rules={{ required: "This field is required" }}
@@ -503,18 +515,18 @@ export default function EditCreateBookings({
                       )}
                     />
                   )}
-                />
-                <TextField
-                  {...register("externalSpeakers", {})}
-                  error={!!(errors as any)?.externalSpeakers}
-                  helperText={(errors as any)?.externalSpeakers?.message}
-                  disabled={!isEditable}
-                  margin="normal"
-                  fullWidth
-                  InputLabelProps={{ shrink: true }}
-                  label={t("externalSpeakers")}
-                  name="externalSpeakers"
-                />
+                /> */}
+                {/* <TextField
+                    {...register("externalSpeakers", {})}
+                    error={!!(errors as any)?.externalSpeakers}
+                    helperText={(errors as any)?.externalSpeakers?.message}
+                    disabled={!isEditable}
+                    margin="normal"
+                    fullWidth
+                    InputLabelProps={{ shrink: true }}
+                    label={t("externalSpeakers")}
+                    name="externalSpeakers"
+                  /> */}
               </>
             )}
           </Box>

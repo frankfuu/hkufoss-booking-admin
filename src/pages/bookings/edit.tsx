@@ -6,6 +6,7 @@ import EditCreateBookings from "./edit-create-booking";
 import { redirect, useNavigate, useParams } from "react-router-dom";
 import { d, k } from "../../common/constants";
 import { useCustomMutation, useGetIdentity, useGo, useResource } from "@refinedev/core";
+import EditCreateSubBookings from "./edit-create-sub-booking";
 
 export const BookingsEdit = () => {
   const { t } = useTranslation();
@@ -38,6 +39,8 @@ export const BookingsEdit = () => {
       navigate(user?.roleId == k.ROLES.ADMIN ? "/bookings" : "/home");
     });
   };
+
+  const forSubResource = booking && booking.parentResourceId !== null;
 
   const handleStatusUpdate = (newStatus: string) => {
     const targetUrl = `bookings/${p.id}`;
@@ -77,7 +80,7 @@ export const BookingsEdit = () => {
       footerButtons={({ saveButtonProps, deleteButtonProps }) => (
         <>
           {deleteButtonProps && <DeleteButton {...deleteButtonProps} />}
-          {booking && booking.status !== d.BOOKINGS.STATUS.LIST.CANCELLED && (
+          {booking?.status !== d.BOOKINGS.STATUS.LIST.CANCELLED && (
             <Button
               variant="contained"
               color="error"
@@ -87,10 +90,9 @@ export const BookingsEdit = () => {
                 }
               }}
             >
-              Cancel Booking
+              {t("cancelBooking")}
             </Button>
           )}
-
           <SaveButton {...saveButtonProps} disabled={!isEditable && user?.roleId != k.ROLES.ADMIN} />
         </>
       )}
@@ -98,7 +100,15 @@ export const BookingsEdit = () => {
       canDelete={user?.roleId == k.ROLES.ADMIN}
       saveButtonProps={{ ...saveButtonProps, onClick: handleSubmit(onSubmit) }}
     >
-      <EditCreateBookings {...{ register, errors, control, action: "edit", setValue, query, isEditable }} />
+      {forSubResource ? (
+        <>
+          <EditCreateSubBookings {...{ register, errors, control, action: "edit", setValue, query, isEditable }} />
+        </>
+      ) : (
+        <>
+          <EditCreateBookings {...{ register, errors, control, action: "edit", setValue, query, isEditable }} />
+        </>
+      )}
     </Edit>
   );
 };

@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import EditCreateBookings from "./edit-create-booking";
 import { useGetIdentity, useGo } from "@refinedev/core";
 import { k } from "../../common/constants";
+import EditCreateSubBookings from "./edit-create-sub-booking";
 
 export const BookingsCreateDetail = () => {
   const { t } = useTranslation();
@@ -40,15 +41,25 @@ export const BookingsCreateDetail = () => {
     });
   };
 
+  const forSubResource = slotData.slot.subResourcesMeta.resourcesCount > 0;
+
   return (
     <Create
       title={<Typography variant="h5">{t("create") + " " + t("booking")}</Typography>}
       isLoading={formLoading}
       saveButtonProps={{ ...saveButtonProps, onClick: handleSubmit(onSubmit) }}
     >
-      <EditCreateBookings
-        {...{ register, errors, control, action: "create", slotData: slotData, setValue, query, isEditable: true }}
-      />
+      {forSubResource ? (
+        <>
+          <EditCreateSubBookings
+            {...{ register, errors, control, action: "create", slotData: slotData, setValue, query, isEditable: true }}
+          />
+        </>
+      ) : (
+        <EditCreateBookings
+          {...{ register, errors, control, action: "create", slotData: slotData, setValue, query, isEditable: true }}
+        />
+      )}
     </Create>
   );
 };

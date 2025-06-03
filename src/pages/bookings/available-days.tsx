@@ -57,6 +57,47 @@ export const AvailableDaysList = ({ onSlotSelect, resourceId, calendarHeight }: 
     return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
   };
 
+  interface TimeSlot {
+    from: string;
+    to: string;
+    resourceId: number;
+    resourceName: string;
+    hasBookingConflict: boolean;
+    hasException: boolean;
+    bookingId?: number;
+    bookingStatus?: string;
+    exceptionId?: string;
+    inPast: boolean;
+    subResourcesMeta: SubResourcesMeta;
+  }
+
+  interface SubResourcesMeta {
+    resourcesCount: number;
+    resourcesAvailableCount: number;
+  }
+
+  const getSlotText = (slot: TimeSlot): string => {
+    const parts: string[] = [];
+
+    if (slot.hasException) {
+      parts.push(`Closed (${slot.exceptionId || ""})`);
+    }
+
+    if (slot.hasBookingConflict) {
+      parts.push(`${capitalizeFirstLetter(slot.bookingStatus || "")} (${slot.bookingId || ""})`);
+    }
+
+    if (!slot.hasBookingConflict && !slot.hasException && !slot.inPast) {
+      parts.push("Select");
+
+      if (slot.subResourcesMeta) {
+        parts.push(` (${slot.subResourcesMeta.resourcesAvailableCount}/${slot.subResourcesMeta.resourcesCount})`);
+      }
+    }
+
+    return parts.join(" ");
+  };
+
   // Transform API data into RBC event structure
   useEffect(() => {
     if (data?.data) {
@@ -73,27 +114,33 @@ export const AvailableDaysList = ({ onSlotSelect, resourceId, calendarHeight }: 
             bookingStatus: string;
             exceptionId: string;
             inPast: boolean;
-          }) => ({
-            title: (
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center", // Vertically center the content
-                  justifyContent: "center", // Horizontally center the content (optional)
-                }}
-              >
-                <Typography variant="body1">{`${slot.hasException ? `Closed (${slot.exceptionId})` : ""} ${
-                  slot.hasBookingConflict ? `${capitalizeFirstLetter(slot?.bookingStatus)} (${slot?.bookingId})` : ""
-                } ${!slot.hasBookingConflict && !slot.hasException && !slot.inPast ? "Select" : ""}`}</Typography>
-              </Box>
-            ),
-            start: new Date(`${day.date}T${slot.from}`), // Combine date and time for start
-            end: new Date(`${day.date}T${slot.to}`), // Combine date and time for end
-            meta: {
-              slot: slot,
-              date: day.date,
-            },
-          })
+            subResourcesMeta?: SubResourcesMeta;
+          }) => {
+            // Ensure subResourcesMeta is present, provide default if missing
+            const slotWithMeta = {
+              ...slot,
+              subResourcesMeta: slot.subResourcesMeta ?? { resourcesCount: 0, resourcesAvailableCount: 0 },
+            };
+            return {
+              title: (
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center", // Vertically center the content
+                    justifyContent: "center", // Horizontally center the content (optional)
+                  }}
+                >
+                  <Typography variant="body1">{getSlotText(slotWithMeta)}</Typography>
+                </Box>
+              ),
+              start: new Date(`${day.date}T${slot.from}`), // Combine date and time for start
+              end: new Date(`${day.date}T${slot.to}`), // Combine date and time for end
+              meta: {
+                slot: slotWithMeta,
+                date: day.date,
+              },
+            };
+          }
         )
       );
       setCalendarEvents(events); // Update calendar events
