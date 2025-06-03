@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Card, CardContent, Grid, Typography, CircularProgress, Container, IconButton, Button, Box } from "@mui/material";
 import { ArrowBackIos, ArrowForwardIos, BorderColor } from "@mui/icons-material";
-import { useCustom } from "@refinedev/core";
+import { useCustom, useGetIdentity } from "@refinedev/core";
 import { addDays, subDays, format } from "date-fns";
 import moment from "moment";
 import "moment-timezone";
@@ -10,6 +10,7 @@ import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { useAutocomplete } from "@refinedev/mui";
 import "./custom-calendar.css";
+import { k } from "../../common/constants";
 
 const localizer = momentLocalizer(moment);
 const allViews = [Views.MONTH, Views.WEEK, Views.DAY, Views.AGENDA];
@@ -32,13 +33,14 @@ function getFirstSundayOfCurrentMonth2() {
 
 const CustomEvent2 = ({ event }: any) => {
   return (
-    <Typography variant="body2" style={{ textAlign: "center" }}>
+    <Typography variant="h6" style={{ textAlign: "center" }}>
       {event.title}
     </Typography>
   );
 };
 
 export const AvailableDaysList = ({ onSlotSelect, resourceId, calendarHeight }: any) => {
+  const { data: user } = useGetIdentity<IUser>();
   const [weekStartDate, setWeekStartDate] = useState(getFirstSundayOfWeek());
   const [calendarEvents, setCalendarEvents] = useState<any[]>([]); // State for RBC events
   const [from, setFrom] = useState(format(getFirstSundayOfWeek(), "yyyy-MM-dd"));
@@ -80,17 +82,19 @@ export const AvailableDaysList = ({ onSlotSelect, resourceId, calendarHeight }: 
     const parts: string[] = [];
 
     if (slot.hasException) {
-      parts.push(`Closed (${slot.exceptionId || ""})`);
+      parts.push(`Closed`);
+      // parts.push(`Closed (ID: ${slot.exceptionId || ""})`);
     }
 
     if (slot.hasBookingConflict) {
-      parts.push(`${capitalizeFirstLetter(slot.bookingStatus || "")} (${slot.bookingId || ""})`);
+      parts.push(`${capitalizeFirstLetter(slot.bookingStatus || "")}`);
+      // parts.push(`${capitalizeFirstLetter(slot.bookingStatus || "")} (${slot.bookingId || ""})`);
     }
 
     if (!slot.hasBookingConflict && !slot.hasException && !slot.inPast) {
       parts.push("Select");
 
-      if (slot.subResourcesMeta) {
+      if (slot.subResourcesMeta && slot.subResourcesMeta.resourcesCount > 0) {
         parts.push(` (${slot.subResourcesMeta.resourcesAvailableCount}/${slot.subResourcesMeta.resourcesCount})`);
       }
     }
@@ -126,11 +130,15 @@ export const AvailableDaysList = ({ onSlotSelect, resourceId, calendarHeight }: 
                 <Box
                   sx={{
                     display: "flex",
-                    alignItems: "center", // Vertically center the content
-                    justifyContent: "center", // Horizontally center the content (optional)
+                    alignItems: "center",
+                    justifyContent: "center",
+                    height: "100%",
+                    width: "100%",
                   }}
                 >
-                  <Typography variant="body1">{getSlotText(slotWithMeta)}</Typography>
+                  <Typography variant="body2" textAlign="center" sx={{ fontSize: "0.9rem", lineHeight: 1.2 }}>
+                    {getSlotText(slotWithMeta)}
+                  </Typography>
                 </Box>
               ),
               start: new Date(`${day.date}T${slot.from}`), // Combine date and time for start
@@ -149,20 +157,31 @@ export const AvailableDaysList = ({ onSlotSelect, resourceId, calendarHeight }: 
 
   // Custom Event Style
   const eventPropGetter = (event: any) => {
-    const defaultColor = " #689F38";
+    // const defaultColor = " #689F38";
+    const defaultColor = k.COLORS.HKU_GREEN;
     const exceptionColor = " black";
-    const bookingConflictColor = " lightcoral";
+    // const bookingConflictColor = " lightcoral";
+    const bookingConflictColor = k.COLORS.HKU_WARM_RED_U_2X;
+    // const partiallyBookedColor = " LightSeaGreen";
+    const partiallyBookedColor = k.COLORS.HKU_PANTONE_346U_SEAGREEN;
+
     const hasB = event.meta.slot.hasBookingConflict;
     const hasE = event.meta.slot.hasException;
+    const partiallyBooked =
+      event.meta.slot.subResourcesMeta &&
+      event.meta.slot.subResourcesMeta.resourcesCount != event.meta.slot.subResourcesMeta.resourcesAvailableCount;
     let bgColor = hasB ? bookingConflictColor : defaultColor;
+    const parentOnlyResource = event.meta.slot.subResourcesMeta.resourcesCount == 0;
+
     bgColor = hasE ? exceptionColor : bgColor;
+    bgColor = partiallyBooked ? partiallyBookedColor : bgColor;
     return {
       style: {
         backgroundColor: bgColor,
         borderColor: bgColor,
         borderRadius: "0px", // Optional: Add rounded corners
         padding: "2px", // Optional: Add padding
-        opacity: event.meta.slot.inPast ? 0.3 : 1,
+        opacity: event.meta.slot.inPast || (parentOnlyResource && user?.roleId == k.ROLES.STUDENT) ? 0.3 : 1,
       },
     };
   };
@@ -182,8 +201,6 @@ export const AvailableDaysList = ({ onSlotSelect, resourceId, calendarHeight }: 
   };
 
   const handleEventClick = (event: any) => {
-    // const { date, slot, service } = event?.meta;
-    // console.log(`event?.meta`, event?.meta);
     onSlotSelect(event?.meta);
   };
 
@@ -199,7 +216,7 @@ export const AvailableDaysList = ({ onSlotSelect, resourceId, calendarHeight }: 
         max={new Date(0, 0, 0, 19, 0, 0)}
         step={60} // 1 slot per hour
         timeslots={1} // No subdivisions, 1 row per hour
-        style={{ width: "90%", height: calendarHeight || 430 }}
+        style={{ width: "80%", height: calendarHeight || 430 }}
         views={allViews}
         defaultView={Views.WEEK}
         formats={{

@@ -9,3 +9,10 @@
   margin-right: 0px;
   /* margin-right: 10px; */
 }
+
+/* elminate all selection/focus styles in react-big-calendar*/
+.rbc-day-slot .rbc-background-event,
+.rbc-day-slot .rbc-event {
+  border: none !important;
+  outline: none !important;
+}

@@ -19,6 +19,7 @@ export const BookingsEdit = () => {
     control,
     handleSubmit,
     setValue,
+    setError,
     formState: { errors },
   } = useForm({
     refineCoreProps: {
@@ -80,6 +81,19 @@ export const BookingsEdit = () => {
       footerButtons={({ saveButtonProps, deleteButtonProps }) => (
         <>
           {deleteButtonProps && <DeleteButton {...deleteButtonProps} />}
+          {booking?.status !== d.BOOKINGS.STATUS.LIST.CONFIRMED &&
+            booking?.status !== d.BOOKINGS.STATUS.LIST.CANCELLED &&
+            user?.roleId == k.ROLES.ADMIN && (
+              <Button
+                variant="contained"
+                color="success"
+                onClick={() => {
+                  handleStatusUpdate(d.BOOKINGS.STATUS.LIST.CONFIRMED);
+                }}
+              >
+                {t("Confirm Booking")}
+              </Button>
+            )}
           {booking?.status !== d.BOOKINGS.STATUS.LIST.CANCELLED && (
             <Button
               variant="contained"
@@ -90,9 +104,10 @@ export const BookingsEdit = () => {
                 }
               }}
             >
-              {t("cancelBooking")}
+              {t("Cancel Booking")}
             </Button>
           )}
+
           <SaveButton {...saveButtonProps} disabled={!isEditable && user?.roleId != k.ROLES.ADMIN} />
         </>
       )}
@@ -102,7 +117,7 @@ export const BookingsEdit = () => {
     >
       {forSubResource ? (
         <>
-          <EditCreateSubBookings {...{ register, errors, control, action: "edit", setValue, query, isEditable }} />
+          <EditCreateSubBookings {...{ register, errors, control, action: "edit", setValue, query, isEditable, setError }} />
         </>
       ) : (
         <>

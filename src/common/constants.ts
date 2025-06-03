@@ -13,7 +13,8 @@ const constants = {
   MEMBER_LIST_MAX_SIZE: 10000,
   ROLES: {
     ADMIN: 1,
-    STANDARD: 2,
+    STAFF: 2,
+    STUDENT: 3,
   },
   TABS: {
     MEMBERS: {
@@ -29,6 +30,15 @@ const constants = {
       SUBMISSIONS: 1,
       CENTRE_SERVICES: 2,
     },
+  },
+  COLORS: {
+    // https://www.hku.hk/reserved4/f/page/8008/HKU_Brand_Guidelines.pdf
+    HKU_GREEN: "#024638",
+    HKU_PANTONE_346U_SEAGREEN: "#4ebd88",
+    HKU_PANTONE_292U_LIGHTBLUE: "#4097db",
+    HKU_PANTONE_YELLOW_U_YELLOW: "#ffe800",
+    HKU_WARM_RED_U_2X: "#ff665e",
+    HKU_WARM_RED_U_2X_ALT: "#dd3123",
   },
 };
 

@@ -414,11 +414,11 @@ export default function EditCreateBookings({
             <Controller
               control={control}
               name="duration"
-              disabled={!isEditable}
               rules={{ required: "This field is required" }}
               defaultValue={d.BOOKINGS.DURATION.DEFAULT}
               render={({ field }) => (
                 <Autocomplete
+                  disabled={!isEditable}
                   {...field}
                   options={d.BOOKINGS.DURATION.OPTIONS}
                   getOptionLabel={(option) => option.label}

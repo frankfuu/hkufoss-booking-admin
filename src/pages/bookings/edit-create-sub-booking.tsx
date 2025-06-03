@@ -36,6 +36,7 @@ export default function EditCreateSubBookings({
   setValue,
   query,
   isEditable = true,
+  setError,
 }: any) {
   const { t } = useTranslation();
 
@@ -98,8 +99,6 @@ export default function EditCreateSubBookings({
                   disabled
                 />
                 <TextField
-                  error={!!(errors as any)?.id}
-                  helperText={(errors as any)?.id?.message}
                   margin="normal"
                   fullWidth
                   InputLabelProps={{ shrink: true }}
@@ -428,12 +427,15 @@ const SubResources = ({
 
   return (
     <>
-      <h2>
+      {/* <h2>
         resourceId {resourceId}, parentId {parentId}, duration {duration}
-      </h2>
-      <h2>
+      </h2> */}
+      {/* <h2>
         from {from}, to {to}, hh {hh}
-      </h2>
+      </h2> */}
+      <Typography variant="h4" textAlign="center" sx={{ my: 2 }}>
+        Seat Selection
+      </Typography>
       <DataGrid {...dataGridProps} columns={columns} autoHeight />
     </>
   );

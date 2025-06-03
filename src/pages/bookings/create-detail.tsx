@@ -7,6 +7,8 @@ import EditCreateBookings from "./edit-create-booking";
 import { useGetIdentity, useGo } from "@refinedev/core";
 import { k } from "../../common/constants";
 import EditCreateSubBookings from "./edit-create-sub-booking";
+import { FormControl, FormControlLabel, Switch } from "@mui/material";
+import { useEffect, useState } from "react";
 
 export const BookingsCreateDetail = () => {
   const { t } = useTranslation();
@@ -14,8 +16,6 @@ export const BookingsCreateDetail = () => {
   const location = useLocation();
   const slotData = location.state;
   const { data: user } = useGetIdentity<IUser>();
-
-  const go = useGo();
 
   const {
     saveButtonProps,
@@ -36,12 +36,63 @@ export const BookingsCreateDetail = () => {
 
   const onSubmit = (data: any) => {
     // console.log("Intercepted data:", data);
+
+    // remove parentResourceId if it is same as resourceId
+    if (data.resourceId && data.parentResourceId && data.resourceId === data.parentResourceId) {
+      delete data.parentResourceId;
+    }
+
     onFinish(data).then((x) => {
       navigate(user?.roleId == k.ROLES.ADMIN ? "/bookings" : "/home");
     });
   };
 
+  const getAvailableBookingTypes = (slotData: any, user: IUser | undefined) => {
+    if (user && (user.roleId == k.ROLES.ADMIN || user.roleId == k.ROLES.STAFF)) {
+      return ["parentResource", "subResource"];
+    } else {
+      return ["subResource"];
+    }
+  };
+
+  const availBookingTypes = getAvailableBookingTypes(slotData, user);
+
   const forSubResource = slotData.slot.subResourcesMeta.resourcesCount > 0;
+
+  const getBookingTypeDefault = () => {
+    if (user?.roleId == k.ROLES.STUDENT) {
+      return "subResource";
+    }
+
+    return "parentResource";
+  };
+
+  const [overrideForSubResource, setOverrideForSubResource] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    if (user) {
+      setOverrideForSubResource(getBookingTypeDefault() === "subResource");
+    }
+  }, [user]);
+
+  const effectiveForSubResource = overrideForSubResource !== null ? overrideForSubResource : forSubResource;
+  const canOverride = user?.roleId == k.ROLES.ADMIN || user?.roleId == k.ROLES.STAFF;
+
+  // UI to override forSubResource
+  const BookingTypeSwitch = (
+    <FormControl component="fieldset" sx={{ mb: 2 }}>
+      <FormControlLabel
+        control={
+          <Switch
+            checked={overrideForSubResource ?? forSubResource}
+            onChange={(e) => setOverrideForSubResource(e.target.checked)}
+            color="primary"
+          />
+        }
+        label="Book Seat only"
+      />
+    </FormControl>
+  );
 
   return (
     <Create
@@ -49,7 +100,10 @@ export const BookingsCreateDetail = () => {
       isLoading={formLoading}
       saveButtonProps={{ ...saveButtonProps, onClick: handleSubmit(onSubmit) }}
     >
-      {forSubResource ? (
+      {/* <h2>{getBookingTypeDefault()}</h2> */}
+      {/* <h2>Allowed Booking Types: {availBookingTypes.join(", ").toString()}</h2> */}
+      {canOverride && BookingTypeSwitch}
+      {overrideForSubResource ? (
         <>
           <EditCreateSubBookings
             {...{ register, errors, control, action: "create", slotData: slotData, setValue, query, isEditable: true }}

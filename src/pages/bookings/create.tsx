@@ -34,12 +34,17 @@ export const BookingCreate = () => {
   const onSlotSelect = (data: any) => {
     // create new booking
     if (!data.slot.hasBookingConflict && !data.slot.hasException && !data.slot.inPast) {
-      navigate(`details`, { state: { ...data } });
+      const isAdminOrStaff = user?.roleId === k.ROLES.ADMIN || user?.roleId === k.ROLES.STAFF;
+      if (!isAdminOrStaff && data.slot.subResourcesMeta.resourcesCount === 0) {
+        alert("Only Admin and Staff can book this resource");
+      } else {
+        navigate(`details`, { state: { ...data } });
+      }
     }
 
     // view existing booking
     if (data.slot.hasBookingConflict && data.slot.bookingId) {
-      if (user?.roleId == k.ROLES.ADMIN) {
+      if (user?.roleId == k.ROLES.ADMIN || user?.roleId == k.ROLES.STAFF) {
         go({
           to: { resource: "bookings", action: "edit", id: data.slot.bookingId },
         });
