@@ -5,6 +5,7 @@ import { Button, Checkbox } from "@mui/material";
 import { useGo, useNavigation, usePermissions, useResource } from "@refinedev/core";
 import { useTranslation } from "react-i18next";
 import { k } from "../../common/constants";
+import { Link } from "react-router-dom";
 
 export const ResourceListings = () => {
   const { t } = useTranslation();
@@ -27,14 +28,8 @@ export const ResourceListings = () => {
   const go = useGo();
 
   const CustomViewButton = ({ paramId }: { paramId: string }) => {
-    const handleClick = () => {
-      go({
-        to: `/bookings/create/${paramId}`,
-      });
-    };
-
     return (
-      <Button sx={{ my: 1 }} onClick={handleClick}>
+      <Button sx={{ my: 1 }} component={Link} to={`/bookings/create/${paramId}`}>
         {t("view")}
       </Button>
     );
@@ -53,6 +48,13 @@ export const ResourceListings = () => {
         field: "resourceName",
         minWidth: 150,
         headerName: t("resourceName"),
+        renderCell: function render({ row }) {
+          return (
+            <Link to={`/resources/edit/${row.id}`} style={{ color: "inherit", textDecoration: "none" }}>
+              {row.resourceName}
+            </Link>
+          );
+        },
       },
       {
         field: "resourceType",
@@ -83,7 +85,7 @@ export const ResourceListings = () => {
         field: "updatedAt",
         filterable: false,
         headerName: t("updatedAt"),
-        minWidth: 180,
+        minWidth: 140,
         renderCell: function render({ value }) {
           return <DateField value={value} format={k.DATE_FM_DEFAULT} />;
         },
@@ -93,11 +95,14 @@ export const ResourceListings = () => {
         headerName: t("Actions"),
         sortable: false,
         type: "actions",
-        minWidth: 200,
+        minWidth: 270,
         renderCell: function render({ row }) {
+          const createBookingUrl = `/bookings/create/${row.id}`;
           return (
             <>
-              <CustomViewButton paramId={row.id} />
+              <Button variant="outlined" color="info" component={Link} to={createBookingUrl}>
+                View Calendar
+              </Button>
               <EditButton hideText recordItemId={row.id} />
               <CloneButton hideText recordItemId={row.id} />
               <DeleteButton hideText recordItemId={row.id} />
@@ -120,7 +125,7 @@ export const ResourceListings = () => {
         onRowClick={({ id }) => resource?.name && edit(resource.name, id)}
         sx={{
           "& .MuiDataGrid-row": {
-            cursor: "pointer",
+            cursor: "pointer", // Optional: remove this if you only want the link to be clickable
           },
         }}
         slots={{ toolbar: GridToolbar }}

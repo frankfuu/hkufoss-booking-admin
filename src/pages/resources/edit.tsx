@@ -2,12 +2,9 @@ import { Create, Edit, SaveButton } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Button, Typography } from "@mui/material";
-import EditCreateFunders from "./edit-create-resources";
-import EditCreateActivityNatures from "./edit-create-resources";
-import EditCreateActivityTypes from "./edit-create-resources";
 import EditCreateResources from "./edit-create-resources";
 import { useGo } from "@refinedev/core";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 
 export const ResourcesEdit = () => {
   const { t } = useTranslation();
@@ -38,54 +35,32 @@ export const ResourcesEdit = () => {
         <>
           <Button
             variant="outlined"
-            onClick={() => {
-              go({
-                query: {
-                  filters: [
-                    {
-                      operator: "eq",
-                      value: !isSubResource ? resource?.id : resource?.parentId,
-                      field: "resourceId",
-                    },
-                  ],
-                },
-                to: {
-                  resource: "resource-schedules",
-                  action: "list",
-                },
-              });
+            component={Link}
+            to={{
+              pathname: "/resource-schedules",
+              search: `?filters[0][operator]=eq&filters[0][value]=${
+                !isSubResource ? resource?.id : resource?.parentId
+              }&filters[0][field]=resourceId`,
             }}
           >
             View Schedules
           </Button>
           <Button
             variant="outlined"
-            onClick={() => {
-              go({
-                query: {
-                  filters: [
-                    {
-                      operator: "eq",
-                      value: !isSubResource ? resource?.id : resource?.parentId,
-                      field: "resourceId",
-                    },
-                  ],
-                },
-                to: {
-                  resource: "resource-exceptions",
-                  action: "list",
-                },
-              });
+            component={Link}
+            to={{
+              pathname: "/resource-exceptions",
+              search: `?filters[0][operator]=eq&filters[0][value]=${
+                !isSubResource ? resource?.id : resource?.parentId
+              }&filters[0][field]=resourceId`,
             }}
           >
             View Exceptions
           </Button>
           <Button
             variant="contained"
-            onClick={() => {
-              const rid = !isSubResource ? resource?.id : resource?.parentId;
-              navigate(`/bookings/create/${rid}`);
-            }}
+            component={Link}
+            to={`/bookings/create/${!isSubResource ? resource?.id : resource?.parentId}`}
           >
             View Availabilities
           </Button>

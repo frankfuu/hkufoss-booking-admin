@@ -3,10 +3,10 @@ import { useDataGrid, EditButton, ShowButton, DeleteButton, List, DateField, Clo
 import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import { Button, Checkbox } from "@mui/material";
 import { useGo, useList, useNavigation, usePermissions, useResource } from "@refinedev/core";
-import { k } from "../../common/constants";
+import { k, s } from "../../common/constants";
 import { useTranslation } from "react-i18next";
 import dayjs, { Dayjs } from "dayjs";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 export const ResourceScheduleListings = () => {
   const { t } = useTranslation();
@@ -41,20 +41,6 @@ export const ResourceScheduleListings = () => {
 
   const go = useGo();
 
-  const CustomViewButton = ({ paramId }: { paramId: string }) => {
-    const handleClick = () => {
-      go({
-        to: `/bookings/create/${paramId}`,
-      });
-    };
-
-    return (
-      <Button sx={{ my: 1 }} onClick={handleClick}>
-        {t("view")}
-      </Button>
-    );
-  };
-
   const columns = React.useMemo<GridColDef[]>(
     () => [
       {
@@ -70,14 +56,33 @@ export const ResourceScheduleListings = () => {
         headerName: t("resource"),
         renderCell: ({ row }) => {
           const resource = resourcesData?.data.find((x) => x.id == row.resourceId);
-          return `${resource?.resourceName}`;
+          return (
+            <Link
+              style={s.underlinedLinkStyle}
+              to={`/resources/edit/${row.resourceId}`}
+              onClick={(e: any) => e.stopPropagation()}
+            >
+              {resource?.resourceName}
+            </Link>
+          );
         },
       },
 
       {
         field: "name",
-        minWidth: 140,
-        headerName: t("scheduleName"),
+        minWidth: 150,
+        headerName: t("name"),
+        renderCell: ({ row }) => {
+          return (
+            <Link
+              style={s.underlinedLinkStyle}
+              to={`/resource-schedules/edit/${row.id}`}
+              onClick={(e: any) => e.stopPropagation()}
+            >
+              {row?.name}
+            </Link>
+          );
+        },
       },
 
       {
@@ -90,16 +95,16 @@ export const ResourceScheduleListings = () => {
         minWidth: 50,
         headerName: t("End Date"),
       },
-      {
-        field: "startTime",
-        minWidth: 50,
-        headerName: t("Start Time"),
-      },
-      {
-        field: "endTime",
-        minWidth: 50,
-        headerName: t("End Time"),
-      },
+      // {
+      //   field: "startTime",
+      //   minWidth: 50,
+      //   headerName: t("Start Time"),
+      // },
+      // {
+      //   field: "endTime",
+      //   minWidth: 50,
+      //   headerName: t("End Time"),
+      // },
       {
         field: "updatedAt",
         // flex: 1,
@@ -115,11 +120,15 @@ export const ResourceScheduleListings = () => {
         headerName: "Actions",
         sortable: false,
         type: "actions",
-        minWidth: 200,
+        minWidth: 270,
         renderCell: function render({ row }) {
+          const createBookingUrl = `/bookings/create/${row.resourceId}`;
+
           return (
             <>
-              <CustomViewButton paramId={row.resourceId} />
+              <Button variant="outlined" color="info" component={Link} to={createBookingUrl}>
+                View Calendar
+              </Button>
               <EditButton hideText recordItemId={row.id} />
               <CloneButton hideText recordItemId={row.id} />
               <DeleteButton hideText recordItemId={row.id} />

@@ -1,10 +1,11 @@
 import React from "react";
 import { useDataGrid, EditButton, ShowButton, DeleteButton, List, DateField, CloneButton } from "@refinedev/mui";
 import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
-import { Button, Checkbox } from "@mui/material";
+import { Button, Checkbox, Typography } from "@mui/material";
 import { useGo, useList, useNavigation, usePermissions, useResource } from "@refinedev/core";
-import { k } from "../../common/constants";
+import { k, s } from "../../common/constants";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 
 export const ResourceExceptionListings = () => {
   const { t } = useTranslation();
@@ -34,7 +35,7 @@ export const ResourceExceptionListings = () => {
 
     return (
       <Button sx={{ my: 1 }} onClick={handleClick}>
-        {t("view")}
+        {t("View Calendar")}
       </Button>
     );
   };
@@ -61,17 +62,36 @@ export const ResourceExceptionListings = () => {
       },
       {
         field: "resourceId",
-        minWidth: 230,
+        minWidth: 150,
         headerName: t("resource"),
         renderCell: ({ row }) => {
           const resource = resourcesData?.data.find((r) => r.id == row.resourceId);
-          return `${resource?.resourceName} ${resource?.resourceType}`;
+          return (
+            <Link
+              style={s.underlinedLinkStyle}
+              to={`/resources/edit/${row.resourceId}`}
+              onClick={(e: any) => e.stopPropagation()}
+            >
+              {resource?.resourceName}
+            </Link>
+          );
         },
       },
       {
         field: "name",
-        minWidth: 200,
+        minWidth: 150,
         headerName: t("name"),
+        renderCell: ({ row }) => {
+          return (
+            <Link
+              style={s.underlinedLinkStyle}
+              to={`/resource-exceptions/edit/${row.id}`}
+              onClick={(e: any) => e.stopPropagation()}
+            >
+              {row?.name}
+            </Link>
+          );
+        },
       },
       {
         field: "startTime",
@@ -104,11 +124,14 @@ export const ResourceExceptionListings = () => {
         headerName: t("Actions"),
         sortable: false,
         type: "actions",
-        minWidth: 200,
+        minWidth: 270,
         renderCell: function render({ row }) {
+          const createBookingUrl = `/bookings/create/${row.resourceId}`;
           return (
             <>
-              <CustomViewButton paramId={row.resourceId} />
+              <Button variant="outlined" color="info" component={Link} to={createBookingUrl}>
+                View Calendar
+              </Button>
               <EditButton hideText recordItemId={row.id} />
               <CloneButton hideText recordItemId={row.id} />
               <DeleteButton hideText recordItemId={row.id} />

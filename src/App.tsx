@@ -97,6 +97,8 @@ import { k } from "./common/constants";
 import { Home } from "./pages/other/home";
 import SchoolIcon from "@mui/icons-material/School";
 
+import "./styles/global.css";
+
 const customTitleHandler = ({ resource, action, params }: any) => {
   let title = "HKU FOSS Booking System";
 

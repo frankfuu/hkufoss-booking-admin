@@ -28,6 +28,17 @@ export const BookingsList = () => {
   });
 
   const {
+    data: resourcesDataAll,
+    isLoading: resourcesDataAllLoading,
+    isError: resourcesDataAllError,
+  } = useList({
+    resource: "resources",
+    pagination: {
+      pageSize: k.GET_MANY_DEFAULT,
+    },
+  });
+
+  const {
     data: resourcesData,
     isLoading: resourcesDataLoading,
     isError: resourcesDataError,
@@ -112,8 +123,10 @@ export const BookingsList = () => {
         minWidth: 100,
         headerName: t("resource"),
         renderCell: ({ row }) => {
-          const resource = resourcesData?.data.find((r) => r.id == row.resourceId);
-          return `${resource?.resourceName} `;
+          const resource = resourcesDataAll?.data.find((r) => r.id == row.resourceId);
+          const isSubresource = resource?.parentId != null;
+
+          return `${resource?.resourceName} ${isSubresource ? `(${resource.parentId})` : ""}`;
         },
       },
       // {

@@ -8,6 +8,7 @@ import {
   usePermissions,
   useCustomMutation,
   useResource,
+  Link,
 } from "@refinedev/core";
 
 import { Show, NumberField, DateField, useAutocomplete, Create, useDataGrid, ListButton, RefreshButton } from "@refinedev/mui";
@@ -259,6 +260,13 @@ const TodaysBookings = () => {
         field: "activityName",
         minWidth: 180,
         headerName: t("activity.short"),
+        renderCell: function render({ row }) {
+          return (
+            <Link to={`/bookings/edit/${row.id}`} style={{ color: "inherit", textDecoration: "none" }}>
+              {row.activityName}
+            </Link>
+          );
+        },
       },
       {
         field: "resourceId",
@@ -410,6 +418,13 @@ const OutstandingApprovals = () => {
         field: "activityName",
         minWidth: 180,
         headerName: t("activity.short"),
+        renderCell: function render({ row }) {
+          return (
+            <Link to={`/bookings/edit/${row.id}`} style={{ color: "inherit", textDecoration: "none" }}>
+              {row.activityName}
+            </Link>
+          );
+        },
       },
       {
         field: "resourceId",

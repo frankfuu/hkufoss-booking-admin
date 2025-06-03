@@ -9,7 +9,6 @@ import {
   useCustomMutation,
   useResource,
   useGetIdentity,
-  Link,
 } from "@refinedev/core";
 
 import { Show, NumberField, DateField, useAutocomplete, Create, useDataGrid, ListButton, RefreshButton } from "@refinedev/mui";
@@ -28,7 +27,7 @@ import { DataGrid, GridColDef, getGridSingleSelectOperators } from "@mui/x-data-
 import { defaultMutationOptions, getChipProps, useResourceNavigation } from "../../common/helpers";
 import React from "react";
 import { format } from "date-fns";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Article, Assignment, Build, Note, PendingActions } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
@@ -81,16 +80,8 @@ export const Home = () => {
           >
             <Typography sx={{ fontWeight: "bold", fontSize: 20, marginBottom: 2, marginTop: 2 }}>
               {t("bookaroom")} ({" "}
-              <Link
-                style={{ fontWeight: "bold", color: "green" }}
-                go={{
-                  to: {
-                    resource: "bookings",
-                    action: "create",
-                  },
-                }}
-              >
-                {t(" or Calendar View")}
+              <Link style={{ fontWeight: "bold", color: "green" }} to={`/bookings/create`}>
+                {t(" View Calendar")}
               </Link>{" "}
               )
             </Typography>
@@ -338,34 +329,23 @@ const BookARoom = () => {
         minWidth: 200,
         renderCell: function render({ row }) {
           const isAvail = row?.schedules.length > 0;
+          const createBookingUrl = `/bookings/create/${row.id}`;
+
           return (
             <>
               {isAvail ? (
                 <Button
                   size="small"
                   sx={{ mr: 2, minWidth: 120 }}
-                  onClick={() =>
-                    go({
-                      to: `/bookings/create/${row.id}`,
-                    })
-                  }
                   variant="contained"
                   color="primary"
+                  component={Link}
+                  to={createBookingUrl}
                 >
                   {t("book")}
                 </Button>
               ) : (
-                <Button
-                  size="small"
-                  sx={{ mr: 2, minWidth: 120 }}
-                  onClick={() =>
-                    go({
-                      to: `/bookings/create/${row.id}`,
-                    })
-                  }
-                  variant="contained"
-                  color="secondary"
-                >
+                <Button disabled size="small" sx={{ mr: 2, minWidth: 120 }} variant="contained" color="secondary">
                   {t("bookNoOpening")}
                 </Button>
               )}
@@ -384,16 +364,16 @@ const BookARoom = () => {
       {...dataGridProps}
       columns={columns}
       autoHeight
-      onRowClick={({ id }) =>
-        go({
-          to: `/bookings/create/${id}`,
-        })
-      }
-      sx={{
-        "& .MuiDataGrid-row": {
-          cursor: "pointer",
-        },
-      }}
+      // onRowClick={({ id }) =>
+      //   go({
+      //     to: `/bookings/create/${id}`,
+      //   })
+      // }
+      // sx={{
+      //   "& .MuiDataGrid-row": {
+      //     cursor: "pointer",
+      //   },
+      // }}
     />
   );
 };

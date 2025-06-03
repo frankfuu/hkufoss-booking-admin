@@ -1,0 +1,5 @@
+/*  styles to remove cell focus highlighting */
+.MuiDataGrid-cell:focus,
+.MuiDataGrid-cell:focus-within {
+  outline: none !important;
+}

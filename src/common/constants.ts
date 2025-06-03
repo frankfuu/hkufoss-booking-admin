@@ -70,6 +70,7 @@ const dropdownOptions = {
   BOOKINGS: {
     DURATION: {
       DEFAULT: 2,
+      SEAT_DEFAULT: 1,
       OPTIONS: [
         { label: "1 hour", value: 1 },
         { label: "2 hours", value: 2 },
@@ -120,6 +121,11 @@ const styles = {
       textDecoration: "underline",
       textUnderlineOffset: "3px",
     },
+  },
+  underlinedLinkStyle: {
+    color: "inherit",
+    textDecoration: "underline",
+    textUnderlineOffset: 4,
   },
 };
 
