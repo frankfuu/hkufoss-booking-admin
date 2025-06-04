@@ -110,9 +110,9 @@ const dropdownOptions = {
       DEFAULT: "Meeting Room",
       SUB_RESOURCE_DEFAULT: "Seat",
       OPTIONS: [
+        { label: "Seat", value: "Seat" },
         { label: "Meeting Room", value: "Meeting Room" },
         { label: "Conference Room", value: "Conference Room" },
-        { label: "Seat", value: "Seat" },
         { label: "Function Room", value: "Function Room" },
         { label: "Chamber", value: "Chamber" },
         { label: "Seminar Room", value: "Seminar Room" },

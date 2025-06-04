@@ -12,6 +12,7 @@ export const BookingsList = () => {
   const [selectedStatus, setSelectedStatus] = React.useState<string | null>("ALL");
   const [selectedTimeRange, setSelectedTimeRange] = React.useState<string | null>("ALL");
   const [selectedResource, setSelectedResource] = React.useState<string | null>("ALL");
+  const [selectedResourceType, setSelectedResourceType] = React.useState<string | null>("ALL");
   const {
     dataGridProps,
     setFilters,
@@ -151,7 +152,8 @@ export const BookingsList = () => {
       },
       {
         field: "user.username",
-        minWidth: 230,
+        minWidth: 150,
+        maxWidth: 150,
         headerName: t("bookedBy"),
         renderCell: ({ row }) => {
           return row?.user?.username;
@@ -267,11 +269,33 @@ export const BookingsList = () => {
     }
   };
 
+  const handleResourceTypeChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    const resourceType = event.target.value as string;
+    setSelectedResourceType(resourceType);
+
+    if (resourceType === "ALL") {
+      setFilters((prevFilters) => [
+        // remove any existing 'resourceType' filter
+        ...prevFilters.filter((f) => "field" in f && f.field !== "resource.resourceType"),
+      ]);
+    } else {
+      setFilters((prevFilters) => [
+        // remove any existing 'resourceType' filter
+        ...prevFilters.filter((f) => "field" in f && f.field !== "resource.resourceType"),
+        {
+          field: "resource.resourceType",
+          operator: "eq",
+          value: resourceType,
+        },
+      ]);
+    }
+  };
+
   return (
     <List headerButtons={({ defaultButtons }) => <>{defaultButtons}</>}>
       <Grid container spacing={1} sx={{ mb: 2 }}>
         {/* Resource filter  */}
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={2}>
           <Box sx={{ mb: 0.5 }}>
             <Box component="span" sx={{ fontWeight: "bold", display: "block", mb: 0.5 }}>
               Filter by Resource:
@@ -290,7 +314,7 @@ export const BookingsList = () => {
                   },
                 }}
               >
-                <MenuItem value="ALL">All Resources</MenuItem>
+                <MenuItem value="ALL">All</MenuItem>
                 {resourcesData?.data?.map((resource) => (
                   <MenuItem key={resource.id ?? ""} value={resource.id?.toString() ?? ""}>
                     {resource.resourceName}
@@ -300,8 +324,40 @@ export const BookingsList = () => {
             </FormControl>
           </Box>
         </Grid>
+
+        {/* Resource Type filter  */}
+        <Grid item xs={12} md={2}>
+          <Box sx={{ mb: 0.5 }}>
+            <Box component="span" sx={{ fontWeight: "bold", display: "block", mb: 0.5 }}>
+              Filter by Resource Type:
+            </Box>
+            <FormControl size="small">
+              <Select
+                size="small"
+                value={selectedResourceType}
+                onChange={handleResourceTypeChange as any}
+                displayEmpty
+                sx={{
+                  minWidth: "200px",
+                  height: "32px",
+                  "& .MuiSelect-select": {
+                    padding: "4px 14px",
+                  },
+                }}
+              >
+                <MenuItem value="ALL">All</MenuItem>
+                {d.RESOURCES.TYPES.OPTIONS.map((type) => (
+                  <MenuItem key={type.value} value={type.value}>
+                    {type.label}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
+        </Grid>
+
         {/* Status filter  */}
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={3}>
           <Box sx={{ mb: 0.5 }}>
             <Box component="span" sx={{ fontWeight: "bold", display: "block", mb: 0.5 }}>
               Filter by Status:
@@ -370,7 +426,7 @@ export const BookingsList = () => {
         </Grid>
 
         {/* Time range filter */}
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={3}>
           <Box sx={{ mb: 0.5 }}>
             <Box component="span" sx={{ fontWeight: "bold", display: "block", mb: 0.5 }}>
               Filter by Time Range:
