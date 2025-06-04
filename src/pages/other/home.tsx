@@ -12,7 +12,18 @@ import {
 } from "@refinedev/core";
 
 import { Show, NumberField, DateField, useAutocomplete, Create, useDataGrid, ListButton, RefreshButton } from "@refinedev/mui";
-import { Typography, Stack, Box, Button, Autocomplete, TextField, createFilterOptions, Grid, Chip } from "@mui/material";
+import {
+  Typography,
+  Stack,
+  Box,
+  Button,
+  Autocomplete,
+  TextField,
+  createFilterOptions,
+  Grid,
+  Chip,
+  ButtonGroup,
+} from "@mui/material";
 import InfiniteScrollAutocompleteAlt from "../../components/infinite-scroll-autocomplete";
 import { d, k, s } from "../../common/constants";
 import { useEffect, useRef, useState } from "react";
@@ -98,9 +109,9 @@ const MyBookings = () => {
   const { t } = useTranslation();
   const { data: user } = useGetIdentity<IUser>();
 
-  const beginningOfDay = startOfDay(new Date());
-  const conclusionOfDay = endOfDay(new Date());
-  const { dataGridProps } = useDataGrid({
+  // const beginningOfDay = startOfDay(new Date());
+  // const conclusionOfDay = endOfDay(new Date());
+  const { dataGridProps, setFilters } = useDataGrid({
     queryOptions: {
       enabled: !!user,
     },
@@ -109,13 +120,13 @@ const MyBookings = () => {
       resourceOverride: `bookings/user/${user?.id}`,
     },
     filters: {
-      permanent: [
-        {
-          field: "startTime",
-          operator: "gte",
-          value: beginningOfDay.toISOString(),
-        },
-      ],
+      // permanent: [
+      //   {
+      //     field: "startTime",
+      //     operator: "gte",
+      //     value: beginningOfDay.toISOString(),
+      //   },
+      // ],
     },
     sorters: {
       initial: [
@@ -138,6 +149,8 @@ const MyBookings = () => {
     },
   });
 
+  const [selectedTimeRange, setSelectedTimeRange] = React.useState<string | null>("UPCOMING");
+
   const { edit } = useNavigation();
 
   const columns = React.useMemo<GridColDef[]>(
@@ -156,11 +169,19 @@ const MyBookings = () => {
       },
       {
         field: "resourceId",
-        minWidth: 100,
+        minWidth: 220,
         headerName: t("resource"),
         renderCell: ({ row }) => {
           const resource = resourcesData?.data.find((r) => r.id == row.resourceId);
-          return `${resource?.resourceName} `;
+          const isSubresource = resource?.parentId != null;
+          let label = "";
+          if (isSubresource) {
+            const parentResource = resourcesData?.data.find((r) => r.id == resource.parentId);
+            label = `${parentResource?.resourceName} (${resource?.resourceName})`;
+          } else {
+            label = `${resource?.resourceName}`;
+          }
+          return label;
         },
       },
       {
@@ -206,17 +227,72 @@ const MyBookings = () => {
   );
 
   return (
-    <DataGrid
-      {...dataGridProps}
-      columns={columns}
-      autoHeight
-      onRowClick={({ id }) => edit("bookings", id)}
-      sx={{
-        "& .MuiDataGrid-row": {
-          cursor: "pointer",
-        },
-      }}
-    />
+    <>
+      <Grid container spacing={1} sx={{ mb: 2 }}>
+        {/* Time range filter */}
+        <Grid item xs={12} md={5}>
+          <Box sx={{ mb: 0.5 }}>
+            <Box component="span" sx={{ fontWeight: "bold", display: "block", mb: 0.5 }}>
+              Filter by Time Range:
+            </Box>
+            <ButtonGroup aria-label="Time range filter button group" size="small">
+              <Button
+                variant={selectedTimeRange === "ALL" ? "contained" : "outlined"}
+                onClick={() => {
+                  setSelectedTimeRange("ALL");
+                  setFilters((prevFilters) => [...prevFilters.filter((f) => "field" in f && f.field !== "startTime")]);
+                }}
+              >
+                ALL
+              </Button>
+              <Button
+                variant={selectedTimeRange === "PAST" ? "contained" : "outlined"}
+                onClick={() => {
+                  setSelectedTimeRange("PAST");
+                  setFilters((prevFilters) => [
+                    ...prevFilters.filter((f) => "field" in f && f.field !== "startTime"),
+                    {
+                      field: "startTime",
+                      operator: "lte",
+                      value: new Date().toISOString(),
+                    },
+                  ]);
+                }}
+              >
+                {"PAST"}
+              </Button>
+              <Button
+                variant={selectedTimeRange === "UPCOMING" ? "contained" : "outlined"}
+                onClick={() => {
+                  setSelectedTimeRange("UPCOMING");
+                  setFilters((prevFilters) => [
+                    ...prevFilters.filter((f) => "field" in f && f.field !== "startTime"),
+                    {
+                      field: "startTime",
+                      operator: "gte",
+                      value: new Date().toISOString(),
+                    },
+                  ]);
+                }}
+              >
+                {"UPCOMING"}
+              </Button>
+            </ButtonGroup>
+          </Box>
+        </Grid>
+      </Grid>
+      <DataGrid
+        {...dataGridProps}
+        columns={columns}
+        autoHeight
+        onRowClick={({ id }) => edit("bookings", id)}
+        sx={{
+          "& .MuiDataGrid-row": {
+            cursor: "pointer",
+          },
+        }}
+      />
+    </>
   );
 };
 
@@ -247,35 +323,6 @@ const BookARoom = () => {
   });
 
   const { mutate } = useCustomMutation({});
-
-  const handleStatusUpdate = (row: any, newStatus: string) => {
-    const targetUrl = `bookings/${row.id}`;
-    mutate(
-      {
-        url: targetUrl,
-        // @ts-ignore,
-        // case sensitivity issue, need to fix on server, refine.dev expecting lower case but server expects upper case
-        method: "PATCH",
-        values: {
-          status: newStatus,
-        },
-        successNotification: (data, values) => {
-          return {
-            message: `Booking ${data?.data?.status}`,
-            type: "success",
-          };
-        },
-      },
-      {
-        // onError: (error, variables, context) => {
-        //   console.log(error);
-        // },
-        onSuccess: (data, variables, context) => {
-          refetch();
-        },
-      }
-    );
-  };
 
   const {
     data: resourcesData,
