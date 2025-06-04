@@ -480,6 +480,24 @@ export const BookingsList = () => {
                 {"FUTURE"}
               </Button>
             </ButtonGroup>
+            <Button
+              variant="contained"
+              color="info"
+              size="small"
+              onClick={() => {
+                // reset all filter states
+                setSelectedResource("ALL");
+                setSelectedResourceType("ALL");
+                setSelectedStatus("ALL");
+                setSelectedTimeRange("ALL");
+
+                // clear all applied filters
+                setFilters([]);
+              }}
+              sx={{ mx: 2, minWidth: 100 }}
+            >
+              Clear All
+            </Button>
           </Box>
         </Grid>
       </Grid>
