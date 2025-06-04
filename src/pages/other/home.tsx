@@ -153,6 +153,18 @@ const MyBookings = () => {
 
   const { edit } = useNavigation();
 
+  // Apply the UPCOMING filter when the component first mounts
+  React.useEffect(() => {
+    setFilters((prevFilters) => [
+      ...prevFilters.filter((f) => "field" in f && f.field !== "startTime"),
+      {
+        field: "startTime",
+        operator: "gte",
+        value: new Date().toISOString(),
+      },
+    ]);
+  }, [setFilters]);
+
   const columns = React.useMemo<GridColDef[]>(
     () => [
       {
@@ -232,9 +244,9 @@ const MyBookings = () => {
         {/* Time range filter */}
         <Grid item xs={12} md={5}>
           <Box sx={{ mb: 0.5 }}>
-            <Box component="span" sx={{ fontWeight: "bold", display: "block", mb: 0.5 }}>
+            {/* <Box component="span" sx={{ fontWeight: "bold", display: "block", mb: 0.5 }}>
               Filter by Time Range:
-            </Box>
+            </Box> */}
             <ButtonGroup aria-label="Time range filter button group" size="small">
               <Button
                 variant={selectedTimeRange === "ALL" ? "contained" : "outlined"}
