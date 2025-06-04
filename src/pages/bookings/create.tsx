@@ -91,63 +91,48 @@ export const BookingCreate = () => {
             }}
           >
             {rid ? (
-              <Box sx={{ gridColumn: "span 3" }} key={tgtResource?.id}>
-                <h3 style={{ marginBottom: 5 }}>
-                  {tgtResource?.resourceName} - {tgtResource?.resourceType}{" "}
-                  {user?.roleId == k.ROLES.ADMIN && (
-                    <>
-                      ( <Link to={`/resources/edit/${tgtResource?.id}`}>Resource ID {tgtResource?.id}</Link>) [View{" "}
-                      <Link
-                        go={{
-                          query: {
-                            filters: [
-                              {
-                                operator: "eq",
-                                value: tgtResource?.id,
-                                field: "resourceId",
-                              },
-                            ],
-                          },
-                          to: {
-                            resource: "resource-schedules",
-                            action: "list",
-                          },
-                        }}
-                      >
-                        Schedules ({tgtResource?.schedules?.length})
-                      </Link>
-                      {" or "}
-                      <Link
-                        go={{
-                          query: {
-                            filters: [
-                              {
-                                operator: "eq",
-                                value: tgtResource?.id,
-                                field: "resourceId",
-                              },
-                            ],
-                          },
-                          to: {
-                            resource: "resource-exceptions",
-                            action: "list",
-                          },
-                        }}
-                      >
-                        Exceptions ({tgtResource?.exceptions?.length})
-                      </Link>
-                      ]
-                    </>
+              <>
+                <Box sx={{ gridColumn: "span 3", display: "flex", alignItems: "center", mb: 4 }} key={tgtResource?.id}>
+                  {tgtResource?.photo1 && (
+                    <Box sx={{ mr: 3 }}>
+                      <img
+                        src={tgtResource.photo1}
+                        alt={tgtResource.resourceName}
+                        style={{ width: 100, height: 100, objectFit: "cover", borderRadius: 8 }}
+                      />
+                    </Box>
                   )}
-                </h3>
-                <AvailableDaysList onSlotSelect={onSlotSelect} resourceId={tgtResource?.id} calendarHeight={550} />
-              </Box>
+                  <Box>
+                    <Typography variant="h6" sx={{ mb: 1 }}>
+                      {tgtResource?.resourceName} - {tgtResource?.resourceType}
+                    </Typography>
+                    <Typography variant="body2" sx={{ mb: 0 }}>
+                      Location: {tgtResource?.location}
+                    </Typography>
+                    <Typography variant="body2" sx={{ mb: 0 }}>
+                      Seating Capacity: {tgtResource?.seatingCapacity}
+                    </Typography>
+                    <Typography variant="body2" sx={{ mb: 0 }}>
+                      Addons:{" "}
+                      {tgtResource?.resourceAddons
+                        ? tgtResource.resourceAddons
+                            .map((addon: any) => addon.resourceAddon?.resourceName)
+                            .filter(Boolean)
+                            .join(", ")
+                        : null}
+                    </Typography>
+                  </Box>
+                </Box>
+                <Box sx={{ gridColumn: "span 3" }}>
+                  <AvailableDaysList onSlotSelect={onSlotSelect} resourceId={tgtResource?.id} calendarHeight={550} />
+                </Box>
+              </>
             ) : (
               <>
                 {resourceData?.data
                   ?.filter((x) => x.parentId == null)
                   .map((r) => (
-                    <Box sx={{ gridColumn: "span 3", mb: 2 }} key={r.id}>
+                    <Box sx={{ gridColumn: "span 3", mb: 4 }} key={r.id}>
                       <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                         <h3 style={{ marginBottom: 5 }}>
                           {r?.resourceName} - {r?.resourceType}{" "}
@@ -198,7 +183,9 @@ export const BookingCreate = () => {
                           )}
                         </h3>
                       </Box>
-                      <AvailableDaysList onSlotSelect={onSlotSelect} resourceId={r.id} calendarHeight={550} />
+                      <Box sx={{ mt: 2 }}>
+                        <AvailableDaysList onSlotSelect={onSlotSelect} resourceId={r.id} calendarHeight={550} />
+                      </Box>
                     </Box>
                   ))}
               </>
