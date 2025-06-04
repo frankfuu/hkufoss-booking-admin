@@ -68,6 +68,30 @@ export const Dashboard = () => {
           >
             <Button
               sx={{
+                backgroundColor: "#1b789f",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                margin: 2,
+                padding: 2,
+                width: 250,
+              }}
+              variant="contained"
+              color="success"
+              onClick={() => {
+                go({
+                  to: {
+                    resource: "bookings",
+                    action: "create",
+                  },
+                });
+              }}
+            >
+              <Assignment fontSize="large" sx={{ marginBottom: 1 }} />
+              <Typography>Booking Calendar</Typography>
+            </Button>
+            <Button
+              sx={{
                 backgroundColor: "#88b08e",
                 display: "flex",
                 flexDirection: "column",
@@ -139,34 +163,9 @@ export const Dashboard = () => {
               <CalendarMonthIcon fontSize="large" sx={{ marginBottom: 1 }} />
               <Typography>Manage Schedules</Typography>
             </Button>
-
-            <Button
-              sx={{
-                backgroundColor: "#1b789f",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                margin: 2,
-                padding: 2,
-                width: 250,
-              }}
-              variant="contained"
-              color="success"
-              onClick={() => {
-                go({
-                  to: {
-                    resource: "bookings",
-                    action: "create",
-                  },
-                });
-              }}
-            >
-              <Assignment fontSize="large" sx={{ marginBottom: 1 }} />
-              <Typography>View Schedules</Typography>
-            </Button>
           </Box>
         </Grid>
-        <Grid item xs={12} lg={12}>
+        {/* <Grid item xs={12} lg={12}>
           <Box
             sx={{
               display: "flex",
@@ -179,7 +178,7 @@ export const Dashboard = () => {
             <Typography sx={{ fontWeight: "bold", fontSize: 20, marginBottom: 2, marginTop: 2 }}>Today's Bookings</Typography>
             <TodaysBookings />
           </Box>
-        </Grid>
+        </Grid> */}
         <Grid item xs={12} lg={12}>
           <Box
             sx={{
