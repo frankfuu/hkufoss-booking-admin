@@ -427,11 +427,19 @@ const OutstandingApprovals = () => {
       },
       {
         field: "resourceId",
-        minWidth: 100,
+        minWidth: 220,
         headerName: t("resource"),
         renderCell: ({ row }) => {
           const resource = resourcesData?.data.find((r) => r.id == row.resourceId);
-          return `${resource?.resourceName} `;
+          const isSubresource = resource?.parentId != null;
+          let label = "";
+          if (isSubresource) {
+            const parentResource = resourcesData?.data.find((r) => r.id == resource.parentId);
+            label = `${parentResource?.resourceName} (${resource?.resourceName})`;
+          } else {
+            label = `${resource?.resourceName}`;
+          }
+          return label;
         },
       },
       {
