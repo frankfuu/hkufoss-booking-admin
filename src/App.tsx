@@ -149,7 +149,7 @@ const AppContent = () => {
           meta: {
             label: t("nav.home"),
             icon: <SchoolIcon />,
-            hide: user?.roleId == k.ROLES.ADMIN,
+            // hide: user?.roleId == k.ROLES.ADMIN,
           },
         },
         {
@@ -357,7 +357,11 @@ const AppContent = () => {
             </Authenticated>
           }
         >
-          <Route index element={<NavigateToResource resource="home" />} />
+          {user?.roleId == k.ROLES.ADMIN ? (
+            <Route index element={<NavigateToResource resource="dashboard" />} />
+          ) : (
+            <Route index element={<NavigateToResource resource="home" />} />
+          )}
 
           <Route path="/debug">
             <Route index element={<DebugShow />} />
