@@ -52,10 +52,6 @@ export const RoleCreate = () => {
             label="Name"
             name="name"
           />
-
-          <Typography variant="h6" sx={{ mt: 2, mb: 2 }}>
-            Permissions
-          </Typography>
         </Box>
       </Create>
     );
