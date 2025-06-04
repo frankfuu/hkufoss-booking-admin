@@ -81,19 +81,7 @@ export const BookingsEdit = () => {
       footerButtons={({ saveButtonProps, deleteButtonProps }) => (
         <>
           {deleteButtonProps && <DeleteButton {...deleteButtonProps} />}
-          {booking?.status !== d.BOOKINGS.STATUS.LIST.CONFIRMED &&
-            booking?.status !== d.BOOKINGS.STATUS.LIST.CANCELLED &&
-            user?.roleId == k.ROLES.ADMIN && (
-              <Button
-                variant="contained"
-                color="success"
-                onClick={() => {
-                  handleStatusUpdate(d.BOOKINGS.STATUS.LIST.CONFIRMED);
-                }}
-              >
-                {t("Confirm Booking")}
-              </Button>
-            )}
+
           {booking?.status !== d.BOOKINGS.STATUS.LIST.CANCELLED && (
             <Button
               variant="contained"
@@ -107,6 +95,19 @@ export const BookingsEdit = () => {
               {t("Cancel Booking")}
             </Button>
           )}
+          {booking?.status !== d.BOOKINGS.STATUS.LIST.CONFIRMED &&
+            booking?.status !== d.BOOKINGS.STATUS.LIST.CANCELLED &&
+            user?.roleId == k.ROLES.ADMIN && (
+              <Button
+                variant="contained"
+                color="success"
+                onClick={() => {
+                  handleStatusUpdate(d.BOOKINGS.STATUS.LIST.CONFIRMED);
+                }}
+              >
+                {t("Confirm Booking")}
+              </Button>
+            )}
 
           <SaveButton {...saveButtonProps} disabled={!isEditable && user?.roleId != k.ROLES.ADMIN} />
         </>
