@@ -121,13 +121,19 @@ export const BookingsList = () => {
       // },
       {
         field: "resourceId",
-        minWidth: 100,
+        minWidth: 220,
         headerName: t("resource"),
         renderCell: ({ row }) => {
           const resource = resourcesDataAll?.data.find((r) => r.id == row.resourceId);
           const isSubresource = resource?.parentId != null;
-
-          return `${resource?.resourceName} ${isSubresource ? `(${resource.parentId})` : ""}`;
+          let label = "";
+          if (isSubresource) {
+            const parentResource = resourcesDataAll?.data.find((r) => r.id == resource.parentId);
+            label = `${parentResource?.resourceName} (${resource?.resourceName})`;
+          } else {
+            label = `${resource?.resourceName}`;
+          }
+          return label;
         },
       },
       // {
