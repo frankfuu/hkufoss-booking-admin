@@ -40,7 +40,7 @@ export const BookingsList = () => {
   });
 
   const {
-    data: resourcesData,
+    data: resourcesDataParentsOnly,
     isLoading: resourcesDataLoading,
     isError: resourcesDataError,
   } = useList({
@@ -240,7 +240,7 @@ export const BookingsList = () => {
         },
       },
     ],
-    [resourcesData, t]
+    [resourcesDataAll, t]
   );
 
   const handleResourceChange = (event: React.ChangeEvent<{ value: unknown }>) => {
@@ -321,7 +321,7 @@ export const BookingsList = () => {
                 }}
               >
                 <MenuItem value="ALL">All</MenuItem>
-                {resourcesData?.data?.map((resource) => (
+                {resourcesDataParentsOnly?.data?.map((resource) => (
                   <MenuItem key={resource.id ?? ""} value={resource.id?.toString() ?? ""}>
                     {resource.resourceName}
                   </MenuItem>

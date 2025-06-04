@@ -70,6 +70,7 @@ import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import StadiumIcon from "@mui/icons-material/Stadium";
 import ElectricalServicesIcon from "@mui/icons-material/ElectricalServices";
 import EventSeatIcon from "@mui/icons-material/EventSeat";
+import TodayIcon from "@mui/icons-material/Today";
 import { FundersCreate } from "./pages/funders/create";
 import { FundersEdit } from "./pages/funders/edit";
 import { CoursesCreate } from "./pages/courses/create";
@@ -147,9 +148,19 @@ const AppContent = () => {
           name: "home",
           list: "/home",
           meta: {
-            label: t("nav.home"),
+            label: "My Bookings",
             icon: <SchoolIcon />,
             // hide: user?.roleId == k.ROLES.ADMIN,
+          },
+        },
+        {
+          name: "bookingcalendar",
+          list: "/bookings/create",
+          meta: {
+            label: "Booking Calendar",
+            canDelete: true,
+            icon: <TodayIcon />,
+            hide: user?.roleId == k.ROLES.ADMIN,
           },
         },
         {
