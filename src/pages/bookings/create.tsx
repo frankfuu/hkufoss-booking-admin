@@ -1,5 +1,7 @@
 import { Create, CreateButton, DeleteButton, EditButton, ListButton, RefreshButton, useAutocomplete } from "@refinedev/mui";
 import { Box, Autocomplete, TextField, Button, Typography } from "@mui/material";
+import ImageViewerModal from "../../components/image-viewer-modal";
+import { useState } from "react";
 
 interface Service {
   id: string;
@@ -18,7 +20,7 @@ import {
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import AvailableDaysList from "./available-days";
-import { k } from "../../common/constants";
+import { d, k } from "../../common/constants";
 
 const ResourceDisplay = ({
   resource,
@@ -31,6 +33,12 @@ const ResourceDisplay = ({
   onSlotSelect: (data: any) => void;
   isSingleView?: boolean;
 }) => {
+  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
+
+  const handleImageClick = () => {
+    setIsImageModalOpen(true);
+  };
+
   const AdminControls = ({ resource }: { resource: any }) =>
     user?.roleId == k.ROLES.ADMIN ? (
       <>
@@ -81,9 +89,19 @@ const ResourceDisplay = ({
   return (
     <Box sx={{ gridColumn: "span 3", mb: 4 }} key={resource?.id}>
       <Box sx={{ display: "flex", alignItems: isSingleView ? "center" : "flex-start", mb: 4 }}>
-        <Box sx={{ mr: 3 }}>
+        <Box
+          sx={{
+            mr: 3,
+            "& img": {
+              transition: "transform 0.2s ease",
+              "&:hover": {
+                transform: resource?.photo1 || d.RESOURCES.DEFAULTS.ROOM_IMG ? "scale(1.05)" : "none",
+              },
+            },
+          }}
+        >
           <img
-            src={resource?.photo1 || "/fosslogo_1_mini.png"}
+            src={resource?.photo1 || d.RESOURCES.DEFAULTS.ROOM_IMG}
             alt={resource?.resourceName || "Resource"}
             style={{
               width: 100,
@@ -91,7 +109,15 @@ const ResourceDisplay = ({
               objectFit: "cover",
               borderRadius: 8,
               backgroundColor: resource?.photo1 ? "transparent" : "#f5f5f5",
+              cursor: "pointer",
             }}
+            onClick={handleImageClick}
+          />
+          <ImageViewerModal
+            open={isImageModalOpen}
+            onClose={() => setIsImageModalOpen(false)}
+            imageSrc={resource?.photo1 || d.RESOURCES.DEFAULTS.ROOM_IMG}
+            title={resource?.resourceName || "Resource Image"}
           />
         </Box>
 

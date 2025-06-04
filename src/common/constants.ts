@@ -106,6 +106,9 @@ const dropdownOptions = {
     },
   },
   RESOURCES: {
+    DEFAULTS: {
+      ROOM_IMG: "/fosslogo_1_mini.png",
+    },
     TYPES: {
       DEFAULT: "Meeting Room",
       SUB_RESOURCE_DEFAULT: "Seat",
