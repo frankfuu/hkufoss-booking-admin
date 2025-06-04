@@ -242,14 +242,24 @@ export const BookingsList = () => {
     if (resourceId === "ALL") {
       setFilters((prevFilters) => [
         // remove any existing 'resourceId' filter
-        ...prevFilters.filter((f) => "field" in f && f.field !== "resourceId"),
+        ...prevFilters
+          .filter((f) => "field" in f && f.field !== "resourceId")
+          .filter((f) => "field" in f && f.field !== "parentResourceId"),
       ]);
     } else {
       setFilters((prevFilters) => [
         // remove any existing 'resourceId' filter
-        ...prevFilters.filter((f) => "field" in f && f.field !== "resourceId"),
+        ...prevFilters
+          .filter((f) => "field" in f && f.field !== "resourceId")
+          .filter((f) => "field" in f && f.field !== "parentResourceId"),
+        // ...prevFilters,
         {
           field: "resourceId",
+          operator: "eq",
+          value: resourceId,
+        },
+        {
+          field: "parentResourceId",
           operator: "eq",
           value: resourceId,
         },
