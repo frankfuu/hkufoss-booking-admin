@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
 import { useState } from "react";
 import { Link, useGetIdentity, useGo, useList, useNavigation, useResource } from "@refinedev/core";
-import FloorPlanModal from "../../components/floor-plan-modal";
+import ImageViewerModal from "../../components/image-viewer-modal";
 import { d, k } from "../../common/constants";
 import { DatePicker, DateTimePicker } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from "dayjs";
@@ -25,9 +25,10 @@ export default function EditCreateResources({ register, errors, control, action,
   const { t } = useTranslation();
   const p = useParams();
 
-  // State for floor plan modal
-  const [floorPlanModalOpen, setFloorPlanModalOpen] = useState<boolean>(false);
-  const [selectedFloorPlan, setSelectedFloorPlan] = useState<string | null>(null);
+  // image viewer modal
+  const [imageModalOpen, setImageModalOpen] = useState<boolean>(false);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [imageModalTitle, setImageModalTitle] = useState<string>("Image");
 
   const isCreate = action === "create";
   const isChildPage = p.parentId !== undefined && p.parentId !== null ? true : !!(resourcesData && resourcesData.parentId);
@@ -62,8 +63,13 @@ export default function EditCreateResources({ register, errors, control, action,
   } else {
     return (
       <Box component="form" sx={{ display: "flex", flexDirection: "column" }} autoComplete="off">
-        {/* Floor Plan Modal */}
-        <FloorPlanModal open={floorPlanModalOpen} onClose={() => setFloorPlanModalOpen(false)} imageSrc={selectedFloorPlan} />
+        {/* Image Viewer Modal */}
+        <ImageViewerModal
+          open={imageModalOpen}
+          onClose={() => setImageModalOpen(false)}
+          imageSrc={selectedImage}
+          title={imageModalTitle}
+        />
         {!isCreate && (
           <TextField
             {...register("id", {
@@ -307,10 +313,16 @@ export default function EditCreateResources({ register, errors, control, action,
                                   component="img"
                                   src={field.value}
                                   alt={`${photoKey} preview`}
+                                  onClick={() => {
+                                    setSelectedImage(field.value);
+                                    setImageModalTitle(photoKey.charAt(0).toUpperCase() + photoKey.slice(1));
+                                    setImageModalOpen(true);
+                                  }}
                                   sx={{
                                     width: "100%",
                                     height: 120,
                                     objectFit: "contain",
+                                    cursor: "pointer", // Add cursor pointer to indicate it's clickable
                                   }}
                                 />
                                 <Button
@@ -487,8 +499,9 @@ export default function EditCreateResources({ register, errors, control, action,
                           src={field.value}
                           alt="Floor plan preview"
                           onClick={() => {
-                            setSelectedFloorPlan(field.value);
-                            setFloorPlanModalOpen(true);
+                            setSelectedImage(field.value);
+                            setImageModalTitle("Floor Plan");
+                            setImageModalOpen(true);
                           }}
                           sx={{
                             width: "100%",

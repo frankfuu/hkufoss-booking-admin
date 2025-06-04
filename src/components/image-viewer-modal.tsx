@@ -2,19 +2,20 @@ import { Box, Dialog, DialogContent, DialogTitle, IconButton, Typography } from 
 import CloseIcon from "@mui/icons-material/Close";
 import { useTranslation } from "react-i18next";
 
-interface FloorPlanModalProps {
+interface ImageViewerModalProps {
   open: boolean;
   onClose: () => void;
   imageSrc: string | null;
+  title?: string;
 }
 
-const FloorPlanModal = ({ open, onClose, imageSrc }: FloorPlanModalProps) => {
+const ImageViewerModal = ({ open, onClose, imageSrc, title = "Image" }: ImageViewerModalProps) => {
   const { t } = useTranslation();
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="lg" fullWidth>
       <DialogTitle sx={{ m: 0, p: 2, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        {t("Floor Plan")}
+        {t(title)}
         <IconButton aria-label="close" onClick={onClose} sx={{ color: (theme) => theme.palette.grey[500] }}>
           <CloseIcon />
         </IconButton>
@@ -23,7 +24,7 @@ const FloorPlanModal = ({ open, onClose, imageSrc }: FloorPlanModalProps) => {
         {imageSrc ? (
           <img
             src={imageSrc}
-            alt="Floor plan enlarged"
+            alt="Image enlarged"
             style={{
               width: "100%",
               maxHeight: "80vh",
@@ -40,4 +41,4 @@ const FloorPlanModal = ({ open, onClose, imageSrc }: FloorPlanModalProps) => {
   );
 };
 
-export default FloorPlanModal;
+export default ImageViewerModal;
