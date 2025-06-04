@@ -20,6 +20,114 @@ import { useTranslation } from "react-i18next";
 import AvailableDaysList from "./available-days";
 import { k } from "../../common/constants";
 
+const ResourceDisplay = ({
+  resource,
+  user,
+  onSlotSelect,
+  isSingleView = false,
+}: {
+  resource: any;
+  user: any;
+  onSlotSelect: (data: any) => void;
+  isSingleView?: boolean;
+}) => {
+  const AdminControls = ({ resource }: { resource: any }) =>
+    user?.roleId == k.ROLES.ADMIN ? (
+      <>
+        (<Link to={`/resources/edit/${resource?.id}`}>Resource ID {resource?.id}</Link>) [View{" "}
+        <Link
+          go={{
+            query: {
+              filters: [
+                {
+                  operator: "eq",
+                  value: resource?.id,
+                  field: "resourceId",
+                },
+              ],
+            },
+            to: {
+              resource: "resource-schedules",
+              action: "list",
+            },
+          }}
+        >
+          Schedules ({resource?.schedules?.length})
+        </Link>
+        {" or "}
+        <Link
+          go={{
+            query: {
+              filters: [
+                {
+                  operator: "eq",
+                  value: resource?.id,
+                  field: "resourceId",
+                },
+              ],
+            },
+            to: {
+              resource: "resource-exceptions",
+              action: "list",
+            },
+          }}
+        >
+          Exceptions ({resource?.exceptions?.length})
+        </Link>
+        ]
+      </>
+    ) : null;
+
+  return (
+    <Box sx={{ gridColumn: "span 3", mb: 4 }} key={resource?.id}>
+      <Box sx={{ display: "flex", alignItems: isSingleView ? "center" : "flex-start", mb: 4 }}>
+        <Box sx={{ mr: 3 }}>
+          <img
+            src={resource?.photo1 || "/fosslogo_1_mini.png"}
+            alt={resource?.resourceName || "Resource"}
+            style={{
+              width: 100,
+              height: 100,
+              objectFit: "cover",
+              borderRadius: 8,
+              backgroundColor: resource?.photo1 ? "transparent" : "#f5f5f5",
+            }}
+          />
+        </Box>
+
+        <Box sx={{ flex: 1 }}>
+          <>
+            <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <Typography variant="subtitle1" sx={{ mb: 1, fontWeight: 800 }}>
+                {resource?.resourceName} - {resource?.resourceType} <AdminControls resource={resource} />
+              </Typography>
+            </Box>
+            <Typography variant="body2" sx={{ mb: 0 }}>
+              Location: {resource?.location}
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 0 }}>
+              Seating Capacity: {resource?.seatingCapacity}
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 0 }}>
+              Addons:{" "}
+              {resource?.resourceAddons
+                ? resource.resourceAddons
+                    .map((addon: any) => addon.resourceAddon?.resourceName)
+                    .filter(Boolean)
+                    .join(", ")
+                : null}
+            </Typography>
+          </>
+        </Box>
+      </Box>
+
+      <Box sx={{ mt: isSingleView ? 0 : 2 }}>
+        <AvailableDaysList onSlotSelect={onSlotSelect} resourceId={resource?.id} calendarHeight={550} />
+      </Box>
+    </Box>
+  );
+};
+
 export const BookingCreate = () => {
   const { t } = useTranslation();
 
@@ -90,106 +198,23 @@ export const BookingCreate = () => {
               gap: 1, // Spacing between items
             }}
           >
-            {rid ? (
-              <>
-                <Box sx={{ gridColumn: "span 3", display: "flex", alignItems: "center", mb: 4 }} key={tgtResource?.id}>
-                  {tgtResource?.photo1 && (
-                    <Box sx={{ mr: 3 }}>
-                      <img
-                        src={tgtResource.photo1}
-                        alt={tgtResource.resourceName}
-                        style={{ width: 100, height: 100, objectFit: "cover", borderRadius: 8 }}
-                      />
-                    </Box>
-                  )}
-                  <Box>
-                    <Typography variant="h6" sx={{ mb: 1 }}>
-                      {tgtResource?.resourceName} - {tgtResource?.resourceType}
-                    </Typography>
-                    <Typography variant="body2" sx={{ mb: 0 }}>
-                      Location: {tgtResource?.location}
-                    </Typography>
-                    <Typography variant="body2" sx={{ mb: 0 }}>
-                      Seating Capacity: {tgtResource?.seatingCapacity}
-                    </Typography>
-                    <Typography variant="body2" sx={{ mb: 0 }}>
-                      Addons:{" "}
-                      {tgtResource?.resourceAddons
-                        ? tgtResource.resourceAddons
-                            .map((addon: any) => addon.resourceAddon?.resourceName)
-                            .filter(Boolean)
-                            .join(", ")
-                        : null}
-                    </Typography>
-                  </Box>
-                </Box>
-                <Box sx={{ gridColumn: "span 3" }}>
-                  <AvailableDaysList onSlotSelect={onSlotSelect} resourceId={tgtResource?.id} calendarHeight={550} />
-                </Box>
-              </>
-            ) : (
-              <>
-                {resourceData?.data
+            {rid
+              ? // Single resource view
+                tgtResource && (
+                  <ResourceDisplay resource={tgtResource} user={user} onSlotSelect={onSlotSelect} isSingleView={true} />
+                )
+              : // Multiple resources view
+                resourceData?.data
                   ?.filter((x) => x.parentId == null)
-                  .map((r) => (
-                    <Box sx={{ gridColumn: "span 3", mb: 4 }} key={r.id}>
-                      <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                        <h3 style={{ marginBottom: 5 }}>
-                          {r?.resourceName} - {r?.resourceType}{" "}
-                          {user?.roleId == k.ROLES.ADMIN && (
-                            <>
-                              (<Link to={`/resources/edit/${r?.id}`}>Resource ID {r?.id}</Link>) [View{" "}
-                              <Link
-                                go={{
-                                  query: {
-                                    filters: [
-                                      {
-                                        operator: "eq",
-                                        value: r?.id,
-                                        field: "resourceId",
-                                      },
-                                    ],
-                                  },
-                                  to: {
-                                    resource: "resource-schedules",
-                                    action: "list",
-                                  },
-                                }}
-                              >
-                                Schedules ({r?.schedules?.length})
-                              </Link>
-                              {" or "}
-                              <Link
-                                go={{
-                                  query: {
-                                    filters: [
-                                      {
-                                        operator: "eq",
-                                        value: r?.id,
-                                        field: "resourceId",
-                                      },
-                                    ],
-                                  },
-                                  to: {
-                                    resource: "resource-exceptions",
-                                    action: "list",
-                                  },
-                                }}
-                              >
-                                Exceptions ({r?.exceptions?.length})
-                              </Link>
-                              ]
-                            </>
-                          )}
-                        </h3>
-                      </Box>
-                      <Box sx={{ mt: 2 }}>
-                        <AvailableDaysList onSlotSelect={onSlotSelect} resourceId={r.id} calendarHeight={550} />
-                      </Box>
-                    </Box>
+                  .map((resource) => (
+                    <ResourceDisplay
+                      key={resource.id}
+                      resource={resource}
+                      user={user}
+                      onSlotSelect={onSlotSelect}
+                      isSingleView={false}
+                    />
                   ))}
-              </>
-            )}
           </Box>
         </Box>
       </Create>
