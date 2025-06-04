@@ -309,6 +309,7 @@ const MyBookings = () => {
 };
 
 const BookARoom = () => {
+  const { data: user } = useGetIdentity<IUser>();
   const { t } = useTranslation();
   const {
     dataGridProps,
@@ -373,11 +374,15 @@ const BookARoom = () => {
         minWidth: 50,
         headerName: t("seatingCapacity.short"),
       },
-
       {
-        field: "floor",
-        minWidth: 50,
-        headerName: t("floor"),
+        field: "Seats",
+        minWidth: 80,
+        sortable: false,
+        headerName: "Seats",
+        renderCell: ({ row }) => {
+          const hasSubresources = row.subResources.length > 0;
+          return hasSubresources ? row.subResources.length : "-";
+        },
       },
 
       {
@@ -387,15 +392,25 @@ const BookARoom = () => {
         type: "actions",
         minWidth: 200,
         renderCell: function render({ row }) {
-          const isAvail = row?.schedules.length > 0;
+          let isAvail = row?.schedules.length > 0;
+          let notAvailReason = "No Availabilities";
+          if (user?.roleId != k.ROLES.ADMIN || user?.roleId != k.ROLES.STAFF) {
+            const hasSubresources = row.subResources.length > 0;
+            if (!hasSubresources) {
+              isAvail = false;
+              notAvailReason = "Staff Only";
+            }
+          }
           const createBookingUrl = `/bookings/create/${row.id}`;
+
+          const buttonsMinWidth = 180;
 
           return (
             <>
               {isAvail ? (
                 <Button
                   size="small"
-                  sx={{ mr: 2, minWidth: 120 }}
+                  sx={{ mr: 2, minWidth: buttonsMinWidth }}
                   variant="contained"
                   color="primary"
                   component={Link}
@@ -404,8 +419,8 @@ const BookARoom = () => {
                   {t("book")}
                 </Button>
               ) : (
-                <Button disabled size="small" sx={{ mr: 2, minWidth: 120 }} variant="contained" color="secondary">
-                  {t("bookNoOpening")}
+                <Button disabled size="small" sx={{ mr: 2, minWidth: buttonsMinWidth }} variant="contained" color="secondary">
+                  {notAvailReason}
                 </Button>
               )}
             </>
@@ -415,7 +430,7 @@ const BookARoom = () => {
         headerAlign: "left",
       },
     ],
-    [resourcesData, t]
+    [resourcesData, t, user]
   );
 
   return (
