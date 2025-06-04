@@ -432,7 +432,7 @@ export const BookingsList = () => {
         </Grid>
 
         {/* Time range filter */}
-        <Grid item xs={12} md={3}>
+        <Grid item xs={12} md={5}>
           <Box sx={{ mb: 0.5 }}>
             <Box component="span" sx={{ fontWeight: "bold", display: "block", mb: 0.5 }}>
               Filter by Time Range:
@@ -478,6 +478,31 @@ export const BookingsList = () => {
                 }}
               >
                 {"FUTURE"}
+              </Button>
+              <Button
+                variant={selectedTimeRange === "NEXT_7_DAYS" ? "contained" : "outlined"}
+                onClick={() => {
+                  setSelectedTimeRange("NEXT_7_DAYS");
+                  const today = new Date();
+                  const nextWeek = new Date();
+                  nextWeek.setDate(today.getDate() + 7);
+
+                  setFilters((prevFilters) => [
+                    ...prevFilters.filter((f) => "field" in f && f.field !== "startTime"),
+                    {
+                      field: "startTime",
+                      operator: "gte",
+                      value: today.toISOString(),
+                    },
+                    {
+                      field: "startTime",
+                      operator: "lte",
+                      value: nextWeek.toISOString(),
+                    },
+                  ]);
+                }}
+              >
+                {"NEXT 7 DAYS"}
               </Button>
             </ButtonGroup>
             <Button
