@@ -1,5 +1,5 @@
 import { CloneButton, DeleteButton, Edit, EditButton, useAutocomplete, useDataGrid } from "@refinedev/mui";
-import { Box, TextField, Autocomplete, createFilterOptions, Grid, Typography, Button } from "@mui/material";
+import { Box, TextField, Autocomplete, createFilterOptions, Grid, Typography, Button, Paper } from "@mui/material";
 import { useForm } from "@refinedev/react-hook-form";
 import { Controller } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
@@ -220,41 +220,116 @@ export default function EditCreateResources({ register, errors, control, action,
               )}
             />
 
-            <TextField
-              {...register("photo1", {})}
-              error={!!(errors as any)?.photo1}
-              helperText={(errors as any)?.photo1?.message}
-              margin="normal"
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-              label={t("Photo 1")}
-              name="photo1"
-              size="small"
-            />
+            {/* Replace the three TextField components with this multi-photo upload component */}
+            <Box sx={{ mt: 2, mb: 2 }}>
+              <Typography variant="subtitle1" gutterBottom>
+                {t("Resource Photos")}
+              </Typography>
 
-            <TextField
-              {...register("photo2", {})}
-              error={!!(errors as any)?.photo2}
-              helperText={(errors as any)?.photo2?.message}
-              margin="normal"
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-              label={t("Photo 2")}
-              name="photo2"
-              size="small"
-            />
+              <Grid container spacing={2}>
+                {(["photo1", "photo2", "photo3"] as const).map((photoKey) => {
+                  // Get the initial value from the form if it exists
+                  const initialValue = resourcesData?.[photoKey] || null;
 
-            {/* <TextField
-              {...register("photo3", {})}
-              error={!!(errors as any)?.photo3}
-              helperText={(errors as any)?.photo3?.message}
-              margin="normal"
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-              label={t("Photo 3")}
-              name="photo3"
-              size="small"
-            /> */}
+                  return (
+                    <Grid item xs={12} sm={4} key={photoKey}>
+                      <Controller
+                        control={control}
+                        name={photoKey}
+                        defaultValue={initialValue}
+                        render={({ field }) => (
+                          <Paper
+                            elevation={1}
+                            sx={{
+                              p: 2,
+                              height: "100%",
+                              display: "flex",
+                              flexDirection: "column",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              minHeight: 180,
+                              position: "relative",
+                            }}
+                          >
+                            <Typography variant="subtitle2" align="center" gutterBottom>
+                              {t(photoKey.charAt(0).toUpperCase() + photoKey.slice(1))}
+                            </Typography>
+
+                            <input
+                              type="file"
+                              accept="image/*"
+                              style={{ display: "none" }}
+                              id={`file-input-${photoKey}`}
+                              onChange={(e) => {
+                                const file = e.target.files?.[0];
+                                if (!file) return;
+
+                                // Check if file is an image
+                                if (!file.type.match("image.*")) {
+                                  alert("Please select an image file");
+                                  return;
+                                }
+
+                                // Check file size (limit to 2MB)
+                                if (file.size > 2 * 1024 * 1024) {
+                                  alert("File size should be less than 5MB");
+                                  return;
+                                }
+
+                                const reader = new FileReader();
+                                reader.onload = () => {
+                                  field.onChange(reader.result);
+                                };
+                                reader.readAsDataURL(file);
+                              }}
+                            />
+
+                            {!field.value ? (
+                              <Button
+                                variant="outlined"
+                                onClick={() => document.getElementById(`file-input-${photoKey}`)?.click()}
+                                sx={{ mt: 2 }}
+                                fullWidth
+                                size="small"
+                              >
+                                {t("Upload Image")}
+                              </Button>
+                            ) : (
+                              <Box sx={{ width: "100%", position: "relative" }}>
+                                <Box
+                                  component="img"
+                                  src={field.value}
+                                  alt={`${photoKey} preview`}
+                                  sx={{
+                                    width: "100%",
+                                    height: 120,
+                                    objectFit: "contain",
+                                  }}
+                                />
+                                <Button
+                                  variant="outlined"
+                                  color="error"
+                                  size="small"
+                                  onClick={() => {
+                                    field.onChange(null);
+                                    // Reset file input
+                                    const fileInput = document.getElementById(`file-input-${photoKey}`) as HTMLInputElement;
+                                    if (fileInput) fileInput.value = "";
+                                  }}
+                                  sx={{ mt: 1, width: "100%" }}
+                                >
+                                  {t("Clear")}
+                                </Button>
+                              </Box>
+                            )}
+                          </Paper>
+                        )}
+                      />
+                    </Grid>
+                  );
+                })}
+              </Grid>
+            </Box>
           </>
         )}
 
