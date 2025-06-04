@@ -272,7 +272,7 @@ export default function EditCreateResources({ register, errors, control, action,
 
                                 // Check file size (limit to 2MB)
                                 if (file.size > 2 * 1024 * 1024) {
-                                  alert("File size should be less than 5MB");
+                                  alert("File size should be less than 2MB");
                                   return;
                                 }
 
@@ -409,6 +409,101 @@ export default function EditCreateResources({ register, errors, control, action,
               <Button variant="contained" size="small" onClick={() => navigate(`/resources/create/${p.id}/child`)}>
                 Add
               </Button>
+            </Box>{" "}
+            {/* Add Floor Plan Photo Upload for SubResource */}
+            <Box sx={{ mt: 2, mb: 2 }}>
+              <Typography variant="subtitle1" gutterBottom>
+                {t("Floor Plan")}
+              </Typography>
+
+              <Controller
+                control={control}
+                name="photoFloorPlan"
+                defaultValue={resourcesData?.photoFloorPlan || null}
+                render={({ field }) => (
+                  <Paper
+                    elevation={1}
+                    sx={{
+                      p: 2,
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      minHeight: 180,
+                      position: "relative",
+                      width: "100%",
+                    }}
+                  >
+                    <input
+                      type="file"
+                      accept="image/*"
+                      style={{ display: "none" }}
+                      id="file-input-floor-plan"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (!file) return;
+
+                        // Check if file is an image
+                        if (!file.type.match("image.*")) {
+                          alert("Please select an image file");
+                          return;
+                        }
+
+                        // Check file size (limit to 5MB)
+                        if (file.size > 5 * 1024 * 1024) {
+                          alert("File size should be less than 5MB");
+                          return;
+                        }
+
+                        const reader = new FileReader();
+                        reader.onload = () => {
+                          field.onChange(reader.result);
+                        };
+                        reader.readAsDataURL(file);
+                      }}
+                    />
+
+                    {!field.value ? (
+                      <Button
+                        variant="outlined"
+                        onClick={() => document.getElementById("file-input-floor-plan")?.click()}
+                        sx={{ mt: 2 }}
+                        fullWidth
+                        size="small"
+                      >
+                        {t("Upload Floor Plan")}
+                      </Button>
+                    ) : (
+                      <Box sx={{ width: "100%", position: "relative" }}>
+                        <Box
+                          component="img"
+                          src={field.value}
+                          alt="Floor plan preview"
+                          sx={{
+                            width: "100%",
+                            height: 200,
+                            objectFit: "contain",
+                          }}
+                        />
+                        <Button
+                          variant="outlined"
+                          color="error"
+                          size="small"
+                          onClick={() => {
+                            field.onChange(null);
+                            // Reset file input
+                            const fileInput = document.getElementById("file-input-floor-plan") as HTMLInputElement;
+                            if (fileInput) fileInput.value = "";
+                          }}
+                          sx={{ mt: 1, width: "100%" }}
+                        >
+                          {t("Clear")}
+                        </Button>
+                      </Box>
+                    )}
+                  </Paper>
+                )}
+              />
             </Box>
             <SubResources />
           </Box>
@@ -506,20 +601,22 @@ const SubResources = () => {
   );
 
   return (
-    <DataGrid
-      {...dataGridProps}
-      columns={columns}
-      autoHeight
-      onRowClick={({ id }) =>
-        go({
-          to: `/resources/edit/${id}`,
-        })
-      }
-      sx={{
-        "& .MuiDataGrid-row": {
-          cursor: "pointer",
-        },
-      }}
-    />
+    <>
+      <DataGrid
+        {...dataGridProps}
+        columns={columns}
+        autoHeight
+        onRowClick={({ id }) =>
+          go({
+            to: `/resources/edit/${id}`,
+          })
+        }
+        sx={{
+          "& .MuiDataGrid-row": {
+            cursor: "pointer",
+          },
+        }}
+      />
+    </>
   );
 };
