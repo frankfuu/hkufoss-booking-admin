@@ -613,7 +613,7 @@ const SubResources = () => {
           return (
             <>
               <EditButton recordItemId={row.id} />
-              <CloneButton recordItemId={row.id} />
+              {/* <CloneButton recordItemId={row.id} /> */}
               <DeleteButton recordItemId={row.id} />
             </>
           );
