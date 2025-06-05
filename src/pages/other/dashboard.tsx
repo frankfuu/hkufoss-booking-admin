@@ -68,7 +68,7 @@ export const Dashboard = () => {
           >
             <Button
               sx={{
-                backgroundColor: "#1b789f",
+                // backgroundColor: "#88b08e",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
@@ -92,7 +92,7 @@ export const Dashboard = () => {
             </Button>
             <Button
               sx={{
-                backgroundColor: "#88b08e",
+                // backgroundColor: "#ff9987",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
@@ -101,7 +101,7 @@ export const Dashboard = () => {
                 width: 250,
               }}
               variant="contained"
-              color="success"
+              color="secondary"
               onClick={() => {
                 go({
                   to: {
@@ -116,7 +116,7 @@ export const Dashboard = () => {
             </Button>
             <Button
               sx={{
-                backgroundColor: "#ff9987",
+                // backgroundColor: "#",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
@@ -125,7 +125,7 @@ export const Dashboard = () => {
                 width: 250,
               }}
               variant="contained"
-              color="success"
+              color="info"
               onClick={() => {
                 go({
                   to: {
@@ -141,7 +141,7 @@ export const Dashboard = () => {
 
             <Button
               sx={{
-                backgroundColor: "#fece92",
+                // backgroundColor: "#fece92",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
@@ -150,7 +150,7 @@ export const Dashboard = () => {
                 width: 250,
               }}
               variant="contained"
-              color="success"
+              color="warning"
               onClick={() => {
                 go({
                   to: {
