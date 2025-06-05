@@ -278,6 +278,12 @@ const SubResources = ({
 }) => {
   // const p = useParams();
 
+  const { data: resource } = useOne({
+    resource: "resources",
+    id: parentId || resourceId,
+    queryOptions: { enabled: !!resourceId },
+  });
+
   const { t } = useTranslation();
   const {
     dataGridProps,
@@ -436,6 +442,9 @@ const SubResources = ({
       <Typography variant="h4" textAlign="center" sx={{ my: 2 }}>
         Seat Selection
       </Typography>
+      <Box sx={{ display: "flex", justifyContent: "center", my: 2 }}>
+        <img src={resource?.data?.photoFloorPlan} alt="Seat Selection" style={{ maxWidth: "100%", height: "auto" }} />
+      </Box>
       <DataGrid {...dataGridProps} columns={columns} autoHeight />
     </>
   );
