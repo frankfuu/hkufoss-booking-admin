@@ -3,9 +3,10 @@ import { useDataGrid, EditButton, ShowButton, DeleteButton, List, DateField, Clo
 import { DataGrid, GridColDef, GridToolbar, getGridSingleSelectOperators } from "@mui/x-data-grid";
 import { Box, Button, ButtonGroup, Checkbox, Chip, Grid, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import { useCustomMutation, useList, useNavigation, usePermissions, useResource } from "@refinedev/core";
-import { d, k } from "../../common/constants";
+import { d, k, s } from "../../common/constants";
 import { useTranslation } from "react-i18next";
 import { getChipProps } from "../../common/helpers";
+import { Link } from "react-router-dom";
 
 export const BookingsList = () => {
   const { t } = useTranslation();
@@ -98,6 +99,13 @@ export const BookingsList = () => {
         field: "activityName",
         minWidth: 180,
         headerName: t("activity.short"),
+        renderCell: function render({ row }) {
+          return (
+            <Link to={`/bookings/edit/${row.id}`} style={{ color: "inherit", textDecoration: "none" }}>
+              {row.activityName}
+            </Link>
+          );
+        },
       },
       {
         field: "status",
@@ -121,7 +129,7 @@ export const BookingsList = () => {
       // },
       {
         field: "resourceId",
-        minWidth: 220,
+        minWidth: 200,
         headerName: t("resource"),
         renderCell: ({ row }) => {
           const resource = resourcesDataAll?.data.find((r) => r.id == row.resourceId);
@@ -133,9 +141,18 @@ export const BookingsList = () => {
           } else {
             label = `${resource?.resourceName}`;
           }
-          return label;
+          return (
+            <Link
+              style={s.underlinedLinkStyle}
+              to={`/resources/edit/${row.resourceId}`}
+              onClick={(e: any) => e.stopPropagation()}
+            >
+              {label}
+            </Link>
+          );
         },
       },
+
       // {
       //   field: "scheduleId",
       //   minWidth: 50,

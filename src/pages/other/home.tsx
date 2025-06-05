@@ -178,6 +178,13 @@ const MyBookings = () => {
         field: "activityName",
         minWidth: 180,
         headerName: t("activity.short"),
+        renderCell: function render({ row }) {
+          return (
+            <Link to={`/bookings/edit/${row.id}`} style={{ color: "inherit", textDecoration: "none" }}>
+              {row.activityName}
+            </Link>
+          );
+        },
       },
       {
         field: "resourceId",
@@ -394,7 +401,7 @@ const BookARoom = () => {
         renderCell: function render({ row }) {
           let isAvail = row?.schedules.length > 0;
           let notAvailReason = "No Availabilities";
-          if (user?.roleId != k.ROLES.ADMIN || user?.roleId != k.ROLES.STAFF) {
+          if (user?.roleId != k.ROLES.ADMIN && user?.roleId != k.ROLES.STAFF) {
             const hasSubresources = row.subResources.length > 0;
             if (!hasSubresources) {
               isAvail = false;
@@ -434,20 +441,22 @@ const BookARoom = () => {
   );
 
   return (
-    <DataGrid
-      {...dataGridProps}
-      columns={columns}
-      autoHeight
-      // onRowClick={({ id }) =>
-      //   go({
-      //     to: `/bookings/create/${id}`,
-      //   })
-      // }
-      // sx={{
-      //   "& .MuiDataGrid-row": {
-      //     cursor: "pointer",
-      //   },
-      // }}
-    />
+    <>
+      <DataGrid
+        {...dataGridProps}
+        columns={columns}
+        autoHeight
+        // onRowClick={({ id }) =>
+        //   go({
+        //     to: `/bookings/create/${id}`,
+        //   })
+        // }
+        // sx={{
+        //   "& .MuiDataGrid-row": {
+        //     cursor: "pointer",
+        //   },
+        // }}
+      />
+    </>
   );
 };
